@@ -84,8 +84,8 @@ sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
 sys.path.insert(0, os.path.abspath(__file__ + "/../hypre_driver/"))
 
 solver = 3 # Bommer AMG
-max_setup_time = 100.
-max_solve_time = 100.
+# max_setup_time = 1000.
+# max_solve_time = 1000.
 coeffs_c = "-c 1 1 1 " # specify c-coefficients in format "-c 1 1 1 " 
 coeffs_a = "-a 0 0 0 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
 problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
@@ -143,6 +143,9 @@ def main():
     nxmax = args.nxmax
     nymax = args.nymax
     nzmax = args.nzmax
+    nxmin = args.nxmin
+    nymin = args.nymin
+    nzmin = args.nzmin
     nodes = args.nodes
     cores = args.cores
     nprocmin_pernode = args.nprocmin_pernode
@@ -161,9 +164,6 @@ def main():
     nprocmin = min(nodes*nprocmin_pernode,nprocmax-1)  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space 
 
     
-    nxmin = 20
-    nymin = 20
-    nzmin = 20
     nx = Integer(nxmin, nxmax, transform="normalize", name="nx")
     ny = Integer(nymin, nymax, transform="normalize", name="ny")
     nz = Integer(nzmin, nzmax, transform="normalize", name="nz")
@@ -171,7 +171,7 @@ def main():
     Py = Integer(1, nprocmax, transform="normalize", name="Py")
     Pz = Integer(1, nprocmax, transform="normalize", name="Pz")
     strong_threshold = Real(0, 1, transform="normalize", name="strong_threshold")
-    trunc_factor =  Real(0, 1, transform="normalize", name="trunc_factor")
+    trunc_factor =  Real(0, 0.999, transform="normalize", name="trunc_factor")
     P_max_elmts = Integer(1, 12,  transform="normalize", name="P_max_elmts")
     coarsen_type = Categoricalnorm (['0', '1', '2', '3', '4', '6', '8', '10'], transform="onehot", name="coarsen_type")
     relax_type = Categoricalnorm (['-1', '0', '6', '8', '16', '18'], transform="onehot", name="relax_type")
@@ -220,6 +220,12 @@ def main():
         giventask = [[randint(nxmin,nxmax),randint(nymin,nymax),randint(nzmin,nzmax)] for i in range(ntask)]
 
     # giventask = [[50, 60, 80], [60, 80, 100]]
+    giventask = [[118, 119, 171], [134, 147, 190], [176, 115, 122], [130, 175, 166], [186, 130, 156],
+                 [139, 100, 138], [172, 188, 170], [144, 105, 172], [150, 136, 198], [192, 111, 110],
+                 [108, 155, 101], [178, 123, 185], [104, 176, 131], [172, 115, 143], [165, 161, 106],
+                 [196, 162, 151], [190, 182, 179], [123, 130, 142], [130, 143, 200], [143, 129, 158], 
+                 [163, 188, 162], [138, 199, 190], [112, 119, 129], [144, 148, 124], [118, 168, 145], 
+                 [133, 199, 132], [163, 179, 149], [136, 175, 149], [132, 153, 103], [159, 109, 119]]
     # # the following will use only task lists stored in the pickle file
     # data = Data(problem)
 
@@ -290,9 +296,12 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser()
     # Problem related arguments
-    parser.add_argument('-nxmax', type=int, default=50, help='discretization size in dimension x')
-    parser.add_argument('-nymax', type=int, default=50, help='discretization size in dimension y')
-    parser.add_argument('-nzmax', type=int, default=50, help='discretization size in dimension y')
+    parser.add_argument('-nxmax', type=int, default=100, help='discretization size in dimension x')
+    parser.add_argument('-nymax', type=int, default=100, help='discretization size in dimension y')
+    parser.add_argument('-nzmax', type=int, default=100, help='discretization size in dimension y')
+    parser.add_argument('-nxmin', type=int, default=10, help='discretization size in dimension x')
+    parser.add_argument('-nymin', type=int, default=10, help='discretization size in dimension y')
+    parser.add_argument('-nzmin', type=int, default=10, help='discretization size in dimension y')
     # Machine related arguments
     parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')

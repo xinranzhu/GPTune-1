@@ -1,0 +1,15 @@
+build
+GPTune/__pycache__
+examples/hypre-driver/exp/cori1/opentuner
+scalapack-2.1.0
+examples/hypre-driver/exp/cori1/GPTune
+examples/hypre-driver/exp/cori1/hpbandster
+*.tgz
+a.*
+examples/hypre_convecdiff.py
+run_cori_hypre_haswell_convcdiff_GPTune.sh
+run_cori_hypre_haswell_convcdiff_hpbandster.sh
+run_cori_hypre_haswell_convcdiff_opentuner.sh
+run_cori_hypre_haswell_convcdiff.sh
+run_cori_hypre_haswell_hpbandster.sh
+run_cori_hypre_haswell_opentuner.sh

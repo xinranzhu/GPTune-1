@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH -C knl,quad,cache
-#SBATCH -J test_driver
+#SBATCH -J exp_hypre
 #SBATCH --qos=regular
-#SBATCH -t 02:00:00
-#SBATCH --nodes=2
+#SBATCH -t 08:00:00
+#SBATCH --nodes=8
 #SBATCH --mail-user=xz584@cornell.edu
 #SBATCH --mail-type=ALL
 
@@ -18,6 +18,7 @@ module unload cray-mpich
 module swap PrgEnv-intel PrgEnv-gnu
 # export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/global/homes/x/xinranz/projects/GPTune/scalapack-2.1.0/build/lib
 module load openmpi/4.0.1
 export OMPI_MCA_btl_ugni_virtual_device_count=1
 
@@ -33,10 +34,13 @@ CCC=mpicc
 CCCPP=mpicxx
 FTN=mpif90
 
-nxmax=100
-nymax=100
-nzmax=100
-ntask=2
+nxmin=100
+nymin=100
+nzmin=100
+nxmax=200
+nymax=200
+nzmax=200
+ntask=30
 nrun=10
 nodes=1
 cores=64
