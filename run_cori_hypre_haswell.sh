@@ -1,26 +1,29 @@
 #!/bin/bash
-#SBATCH -C knl,quad,cache
-#SBATCH -J exp_hypre
+#SBATCH -C haswell
+#SBATCH -J test_driver
 #SBATCH --qos=regular
-#SBATCH -t 08:00:00
-#SBATCH --nodes=8
+#SBATCH -t 05:00:00
+#SBATCH --nodes=4
 #SBATCH --mail-user=xz584@cornell.edu
 #SBATCH --mail-type=ALL
 
-module unload darshan
-module swap craype-haswell craype-mic-knl
-module load craype-hugepages2M
-module unload cray-libsci
+#OpenMP settings:
+# export OMP_NUM_THREADS=4
+# export OMP_PLACES=threads
+# export OMP_PROC_BIND=spread
+
 
 module load python/3.7-anaconda-2019.10
 module unload cray-mpich
 
 module swap PrgEnv-intel PrgEnv-gnu
-# export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
+export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64:/opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/lib/intel64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/global/homes/x/xinranz/projects/GPTune/scalapack-2.1.0/build/lib
+
+# module use /global/common/software/m3169/cori/modulefiles
+# module unload openmpi
 module load openmpi/4.0.1
-export OMPI_MCA_btl_ugni_virtual_device_count=1
 
 export PYTHONPATH=$PYTHONPATH:$PWD/autotune/
 export PYTHONPATH=$PYTHONPATH:$PWD/scikit-optimize/

@@ -42,9 +42,9 @@ CCC=mpicc
 CCCPP=mpicxx
 FTN=mpif90
 
-nxmax=100
-nymax=100
-nzmax=100
+nxmax=200
+nymax=200
+nzmax=200
 ntask=2
 nrun=10
 nodes=16
