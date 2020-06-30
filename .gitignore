@@ -13,7 +13,6 @@ run_cori_hypre_haswell_convcdiff_opentuner.sh
 run_cori_hypre_haswell_convcdiff.sh
 run_cori_hypre_haswell_hpbandster.sh
 run_cori_hypre_haswell_opentuner.sh
-<<<<<<< HEAD
 examples/core
 examples/opentuner_failed_params.txt
 examples/opentuner.log
@@ -43,5 +42,3 @@ GPTune/__pycache__/search.cpython-37.pyc
 mpi4py
 examples/hypre
 examples/superlu_dist
-=======
->>>>>>> update hypre results
