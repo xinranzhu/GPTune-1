@@ -1,8 +1,10 @@
+set -x 
+
 nmax=200
 nmin=10
-ntask=90
-# equation="convdiff"
-equation="Poisson"
+ntask=60
+equation="convdiff"
+# equation="Poisson"
 nrun=10
 
 # read results
