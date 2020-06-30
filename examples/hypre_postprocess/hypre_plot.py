@@ -165,7 +165,7 @@ def main(args):
     if args.equation == "convdiff":
         equation_name = "Convection-diffusion"
     ax.set_title(f'{equation_name}, [nx, ny, nz] in [{args.nmin}, {args.nmax}], nrun = {nrun}')   
-    ax.legend()
+    ax.legend(fontsize=8)
     fig.tight_layout()
     filename = os.path.splitext(os.path.basename(my_source))[0]
     fig.savefig(os.path.join("./plots", f"{filename}_nrun{nrun}.pdf"))
@@ -175,23 +175,24 @@ def plot_histogram(data1, data2, args):
     assert len(data1) == len(data2) 
     nrun = args.nrun
     ntask = len(data1)
-    p1 = len([x for x in data1 if x >= 1])
-    p2 = len([x for x in data2 if x >= 1])
     
     plt.clf()
     fig, (ax1, ax2) = plt.subplots(2, 1)
-    ax1.hist(data1, bins=np.arange(0, int(np.ceil(max(data1)))+1, 0.5), density=True, 
+    ax1.hist(data1, bins=np.arange(0, int(np.ceil(max(data1)))+1, 0.5), weights=np.ones(ntask) / ntask, 
              label=f'OpenTuner/GPTune, range: [{min(data1):.2f}, {max(data1):.2f}]', color='#1f77b4')
-    ax2.hist(data2, bins=np.arange(0, int(np.ceil(max(data2)))+1, 0.5) , density=True, 
+    ax2.hist(data2, bins=np.arange(0, int(np.ceil(max(data2)))+1, 0.5) , weights=np.ones(ntask) / ntask, 
              label=f'HpBandster/GPTune, range: [{min(data2):.2f}, {max(data2):.2f}]', color='#ff7f0e')
-    ax1.legend()
-    ax2.legend()
+    ax1.plot([1, 1], [0, 1], c='black', linestyle=':')
+    ax2.plot([1, 1], [0, 1], c='black', linestyle=':')
+    ax1.legend(fontsize=8)
+    ax2.legend(fontsize=8)
     equation_name = "Poisson"
     if args.equation == "convdiff":
         equation_name = "Convection-diffusion"
+
     ax1.set_title(f'{equation_name}, [nx, ny, nz] in [{args.nmin}, {args.nmax}], nrun = {nrun}')
-    ax1.set_ylabel('Density')
-    ax2.set_ylabel('Density')
+    ax1.set_ylabel('Fraction')
+    ax2.set_ylabel('Fraction')
     ax2.set_xlabel('Ratio of best performance')
     fig.tight_layout()
     filename = os.path.splitext(os.path.basename(my_source))[0]
@@ -216,15 +217,13 @@ def plot_size_time(data1, data2, data3, size_set, args):
     
     # plot
     plt.clf()
-    # print(type(reg1.coef_))
-    # print(reg1.intercept_)
     plt.loglog(size_set, data1, label=f'GPTune, coeff={reg1.coef_[0]:.2f}', color='#2ca02c')
     plt.loglog(size_set, data2, label=f'OpenTuner, coeff={reg2.coef_[0]:.2f}', color='#1f77b4')
     plt.loglog(size_set, data3, label=f'HpBandster, coeff={reg3.coef_[0]:.2f}', color='#ff7f0e')
     # plt.loglog(size_set, np.array(size_set) + (data1[0]+data2[0]+data3[0])/3-size_set[0], linestyle='--', color='red')
     plt.xlabel('Problem size nx*ny*nz')
     plt.ylabel('Optimal Hypre Time')
-    plt.legend()
+    plt.legend(fontsize=8)
     plt.grid()
     equation_name = "Poisson"
     if args.equation == "convdiff":
@@ -237,10 +236,10 @@ def plot_size_time(data1, data2, data3, size_set, args):
 def main(args):
 
     OpenTunervsGPTune, HpBandstervsGPTune, GPTune_time, Opentuner_time, HpBandster_time, size_set = data_process(args)
-    # print(OpenTunervsGPTune)
-    # print(HpBandstervsGPTune)
+    print(OpenTunervsGPTune)
+    print(HpBandstervsGPTune)
     plot(OpenTunervsGPTune, HpBandstervsGPTune, args)
-    plot_histogram(OpenTunervsGPTune, HpBandstervsGPTune, args)
+    # plot_histogram(OpenTunervsGPTune, HpBandstervsGPTune, args)
     # plot_size_time(GPTune_time, Opentuner_time, HpBandster_time, size_set, args)
     
 if __name__ == "__main__":
