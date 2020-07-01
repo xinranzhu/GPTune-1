@@ -39,3 +39,6 @@ GPTune/__pycache__/options.cpython-37.pyc
 GPTune/__pycache__/problem.cpython-37.pyc
 GPTune/__pycache__/sample.cpython-37.pyc
 GPTune/__pycache__/search.cpython-37.pyc
+mpi4py
+examples/hypre
+examples/superlu_dist
