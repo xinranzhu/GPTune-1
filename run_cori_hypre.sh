@@ -46,7 +46,7 @@ nymax=200
 nzmax=200
 ntask=30
 nrun=10
-nodes=8
+nodes=16
 cores=32
 nprocmin_pernode=32  # nprocmin_pernode=cores means flat MPI 
 

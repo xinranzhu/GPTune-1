@@ -42,3 +42,5 @@ GPTune/__pycache__/search.cpython-37.pyc
 mpi4py
 examples/hypre
 examples/superlu_dist
+examples/opentuner.db/nid00103.db
+examples/opentuner.db/nid00103.db-journal

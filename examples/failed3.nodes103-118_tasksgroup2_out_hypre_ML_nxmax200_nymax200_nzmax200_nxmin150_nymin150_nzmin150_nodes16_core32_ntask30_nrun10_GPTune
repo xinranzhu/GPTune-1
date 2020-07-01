@@ -1,0 +1,1325 @@
+Space([Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize')]) Space([Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=510, high=511, prior='uniform', transform='normalize'),
+       Real(low=0, high=1, prior='uniform', transform='normalize'),
+       Real(low=0, high=0.999, prior='uniform', transform='normalize'),
+       Integer(low=1, high=12, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '1', '2', ..., '6', '8', '10'), prior=None),
+       Categorical(categories=('-1', '0', '6', '8', '16', '18'), prior=None),
+       Categorical(categories=('5', '6', '7', '8', '9'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '3', '4', '5', '6', '8', '12'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize')]) Space([Real(low=-inf, high=inf, prior='uniform', transform='identity')]) {'cst1': 'Px * Py  <= Nproc'}
+
+
+------Validating the options
+  
+  total core counts provided to GPTune: 512
+   ---> distributed_memory_parallelism: False
+   ---> shared_memory_parallelism: False
+   ---> objective_evaluation_parallelism: False
+  
+  total core counts for modeling: 2
+   ---> model_processes: 1
+   ---> model_threads: 1
+   ---> model_restart_processes: 1
+   ---> model_restart_threads: 1
+  
+  total core counts for search: 1
+   ---> search_processes: 1
+   ---> search_threads: 1
+   ---> search_multitask_processes: 1
+   ---> search_multitask_threads: 1
+  
+  total core counts for objective function evaluation: 512
+   ---> core counts in a single application run: 511
+   ---> objective_multisample_processes: 1
+   ---> objective_multisample_threads: 1
+
+
+
+------Starting MLA with 30 tasks and 10 samples each 
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 2, 143, 1, 0.658, 0.1721, 3, 3, 8, 6, 3, 0, 3, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '2', '143', '1', '-th', '0.6580401357545079', '-tr', '0.1721224400403871', '-Pmx', '3', '-rlx', '8', '-smtype', '6', '-smlv', '3', '-interptype', '0', '-agg_nl', '3', '-ruge2b', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_184_165_153_2_143_1_0.6580401357545079_0.1721224400403871_3_3_8_6_3_0_3'] nproc 286
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (2, 143, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 286
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 14
+
+ Strength Threshold = 0.658040
+ Interpolation Truncation Factor = 0.172122
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge2B
+
+ No. of levels of aggressive coarsening: 3
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = modified classical interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  577527 13712783  0.000     5   44    23.7  -1.077e-14   7.435e+00
+  2   32094  1266138  0.001     3   94    39.5  -5.929e-02   7.658e+01
+  3    8795   433655  0.006     4  150    49.3  -8.433e-14   1.070e+02
+  4    5108   293514  0.011     4  186    57.5  -6.352e+00   1.339e+02
+  5    2873   180303  0.022     3  214    62.8  -4.914e+00   1.526e+02
+  6    1578    91144  0.037     3  216    57.8  -8.957e+00   1.662e+02
+  7     836    40810  0.058     3  231    48.8  -5.550e+00   1.784e+02
+  8     425    16703  0.092     2  140    39.3   2.172e+00   2.117e+02
+  9     212     6062  0.135     3  105    28.6   1.177e+01   2.957e+02
+ 10      99     1743  0.178     3   52    17.6   1.222e+01   5.108e+02
+ 11      40      388  0.242     2   22     9.7   1.912e+01   6.678e+02
+ 12      16       80  0.312     1    9     5.0   3.505e+01   7.121e+02
+ 13       7       25  0.510     2    5     3.6   9.174e+01   7.343e+02
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 577527    1   15   1.9   8.333e-03   8.333e-01   2.870e-01   1.000e+00
+  1  577527 x 32094     0   18   1.0   5.909e-03   1.000e+00   0.000e+00   1.000e+00
+  2   32094 x 8795      0   11   1.5   3.535e-03   1.004e+00   0.000e+00   1.004e+00
+  3    8795 x 5108      0    3   2.0   1.964e-02   1.000e+00   0.000e+00   1.000e+00
+  4    5108 x 2873      0    3   1.9   1.060e-02   1.295e+00   0.000e+00   1.497e+00
+  5    2873 x 1578      0    3   1.7   1.258e-02   1.038e+00   0.000e+00   1.038e+00
+  6    1578 x 836       0    3   1.6   4.257e-03   1.337e+00   0.000e+00   1.337e+00
+  7     836 x 425       0    3   1.4   2.778e-03   8.441e-01   0.000e+00   1.000e+00
+  8     425 x 212       0    3   1.3   8.750e-04   7.592e-01   0.000e+00   1.000e+00
+  9     212 x 99        0    3   1.3   9.146e-05   5.429e-01   0.000e+00   1.000e+00
+ 10      99 x 40        0    3   1.0   1.135e-08   2.969e-01   0.000e+00   1.000e+00
+ 11      40 x 16        0    1   0.7   1.123e-08   1.728e-01   0.000e+00   1.000e+00
+ 12      16 x 7         0    2   0.9   2.131e-08   1.031e-01   0.000e+00   1.000e+00
+
+
+     Complexity:    grid = 1.135543
+                operator = 1.495960
+                memory = 1.778332
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      8    8     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ Schwarz Relaxation Weight 1.000000 level 0
+ Schwarz Relaxation Weight 1.000000 level 1
+ Schwarz Relaxation Weight 1.000000 level 2
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.106013e+03    0.977157   9.771574e-01
+    2    2.054608e+03    0.975591   9.533060e-01
+    3    2.027656e+03    0.986882   9.408009e-01
+    4    1.994280e+03    0.983539   9.253148e-01
+    5    1.935705e+03    0.970628   8.981368e-01
+    6    1.932011e+03    0.998092   8.964231e-01
+    7    1.925759e+03    0.996764   8.935220e-01
+    8    1.919957e+03    0.996988   8.908303e-01
+    9    1.904671e+03    0.992038   8.837376e-01
+   10    1.850149e+03    0.971375   8.584404e-01
+   11    1.817943e+03    0.982593   8.434973e-01
+   12    1.787909e+03    0.983479   8.295620e-01
+   13    1.749665e+03    0.978609   8.118171e-01
+   14    1.640440e+03    0.937574   7.611388e-01
+   15    1.367368e+03    0.833537   6.344376e-01
+   16    1.344167e+03    0.983032   6.236727e-01
+   17    1.304453e+03    0.970454   6.052457e-01
+   18    1.252432e+03    0.960121   5.811091e-01
+   19    1.191894e+03    0.951664   5.530204e-01
+   20    1.141856e+03    0.958018   5.298034e-01
+   21    1.135639e+03    0.994555   5.269187e-01
+   22    1.127731e+03    0.993037   5.232497e-01
+   23    1.119028e+03    0.992282   5.192114e-01
+   24    1.094336e+03    0.977934   5.077547e-01
+   25    1.038306e+03    0.948800   4.817578e-01
+   26    1.016391e+03    0.978894   4.715898e-01
+   27    9.948071e+02    0.978764   4.615750e-01
+   28    9.798598e+02    0.984975   4.546397e-01
+   29    9.475835e+02    0.967060   4.396640e-01
+   30    8.986008e+02    0.948308   4.169368e-01
+   31    8.869312e+02    0.987014   4.115223e-01
+   32    8.661897e+02    0.976614   4.018986e-01
+   33    8.350108e+02    0.964004   3.874320e-01
+   34    8.114421e+02    0.971774   3.764965e-01
+   35    7.860454e+02    0.968702   3.647128e-01
+   36    7.717146e+02    0.981768   3.580635e-01
+   37    7.609050e+02    0.985993   3.530481e-01
+   38    7.443099e+02    0.978190   3.453482e-01
+   39    7.257856e+02    0.975112   3.367532e-01
+   40    6.988273e+02    0.962856   3.242450e-01
+   41    6.829958e+02    0.977346   3.168994e-01
+   42    6.656053e+02    0.974538   3.088305e-01
+   43    6.444483e+02    0.968214   2.990140e-01
+   44    6.238536e+02    0.968043   2.894584e-01
+   45    6.071739e+02    0.973263   2.817192e-01
+   46    5.950908e+02    0.980099   2.761128e-01
+   47    5.846625e+02    0.982476   2.712743e-01
+   48    5.741278e+02    0.981982   2.663863e-01
+   49    5.629332e+02    0.980502   2.611922e-01
+   50    5.436091e+02    0.965673   2.522262e-01
+   51    5.303036e+02    0.975524   2.460526e-01
+   52    5.204472e+02    0.981414   2.414794e-01
+   53    5.071023e+02    0.974359   2.352876e-01
+   54    4.860370e+02    0.958459   2.255136e-01
+   55    4.671497e+02    0.961140   2.167502e-01
+   56    4.540890e+02    0.972042   2.106902e-01
+   57    4.432712e+02    0.976177   2.056709e-01
+   58    4.366545e+02    0.985073   2.026009e-01
+   59    4.298510e+02    0.984419   1.994442e-01
+   60    4.125036e+02    0.959643   1.913953e-01
+   61    3.994943e+02    0.968462   1.853591e-01
+   62    3.939708e+02    0.986174   1.827963e-01
+   63    3.871978e+02    0.982808   1.796538e-01
+   64    3.668074e+02    0.947338   1.701929e-01
+   65    3.394739e+02    0.925483   1.575106e-01
+   66    3.247809e+02    0.956718   1.506933e-01
+   67    3.115492e+02    0.959259   1.445540e-01
+   68    3.058684e+02    0.981766   1.419182e-01
+   69    3.022435e+02    0.988149   1.402363e-01
+   70    2.933413e+02    0.970547   1.361058e-01
+   71    2.870344e+02    0.978500   1.331795e-01
+   72    2.834969e+02    0.987676   1.315381e-01
+   73    2.785491e+02    0.982547   1.292425e-01
+   74    2.552716e+02    0.916433   1.184420e-01
+   75    2.250820e+02    0.881736   1.044345e-01
+   76    2.090458e+02    0.928754   9.699399e-02
+   77    1.931072e+02    0.923756   8.959873e-02
+   78    1.865949e+02    0.966277   8.657715e-02
+   79    1.833852e+02    0.982798   8.508787e-02
+   80    1.799439e+02    0.981235   8.349117e-02
+   81    1.782708e+02    0.990702   8.271488e-02
+   82    1.762733e+02    0.988795   8.178806e-02
+   83    1.714497e+02    0.972636   7.954998e-02
+   84    1.510717e+02    0.881143   7.009491e-02
+   85    1.304652e+02    0.863598   6.053380e-02
+   86    1.172748e+02    0.898898   5.441370e-02
+   87    1.055846e+02    0.900318   4.898962e-02
+   88    9.912180e+01    0.938790   4.599097e-02
+   89    9.672925e+01    0.975863   4.488087e-02
+   90    9.588462e+01    0.991268   4.448897e-02
+   91    9.538345e+01    0.994773   4.425643e-02
+   92    9.384140e+01    0.983833   4.354095e-02
+   93    9.017835e+01    0.960966   4.184135e-02
+   94    8.292292e+01    0.919544   3.847495e-02
+   95    7.234904e+01    0.872485   3.356883e-02
+   96    6.393112e+01    0.883648   2.966304e-02
+   97    5.893317e+01    0.921823   2.734407e-02
+   98    5.549729e+01    0.941699   2.574988e-02
+   99    5.385709e+01    0.970445   2.498885e-02
+  100    5.338654e+01    0.991263   2.477052e-02
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 2.477052e-02
+
+[----- runtime = 8.540000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 2, 143, 1, 0.6580401357545079, 0.1721224400403871, 3, '3', '8', '6', 3, '0', 3, 1, 32)]  hypre time:  [8.540000000000001]
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 339, 1, 1, 0.6432, 0.3856, 5, 3, 18, 6, 3, 0, 3, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '339', '1', '1', '-th', '0.6432250320098365', '-tr', '0.38559692657126843', '-Pmx', '5', '-rlx', '18', '-smtype', '6', '-smlv', '3', '-interptype', '0', '-agg_nl', '3', '-ruge2b', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_184_165_153_339_1_1_0.6432250320098365_0.38559692657126843_5_3_18_6_3_0_3'] nproc 339
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (339, 1, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 339
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 11
+
+ Strength Threshold = 0.643225
+ Interpolation Truncation Factor = 0.385597
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge2B
+
+ No. of levels of aggressive coarsening: 3
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = modified classical interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  597491 15580037  0.000     5   34    26.1  -1.049e-14   5.085e+00
+  2    9336   129986  0.001     5   27    13.9   7.490e-01   3.420e+01
+  3    1246    13824  0.009     3   23    11.1   1.656e+00   9.113e+01
+  4     628     7348  0.019     3   28    11.7   3.264e+00   1.289e+02
+  5     323     3885  0.037     3   27    12.0   4.593e+00   1.772e+02
+  6     156     1778  0.073     4   21    11.4   7.406e+00   1.796e+02
+  7      75      741  0.132     3   17     9.9   8.938e+00   1.892e+02
+  8      34      286  0.247     3   13     8.4   9.656e+00   1.978e+02
+  9      15      103  0.458     5    9     6.9   9.034e+01   1.926e+02
+ 10       7       29  0.592     3    6     4.1   9.034e+01   1.745e+02
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 597491    1    5   1.7   6.705e-02   8.333e-01   5.000e-01   1.000e+00
+  1  597491 x 9336      0    7   0.1   5.359e-02   1.000e+00   0.000e+00   1.000e+00
+  2    9336 x 1246      1    7   1.6   2.811e-02   9.540e-01   2.882e-01   1.000e+00
+  3    1246 x 628       0    4   1.6   8.435e-02   7.147e-01   0.000e+00   1.000e+00
+  4     628 x 323       0    5   1.5   6.680e-02   6.171e-01   0.000e+00   1.000e+00
+  5     323 x 156       0    3   1.3   3.582e-02   6.271e-01   0.000e+00   1.000e+00
+  6     156 x 75        0    3   1.2   1.219e-02   3.586e-01   0.000e+00   1.000e+00
+  7      75 x 34        0    2   1.1   3.961e-03   3.016e-01   0.000e+00   1.000e+00
+  8      34 x 15        1    2   1.2   4.515e-04   5.968e-02   9.212e-04   1.000e+00
+  9      15 x 7         1    1   1.0   3.967e-08   4.222e-02   3.967e-08   1.000e+00
+
+
+     Complexity:    grid = 1.131173
+                operator = 1.486521
+                memory = 1.721756
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     18   18     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ Schwarz Relaxation Weight 1.000000 level 0
+ Schwarz Relaxation Weight 1.000000 level 1
+ Schwarz Relaxation Weight 1.000000 level 2
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.123299e+03    0.985178   9.851775e-01
+    2    2.086373e+03    0.982609   9.680445e-01
+    3    2.015891e+03    0.966218   9.353421e-01
+    4    1.882275e+03    0.933719   8.733464e-01
+    5    1.765818e+03    0.938130   8.193121e-01
+    6    1.720365e+03    0.974260   7.982227e-01
+    7    1.671375e+03    0.971523   7.754921e-01
+    8    1.645197e+03    0.984337   7.633459e-01
+    9    1.596070e+03    0.970139   7.405516e-01
+   10    1.517488e+03    0.950765   7.040906e-01
+   11    1.472849e+03    0.970584   6.833791e-01
+   12    1.415571e+03    0.961110   6.568027e-01
+   13    1.371492e+03    0.968862   6.363509e-01
+   14    1.335676e+03    0.973885   6.197327e-01
+   15    1.265920e+03    0.947775   5.873671e-01
+   16    1.223172e+03    0.966232   5.675328e-01
+   17    1.194628e+03    0.976664   5.542887e-01
+   18    1.176447e+03    0.984781   5.458530e-01
+   19    1.154317e+03    0.981189   5.355850e-01
+   20    1.134635e+03    0.982949   5.264529e-01
+   21    1.118530e+03    0.985806   5.189805e-01
+   22    1.092872e+03    0.977061   5.070754e-01
+   23    1.060089e+03    0.970003   4.918647e-01
+   24    1.018014e+03    0.960310   4.723427e-01
+   25    9.034080e+02    0.887422   4.191672e-01
+   26    8.430586e+02    0.933198   3.911660e-01
+   27    8.040397e+02    0.953717   3.730619e-01
+   28    7.797283e+02    0.969763   3.617818e-01
+   29    7.622309e+02    0.977560   3.536633e-01
+   30    7.544126e+02    0.989743   3.500357e-01
+   31    7.489644e+02    0.992778   3.475078e-01
+   32    7.348125e+02    0.981105   3.409415e-01
+   33    6.907868e+02    0.940086   3.205143e-01
+   34    6.478508e+02    0.937845   3.005927e-01
+   35    5.120721e+02    0.790417   2.375935e-01
+   36    4.328653e+02    0.845321   2.008428e-01
+   37    3.975458e+02    0.918405   1.844551e-01
+   38    3.718083e+02    0.935259   1.725132e-01
+   39    3.607911e+02    0.970369   1.674014e-01
+   40    3.574499e+02    0.990739   1.658512e-01
+   41    3.555955e+02    0.994812   1.649908e-01
+   42    3.446206e+02    0.969136   1.598986e-01
+   43    3.066170e+02    0.889723   1.422655e-01
+   44    2.674793e+02    0.872356   1.241062e-01
+   45    2.194617e+02    0.820481   1.018268e-01
+   46    1.843711e+02    0.840106   8.554532e-02
+   47    1.619105e+02    0.878177   7.512393e-02
+   48    1.474002e+02    0.910381   6.839141e-02
+   49    1.434072e+02    0.972910   6.653869e-02
+   50    1.418599e+02    0.989211   6.582078e-02
+   51    1.406630e+02    0.991562   6.526542e-02
+   52    1.380704e+02    0.981569   6.406252e-02
+   53    1.306191e+02    0.946033   6.060524e-02
+   54    1.226899e+02    0.939295   5.692619e-02
+   55    1.142947e+02    0.931574   5.303098e-02
+   56    1.082035e+02    0.946706   5.020473e-02
+   57    1.041300e+02    0.962354   4.831470e-02
+   58    1.011894e+02    0.971760   4.695028e-02
+   59    9.907768e+01    0.979131   4.597050e-02
+   60    9.642281e+01    0.973204   4.473868e-02
+   61    9.466586e+01    0.981779   4.392349e-02
+   62    9.354160e+01    0.988124   4.340185e-02
+   63    9.048391e+01    0.967312   4.198312e-02
+   64    8.563139e+01    0.946371   3.973163e-02
+   65    8.180147e+01    0.955274   3.795461e-02
+   66    7.867623e+01    0.961795   3.650455e-02
+   67    7.549143e+01    0.959520   3.502685e-02
+   68    7.396298e+01    0.979753   3.431767e-02
+   69    7.301747e+01    0.987216   3.387897e-02
+   70    7.097652e+01    0.972048   3.293200e-02
+   71    6.935207e+01    0.977113   3.217828e-02
+   72    6.862453e+01    0.989509   3.184071e-02
+   73    6.685519e+01    0.974217   3.101977e-02
+   74    6.293885e+01    0.941421   2.920265e-02
+   75    5.991030e+01    0.951881   2.779745e-02
+   76    5.734265e+01    0.957142   2.660610e-02
+   77    5.445318e+01    0.949610   2.526543e-02
+   78    5.336363e+01    0.979991   2.475989e-02
+   79    5.266391e+01    0.986888   2.443523e-02
+   80    5.113602e+01    0.970988   2.372632e-02
+   81    5.000383e+01    0.977859   2.320100e-02
+   82    4.951989e+01    0.990322   2.297646e-02
+   83    4.814613e+01    0.972259   2.233906e-02
+   84    4.480414e+01    0.930587   2.078842e-02
+   85    4.279313e+01    0.955115   1.985534e-02
+   86    4.106425e+01    0.959599   1.905317e-02
+   87    3.854319e+01    0.938607   1.788344e-02
+   88    3.760699e+01    0.975711   1.744906e-02
+   89    3.704413e+01    0.985033   1.718790e-02
+   90    3.605499e+01    0.973298   1.672895e-02
+   91    3.538086e+01    0.981303   1.641617e-02
+   92    3.502262e+01    0.989875   1.624995e-02
+   93    3.397024e+01    0.969951   1.576166e-02
+   94    3.201238e+01    0.942365   1.485324e-02
+   95    3.077702e+01    0.961410   1.428006e-02
+   96    2.975388e+01    0.966757   1.380534e-02
+   97    2.824454e+01    0.949272   1.310503e-02
+   98    2.727586e+01    0.965704   1.265557e-02
+   99    2.686549e+01    0.984955   1.246517e-02
+  100    2.640826e+01    0.982981   1.225302e-02
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 1.225302e-02
+
+[----- runtime = 7.140000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 339, 1, 1, 0.6432250320098365, 0.38559692657126843, 5, '3', '18', '6', 3, '0', 3, 1, 32)]  hypre time:  [7.14]
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 123, 3, 1, 0.9941, 0.348, 6, 4, 18, 6, 2, 3, 1, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '123', '3', '1', '-th', '0.9941415331216241', '-tr', '0.34799598471261683', '-Pmx', '6', '-rlx', '18', '-smtype', '6', '-smlv', '2', '-interptype', '3', '-agg_nl', '1', '-ruge3c', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_184_165_153_123_3_1_0.9941415331216241_0.34799598471261683_6_4_18_6_2_3_1'] nproc 369
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (123, 3, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 369
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 17
+
+ Strength Threshold = 0.994142
+ Interpolation Truncation Factor = 0.347996
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge 3c 
+
+ No. of levels of aggressive coarsening: 1
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = direct interpolation with separation of weights
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  669767  7851211  0.000     4   28    11.7  -3.032e-15   6.130e+00
+  2  477994 12074568  0.000     5   78    25.3  -1.237e+00   9.906e+00
+  3  434952 11016958  0.000     5   98    25.3  -2.301e+00   1.777e+01
+  4  237233  7152857  0.000     5  114    30.2  -2.965e+00   2.532e+01
+  5  116281  3806853  0.000     5  124    32.7  -5.707e+00   3.638e+01
+  6   51392  1543798  0.001     5  110    30.0  -1.468e+01   5.201e+01
+  7   21738   591214  0.001     6   89    27.2  -1.684e+01   6.966e+01
+  8    9056   220514  0.003     7   71    24.4  -1.274e+01   1.374e+02
+  9    3775    81659  0.006     6   57    21.6  -8.112e+00   2.040e+02
+ 10    1591    31253  0.012     5   44    19.6  -6.893e+00   2.764e+02
+ 11     669    11743  0.026     6   44    17.6  -2.437e+01   5.349e+02
+ 12     280     4416  0.056     6   34    15.8  -3.296e+01   1.058e+03
+ 13     122     1670  0.112     5   34    13.7   2.330e+01   2.380e+03
+ 14      51      581  0.223     4   26    11.4   1.932e+02   4.257e+03
+ 15      20      166  0.415     4   12     8.3   9.429e+02   5.168e+03
+ 16       8       44  0.688     4    7     5.5   2.060e+03   7.974e+03
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 669767    1    9   2.0   3.472e-02   8.333e-01   3.333e-01   1.000e+00
+  1  669767 x 477994    0    6   4.5   1.612e-01   1.286e+00   0.000e+00   1.286e+00
+  2  477994 x 434952    0    5   1.5   1.667e-01   1.337e+00   0.000e+00   1.337e+00
+  3  434952 x 237233    1    6   1.9   1.667e-01   1.234e+00   3.056e-01   1.234e+00
+  4  237233 x 116281    1    6   1.5   1.701e-01   1.252e+00   2.377e-01   1.252e+00
+  5  116281 x 51392     1    6   1.1   1.631e-01   1.505e+00   5.177e-01   1.505e+00
+  6   51392 x 21738     1    3   1.0   3.248e-01   1.497e+00   4.905e-01   1.497e+00
+  7   21738 x 9056      1    3   1.0   3.161e-01   1.309e+00   5.720e-01   1.309e+00
+  8    9056 x 3775      1    2   1.0   3.522e-01   1.180e+00   5.605e-01   1.180e+00
+  9    3775 x 1591      1    3   1.0   3.160e-01   1.233e+00   5.739e-01   1.233e+00
+ 10    1591 x 669       1    2   1.0   3.989e-01   1.163e+00   6.591e-01   1.163e+00
+ 11     669 x 280       1    2   1.0   3.574e-01   1.135e+00   6.372e-01   1.135e+00
+ 12     280 x 122       1    2   1.0   4.410e-01   1.009e+00   7.071e-01   1.009e+00
+ 13     122 x 51        1    2   1.0   4.405e-01   9.928e-01   6.007e-01   1.000e+00
+ 14      51 x 20        1    1   1.0   6.372e-01   9.735e-01   6.372e-01   1.000e+00
+ 15      20 x 8         1    1   1.0   6.209e-01   8.877e-01   6.209e-01   1.000e+00
+
+
+     Complexity:    grid = 1.435930
+                operator = 2.372247
+                memory = 2.733449
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     18   18     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ Schwarz Relaxation Weight 1.000000 level 0
+ Schwarz Relaxation Weight 1.000000 level 1
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.070859e+03    0.960846   9.608462e-01
+    2    1.815432e+03    0.876656   8.423320e-01
+    3    1.509398e+03    0.831427   7.003372e-01
+    4    1.203766e+03    0.797514   5.585288e-01
+    5    9.281901e+02    0.771072   4.306658e-01
+    6    9.008757e+02    0.970572   4.179923e-01
+    7    8.073636e+02    0.896199   3.746041e-01
+    8    6.517227e+02    0.807223   3.023892e-01
+    9    4.014812e+02    0.616031   1.862810e-01
+   10    2.341484e+02    0.583211   1.086412e-01
+   11    2.281764e+02    0.974495   1.058703e-01
+   12    1.893265e+02    0.829737   8.784455e-02
+   13    1.198396e+02    0.632978   5.560370e-02
+   14    7.267675e+01    0.606450   3.372088e-02
+   15    5.153687e+01    0.709125   2.391231e-02
+   16    4.684345e+01    0.908931   2.173463e-02
+   17    3.439287e+01    0.734209   1.595775e-02
+   18    2.416894e+01    0.702731   1.121401e-02
+   19    1.759597e+01    0.728040   8.164255e-03
+   20    1.148115e+01    0.652487   5.327074e-03
+   21    9.600248e+00    0.836175   4.454366e-03
+   22    6.888769e+00    0.717562   3.196282e-03
+   23    5.368886e+00    0.779368   2.491079e-03
+   24    3.208410e+00    0.597593   1.488652e-03
+   25    1.955342e+00    0.609443   9.072483e-04
+   26    1.681810e+00    0.860111   7.803338e-04
+   27    1.045899e+00    0.621889   4.852807e-04
+   28    7.385158e-01    0.706106   3.426598e-04
+   29    5.574289e-01    0.754796   2.586383e-04
+   30    4.230313e-01    0.758897   1.962799e-04
+   31    3.384831e-01    0.800137   1.570509e-04
+   32    2.726667e-01    0.805555   1.265131e-04
+   33    1.773871e-01    0.650564   8.230486e-05
+   34    1.237371e-01    0.697554   5.741207e-05
+   35    7.282182e-02    0.588521   3.378819e-05
+   36    5.535888e-02    0.760196   2.568566e-05
+   37    3.566503e-02    0.644251   1.654802e-05
+   38    2.547232e-02    0.714210   1.181876e-05
+   39    1.914722e-02    0.751687   8.884011e-06
+   40    1.542309e-02    0.805501   7.156076e-06
+   41    1.292266e-02    0.837877   5.995913e-06
+   42    1.003930e-02    0.776876   4.658078e-06
+   43    7.029184e-03    0.700167   3.261432e-06
+   44    4.039200e-03    0.574633   1.874126e-06
+   45    2.699079e-03    0.668221   1.252330e-06
+   46    2.163325e-03    0.801505   1.003749e-06
+   47    1.201582e-03    0.555433   5.575155e-07
+   48    8.628823e-04    0.718122   4.003640e-07
+   49    6.781082e-04    0.785864   3.146316e-07
+   50    5.329539e-04    0.785942   2.472823e-07
+   51    4.360575e-04    0.818190   2.023239e-07
+   52    3.555124e-04    0.815288   1.649522e-07
+   53    2.553732e-04    0.718324   1.184892e-07
+   54    1.264530e-04    0.495169   5.867220e-08
+   55    8.055906e-05    0.637067   3.737815e-08
+   56    6.500130e-05    0.806878   3.015959e-08
+   57    3.205431e-05    0.493133   1.487270e-08
+   58    2.203778e-05    0.687514   1.022519e-08
+   59    1.782706e-05    0.808932   8.271480e-09
+
+
+Final L2 norm of residual: 1.782706e-05
+
+
+
+
+GMRES Iterations = 59
+Final GMRES Relative Residual Norm = 8.271480e-09
+
+[----- runtime = 5.140000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 123, 3, 1, 0.9941415331216241, 0.34799598471261683, 6, '4', '18', '6', 2, '3', 1, 1, 32)]  hypre time:  [5.140000000000001]
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 19, 5, 5, 0.6243, 0.699, 9, 0, 6, 7, 2, 6, 3, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '19', '5', '5', '-th', '0.6243088111946323', '-tr', '0.6990200959864268', '-Pmx', '9', '-rlx', '6', '-smtype', '7', '-smlv', '2', '-interptype', '6', '-agg_nl', '3', '-cljp', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_184_165_153_19_5_5_0.6243088111946323_0.6990200959864268_9_0_6_7_2_6_3'] nproc 475
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (19, 5, 5)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+[nid00108:43017] *** Process received signal ***
+[nid00108:43017] Signal: Segmentation fault (11)
+[nid00108:43017] Signal code: Address not mapped (1)
+[nid00108:43017] Failing at address: 0x10
+[nid00114:53881] *** Process received signal ***
+[nid00114:53881] Signal: Segmentation fault (11)
+[nid00114:53881] Signal code: Address not mapped (1)
+[nid00114:53881] Failing at address: 0xc8
+[nid00103:58008] *** Process received signal ***
+[nid00103:58008] Signal: Segmentation fault (11)
+[nid00103:58008] Signal code: Address not mapped (1)
+[nid00103:58008] Failing at address: 0x38
+[nid00116:28156] *** Process received signal ***
+[nid00116:28156] Signal: Segmentation fault (11)
+[nid00116:28156] Signal code: Address not mapped (1)
+[nid00116:28156] Failing at address: 0xc8
+[nid00117:64787] *** Process received signal ***
+[nid00117:64787] Signal: Segmentation fault (11)
+[nid00117:64787] Signal code: Address not mapped (1)
+[nid00117:64787] Failing at address: 0x48
+[nid00106:20761] *** Process received signal ***
+[nid00106:20761] Signal: Segmentation fault (11)
+[nid00106:20761] Signal code: Address not mapped (1)
+[nid00106:20761] Failing at address: 0x38
+[nid00105:35606] *** Process received signal ***
+[nid00105:35606] Signal: Floating point exception (8)
+[nid00105:35606] Signal code: Integer divide-by-zero (1)
+[nid00105:35606] Failing at address: 0x2aaab6c976d8
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000dede80 ***
+[nid00110:39210] *** Process received signal ***
+[nid00110:39210] Signal: Aborted (6)
+[nid00110:39210] Signal code:  (-6)
+[nid00109:13808] *** Process received signal ***
+[nid00109:13808] Signal: Segmentation fault (11)
+[nid00109:13808] Signal code: Address not mapped (1)
+[nid00109:13808] Failing at address: 0x10
+[nid00115:20460] *** Process received signal ***
+[nid00115:20460] Signal: Segmentation fault (11)
+[nid00115:20460] Signal code: Address not mapped (1)
+[nid00115:20460] Failing at address: 0x8
+[nid00111:05046] *** Process received signal ***
+[nid00111:05046] Signal: Segmentation fault (11)
+[nid00111:05046] Signal code: Address not mapped (1)
+[nid00111:05046] Failing at address: 0x48
+[nid00108:43025] *** Process received signal ***
+[nid00108:43025] Signal: Floating point exception (8)
+[nid00108:43025] Signal code: Integer divide-by-zero (1)
+[nid00108:43025] Failing at address: 0x2aaab6c976d8
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000dcd670 ***
+[nid00114:53892] *** Process received signal ***
+[nid00114:53892] Signal: Aborted (6)
+[nid00114:53892] Signal code:  (-6)
+[nid00103:58056] *** Process received signal ***
+[nid00103:58056] Signal: Segmentation fault (11)
+[nid00103:58056] Signal code: Address not mapped (1)
+[nid00103:58056] Failing at address: 0x38
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': corrupted double-linked list: 0x0000000000efc380 ***
+[nid00116:28158] *** Process received signal ***
+[nid00116:28158] Signal: Aborted (6)
+[nid00116:28158] Signal code:  (-6)
+[nid00117:64790] *** Process received signal ***
+[nid00117:64790] Signal: Segmentation fault (11)
+[nid00117:64790] Signal code: Address not mapped (1)
+[nid00117:64790] Failing at address: 0x48
+[nid00106:20790] *** Process received signal ***
+[nid00106:20790] Signal: Segmentation fault (11)
+[nid00106:20790] Signal code: Address not mapped (1)
+[nid00106:20790] Failing at address: 0x380
+[nid00105:35624] *** Process received signal ***
+[nid00105:35624] Signal: Segmentation fault (11)
+[nid00105:35624] Signal code: Address not mapped (1)
+[nid00105:35624] Failing at address: 0x38
+[nid00109:13814] *** Process received signal ***
+[nid00109:13814] Signal: Segmentation fault (11)
+[nid00109:13814] Signal code: Address not mapped (1)
+[nid00109:13814] Failing at address: 0x38
+[nid00115:20465] *** Process received signal ***
+[nid00115:20465] Signal: Segmentation fault (11)
+[nid00115:20465] Signal code: Address not mapped (1)
+[nid00115:20465] Failing at address: 0x38
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000da0c00 ***
+[nid00108:43036] *** Process received signal ***
+[nid00108:43036] Signal: Aborted (6)
+[nid00108:43036] Signal code:  (-6)
+[nid00116:28173] *** Process received signal ***
+[nid00116:28173] Signal: Segmentation fault (11)
+[nid00116:28173] Signal code: Address not mapped (1)
+[nid00116:28173] Failing at address: 0xc8
+[nid00117][[21,5],466][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 14585456, hdr_len = 18, payload_len = 940
+[nid00115:20482] *** Process received signal ***
+[nid00115:20482] Signal: Segmentation fault (11)
+[nid00115:20482] Signal code: Address not mapped (1)
+[nid00115:20482] Failing at address: 0x8
+[nid00117:64794] *** Process received signal ***
+[nid00117:64794] Signal: Segmentation fault (11)
+[nid00117:64794] Signal code: Address not mapped (1)
+[nid00117:64794] Failing at address: 0x48
+[nid00115:20484] *** Process received signal ***
+[nid00115:20484] Signal: Segmentation fault (11)
+[nid00115:20484] Signal code: Address not mapped (1)
+[nid00115:20484] Failing at address: 0x8
+[nid00117][[21,5],469][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 3. handle = 13890064, hdr_len = 18, payload_len = 940
+[nid00115:20489] *** Process received signal ***
+[nid00115:20489] Signal: Segmentation fault (11)
+[nid00115:20489] Signal code: Address not mapped (1)
+[nid00115:20489] Failing at address: 0x10
+[nid00115][[21,5],415][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 13808672, hdr_len = 18, payload_len = 876
+[nid00117:64787] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00117:64787] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00117:64787] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00117:64787] [ 3] [nid00117:64790] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00117:64790] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0xb322)[0x2aaabe2c9322]
+[nid00117:64790] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x87)[0x2aaabe2c9d67]
+[nid00117:64790] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00117:64790] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00117:64790] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00117:64790] [nid00117:64794] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00117:64794] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0xb322)[0x2aaabe2c9322]
+[nid00117:64794] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x87)[0x2aaabe2c9d67]
+[nid00117:64794] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00117:64794] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00117:64794] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00117:64794] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00117:64787] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00117:64787] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00117:64787] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00117:64787] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00117:64787] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00117:64787] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00117:64787] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00117:64787] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00117:64787] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00117:64787] [nid00114:53881] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00114:53881] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00114:53881] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00114:53881] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00114:53881] [ 4] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00117:64790] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00117:64790] [nid00114:53892] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00114:53892] [ 1] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00114:53892] [ 2] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00114:53892] [ 3] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00114:53892] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00117:64794] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00117:64794] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00117:64794] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00117:64794] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00114:53881] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:53881] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00114:53881] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00114:53881] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00114:53881] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00114:53881] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00114:53881] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00114:53881] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00114:53881] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00114:53881] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00114:53881] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00114:53881] [16] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00117:64790] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00117:64790] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00117:64790] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00117:64790] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00117:64790] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00117:64790] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00117:64790] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00117:64790] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00117:64790] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00117:64790] /lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00114:53892] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[nid00114:53892] [ 6] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00117:64787] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00117:64787] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00117:64787] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00117:64787] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00114:53881] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00114:53881] *** End of error message ***
+[10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00117:64794] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00117:64794] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00117:64794] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00117:64794] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00117:64794] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00117:64794] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00117:64794] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00117:64794] [18] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d71e)[0x2aaaabc1471e]
+[nid00114:53892] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00114:53892] [ 8] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00117:64790] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00117:64790] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00114:53892] [ 9] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00117:64794] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00117:64794] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:53892] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00114:53892] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00114:53892] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00114:53892] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00114:53892] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00114:53892] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00114:53892] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00114:53892] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00114:53892] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00114:53892] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00114:53892] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00114:53892] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00114:53892] *** End of error message ***
+[nid00115:20489] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00115:20489] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00115:20489] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00115:20489] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00115:20489] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00115:20489] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00115:20489] [ 6] [nid00115:20460] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00115:20460] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00115:20460] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00115:20460] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00115:20460] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00115:20460] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00115:20460] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00115:20460] [nid00115:20482] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00115:20482] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00115:20482] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00115:20482] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00115:20482] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00115:20482] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00115:20482] [nid00115:20484] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00115:20484] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00115:20484] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00115:20484] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00115:20484] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00115:20484] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00115:20484] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00115:20484] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00115:20484] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00115:20484] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00115:20484] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00115:20484] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00115:20484] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00115:20484] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00115:20484] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00115:20484] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00115:20489] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00115:20489] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00115:20489] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00115:20489] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00115:20489] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00115:20489] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00115:20489] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00115:20489] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00115:20489] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00115:20489] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00115:20489] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00115:20489] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00115:20489] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00115:20489] *** End of error message ***
+[ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00115:20460] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00115:20460] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00115:20460] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00115:20460] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00115:20460] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00115:20460] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00115:20460] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00115:20460] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00115:20460] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00115:20460] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00115:20460] *** End of error message ***
+[ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00115:20482] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00115:20482] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00115:20482] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00115:20482] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00115:20482] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00115:20482] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00115:20482] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00115:20482] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00115:20482] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00115:20482] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00115:20482] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00115:20482] *** End of error message ***
+[15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00115:20484] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00115:20484] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00115:20484] *** End of error message ***
+[nid00109:13808] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00109:13808] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00109:13808] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00109:13808] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00109:13808] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00109:13808] [ 5] [nid00105:35606] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00105:35606] [ 1] /opt/cray/ugni/default/lib64/libugni.so.0(GNI_SmsgGetNextWTag+0x5c)[0x2aaab6c976d8]
+[nid00105:35606] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_smsg_process+0x85)[0x2aaabe2d3685]
+[nid00105:35606] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_progress_remote_smsg+0xb3)[0x2aaabe2d3d53]
+[nid00105:35606] [ 4] [nid00105:35624] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00105:35624] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00105:35624] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00105:35624] [ 3] [nid00109:13814] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00109:13814] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00109:13814] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00109:13814] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00109:13808] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0x67c4)[0x2aaabe2c47c4]
+[nid00105:35606] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_progress+0x2c)[0x2aaaabbfca0c]
+[nid00105:35606] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_request_default_wait+0x105)[0x2aaaab05c105]
+[nid00105:35606] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00109:13814] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00109:13814] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00105:35624] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00105:35624] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00109:13808] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00109:13808] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00109:13808] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00109:13808] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0xa3)[0x2aaaab0b57a3]
+[nid00105:35606] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00105:35606] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00109:13814] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00109:13814] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00109:13814] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00109:13814] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00109:13814] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00109:13814] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00109:13814] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00109:13814] [13] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00105:35624] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00105:35624] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00105:35624] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00105:35624] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00105:35624] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00109:13808] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00109:13808] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00109:13808] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00109:13808] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00109:13808] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00109:13808] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00109:13808] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00109:13808] [18] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00105:35606] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00105:35606] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00105:35606] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00105:35606] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00105:35606] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00105:35606] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00105:35606] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00105:35606] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00105:35606] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00105:35606] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00105:35606] [20] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00109:13814] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00109:13814] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00109:13814] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00109:13808] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00109:13808] *** End of error message ***
+[nid00105:35624] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00105:35624] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00105:35624] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00105:35624] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00105:35624] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00105:35624] [16] [nid00109:13814] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00109:13814] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00105:35606] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00105:35606] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00105:35624] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00105:35624] *** End of error message ***
+[nid00116:28156] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00116:28156] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00116:28156] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00116:28156] [ 3] [nid00117:64793] *** An error occurred in MPI_Alltoall
+[nid00117:64793] *** reported by process [1376261,466]
+[nid00117:64793] *** on communicator MPI_COMM_WORLD
+[nid00117:64793] *** MPI_ERR_OTHER: known error not in list
+[nid00117:64793] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[nid00117:64793] ***    and potentially your MPI job)
+[nid00116:28158] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00116:28158] [ 1] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00116:28158] [ 2] [nid00116:28173] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00116:28173] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00116:28173] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00116:28173] [ 3] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00116:28158] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00116:28156] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00116:28156] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00116:28173] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00116:28173] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00116:28156] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00116:28156] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00116:28156] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00116:28156] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00116:28156] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00116:28156] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00116:28156] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00116:28156] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00116:28156] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00116:28156] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00116:28156] [16] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00116:28158] [ 4] /lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00116:28158] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00116:28173] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00116:28173] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00116:28173] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00116:28173] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00116:28173] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00116:28173] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00116:28173] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00116:28173] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00116:28173] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00116:28173] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00116:28173] [16] /lib64/libc.so.6(+0x852f3)[0x2aaaab5d42f3]
+[nid00116:28158] [ 6] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00116:28156] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00116:28156] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00116:28173] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00116:28173] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d74b)[0x2aaaabc1474b]
+[nid00116:28158] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00116:28158] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00116:28158] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00116:28158] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00116:28158] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00116:28158] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00116:28158] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00116:28158] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00116:28158] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00116:28158] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00116:28158] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00116:28158] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00116:28158] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00116:28158] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00116:28158] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00116:28158] *** End of error message ***
+[nid00106:20790] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00106:20790] [ 1] [nid00108:43017] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00108:43017] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00108:43017] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00108:43017] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00108:43017] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00108:43017] [nid00103:58056] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00103:58056] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00103:58056] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00103:58056] [ 3] [nid00106:20761] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00106:20761] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00106:20761] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00106:20761] [ 3] [nid00110:39210] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00110:39210] [ 1] [nid00108:43025] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00108:43025] [ 1] /opt/cray/ugni/default/lib64/libugni.so.0(GNI_SmsgGetNextWTag+0x5c)[0x2aaab6c976d8]
+[nid00108:43025] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_smsg_process+0x85)[0x2aaabe2d3685]
+[nid00108:43025] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_progress_remote_smsg+0xb3)[0x2aaabe2d3d53]
+[nid00108:43025] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0x67c4)[0x2aaabe2c47c4]
+[nid00108:43025] [ 5] [nid00103:58008] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00103:58008] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00103:58008] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00103:58008] [ 3] /lib64/libc.so.6(+0x15de15)[0x2aaaab6ace15]
+[nid00106:20790] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d50a)[0x2aaaabc1450a]
+[nid00106:20790] [ 3] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00110:39210] [ 2] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00110:39210] [ 3] [nid00108:43036] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00108:43036] [ 1] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00108:43036] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00103:58056] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00106:20761] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00106:20761] [ 5] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00110:39210] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_progress+0x2c)[0x2aaaabbfca0c]
+[nid00108:43025] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_request_default_wait+0x105)[0x2aaaab05c105]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00103:58008] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00103:58008] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x366)[0x2aaaab0b8ec6]
+[nid00106:20790] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+/lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00110:39210] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00108:43017] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00108:43017] [ 7] [nid00103:58056] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00103:58056] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00103:58056] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00103:58056] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00103:58056] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00103:58056] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00106:20761] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00106:20761] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00106:20761] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00106:20761] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00106:20761] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00106:20761] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00106:20761] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00106:20761] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00106:20761] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00106:20761] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00106:20761] [16] [nid00110:39210] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d71e)[0x2aaaabc1471e]
+[nid00110:39210] [ 7] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00108:43036] [ 3] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00108:43036] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00103:58008] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00103:58008] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00103:58008] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00103:58008] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00103:58008] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00103:58008] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00103:58008] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00103:58008] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00103:58008] [14] [nid00106:20790] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00106:20790] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00106:20790] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00106:20790] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00106:20790] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00106:20790] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00106:20790] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00106:20790] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00106:20790] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00106:20790] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00106:20790] [15] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00110:39210] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00108:43017] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00108:43017] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00108:43017] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00108:43017] [nid00103:58056] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00103:58056] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00103:58056] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00103:58056] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00103:58056] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00103:58056] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00103:58056] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00106:20761] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00106:20761] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00110:39210] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00110:39210] [10] [nid00108:43025] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0xa3)[0x2aaaab0b57a3]
+[nid00108:43025] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00103:58008] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00103:58008] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00103:58008] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00103:58008] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00106:20790] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00106:20790] *** End of error message ***
+/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00110:39210] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00110:39210] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00110:39210] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00110:39210] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00110:39210] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00110:39210] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00110:39210] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00110:39210] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00110:39210] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00110:39210] [20] /lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00108:43036] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[nid00108:43036] [ 6] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00103:58056] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00110:39210] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00110:39210] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00108:43025] [ 9] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00108:43017] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00108:43017] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00108:43017] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00108:43017] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00108:43017] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00108:43017] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00108:43017] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00108:43017] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d71e)[0x2aaaabc1471e]
+[nid00108:43036] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00108:43036] [ 8] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00108:43017] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00108:43025] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00108:43025] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00108:43025] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00108:43025] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00108:43025] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00108:43025] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00108:43025] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00108:43025] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00108:43025] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00108:43025] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00108:43025] [20] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00108:43036] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00108:43036] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00108:43036] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00108:43036] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00108:43036] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00108:43036] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00108:43025] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00108:43025] *** End of error message ***
+[14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00108:43036] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00108:43036] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00108:43036] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00108:43036] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00108:43036] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00108:43036] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00108:43036] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00108:43036] *** End of error message ***
+[nid00115:20465] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00115:20465] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00115:20465] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00115:20465] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00115:20465] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00115:20465] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00115:20465] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00115:20465] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00115:20465] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00115:20465] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00115:20465] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00115:20465] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00115:20465] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00115:20465] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00115:20465] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00115:20465] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00115:20465] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00115:20465] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00115:20465] *** End of error message ***
+[nid00111:05046] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00111:05046] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00111:05046] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00111:05046] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00111:05046] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00111:05046] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00111:05046] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00111:05046] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00111:05046] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00111:05046] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00111:05046] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00111:05046] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00111:05046] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00111:05046] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00111:05046] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00111:05046] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00111:05046] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00111:05046] *** End of error message ***
+[nid00103:57445] 2 more processes have sent help message help-mpi-errors.txt / mpi_errors_are_fatal
+[nid00103:57445] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages

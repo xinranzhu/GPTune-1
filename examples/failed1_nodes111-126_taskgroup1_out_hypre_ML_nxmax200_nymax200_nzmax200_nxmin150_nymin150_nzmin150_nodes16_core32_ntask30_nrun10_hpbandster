@@ -1,0 +1,990 @@
+Space([Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize')]) Space([Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=510, high=511, prior='uniform', transform='normalize'),
+       Real(low=0, high=1, prior='uniform', transform='normalize'),
+       Real(low=0, high=0.999, prior='uniform', transform='normalize'),
+       Integer(low=1, high=12, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '1', '2', ..., '6', '8', '10'), prior=None),
+       Categorical(categories=('-1', '0', '6', '8', '16', '18'), prior=None),
+       Categorical(categories=('5', '6', '7', '8', '9'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '3', '4', '5', '6', '8', '12'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize')]) Space([Real(low=-inf, high=inf, prior='uniform', transform='identity')]) {'cst1': 'Px * Py  <= Nproc'}
+
+
+------Validating the options
+  
+  total core counts provided to GPTune: 512
+   ---> distributed_memory_parallelism: False
+   ---> shared_memory_parallelism: False
+   ---> objective_evaluation_parallelism: False
+  
+  total core counts for modeling: 2
+   ---> model_processes: 1
+   ---> model_threads: 1
+   ---> model_restart_processes: 1
+   ---> model_restart_threads: 1
+  
+  total core counts for search: 1
+   ---> search_processes: 1
+   ---> search_threads: 1
+   ---> search_multitask_processes: 1
+   ---> search_multitask_threads: 1
+  
+  total core counts for objective function evaluation: 512
+   ---> core counts in a single application run: 511
+   ---> objective_multisample_processes: 1
+   ---> objective_multisample_threads: 1
+Start HpBandSter
+07:55:25 WORKER: Connected to nameserver <Pyro4.core.Proxy at 0x2aab05aecad0; connected IPv4; for PYRO:Pyro.NameServer@127.0.0.1:9090>
+07:55:25 WORKER: No dispatcher found. Waiting for one to initiate contact.
+07:55:25 WORKER: start listening for jobs
+07:55:25 wait_for_workers trying to get the condition
+07:55:25 DISPATCHER: started the 'discover_worker' thread
+07:55:25 DISPATCHER: started the 'job_runner' thread
+07:55:25 DISPATCHER: Pyro daemon running on localhost:41065
+07:55:25 DISPATCHER: Starting worker discovery
+07:55:25 DISPATCHER: Found 1 potential workers, 0 currently in the pool.
+07:55:25 DISPATCHER: discovered new worker, hpbandster.run_HpBandSter.worker.nid00111.1287.046912496651648
+07:55:25 HBMASTER: number of workers changed to 1
+07:55:25 DISPATCHER: jobs to submit = 0, number of idle workers = 1 -> waiting!
+07:55:25 HBMASTER: only 1 worker(s) available, waiting for at least 1.
+07:55:25 adjust_queue_size: lock accquired
+07:55:25 HBMASTER: adjusted queue size to (0, 1)
+07:55:25 DISPATCHER: Finished worker discovery
+07:55:25 DISPATCHER: A new worker triggered discover_worker
+07:55:25 DISPATCHER: Trying to submit another job.
+07:55:25 DISPATCHER: jobs to submit = 0, number of idle workers = 1 -> waiting!
+07:55:25 Enough workers to start this run!
+07:55:25 DISPATCHER: Starting worker discovery
+07:55:25 HBMASTER: starting run at 1593615325.7691164
+07:55:25 start sampling a new configuration.
+Configuration:
+  Nproc, Value: 511
+  P_max_elmts, Value: 5
+  Px, Value: 442
+  Py, Value: 237
+  agg_num_levels, Value: 0
+  coarsen_type, Value: '3'
+  interp_type, Value: '4'
+  relax_type, Value: '6'
+  smooth_num_levels, Value: 5
+  smooth_type, Value: '8'
+  strong_threshold, Value: 0.49094751078103815
+  trunc_factor, Value: 0.912942647854528
+ <class 'ConfigSpace.configuration_space.Configuration'>
+Configuration:
+  Nproc, Value: 511
+  P_max_elmts, Value: 10
+  Px, Value: 11
+  Py, Value: 5
+  agg_num_levels, Value: 3
+  coarsen_type, Value: '0'
+  interp_type, Value: '4'
+  relax_type, Value: '18'
+  smooth_num_levels, Value: 4
+  smooth_type, Value: '7'
+  strong_threshold, Value: 0.4655586591765072
+  trunc_factor, Value: 0.3457865161914265
+ <class 'ConfigSpace.configuration_space.Configuration'>
+07:55:25 done sampling a new configuration.
+07:55:25 HBMASTER: schedule new run for iteration 0
+07:55:25 HBMASTER: trying submitting job (0, 0, 0) to dispatcher
+07:55:25 HBMASTER: submitting job (0, 0, 0) to dispatcher
+07:55:25 DISPATCHER: trying to submit job (0, 0, 0)
+07:55:25 DISPATCHER: Found 1 potential workers, 1 currently in the pool.
+07:55:25 DISPATCHER: Finished worker discovery
+07:55:25 DISPATCHER: trying to notify the job_runner thread.
+07:55:25 HBMASTER: job (0, 0, 0) submitted to dispatcher
+07:55:25 DISPATCHER: Trying to submit another job.
+07:55:25 HBMASTER: running jobs: 1, queue sizes: (0, 1) -> wait
+07:55:25 DISPATCHER: starting job (0, 0, 0) on hpbandster.run_HpBandSter.worker.nid00111.1287.046912496651648
+07:55:25 DISPATCHER: job (0, 0, 0) dispatched on hpbandster.run_HpBandSter.worker.nid00111.1287.046912496651648
+07:55:25 DISPATCHER: jobs to submit = 0, number of idle workers = 0 -> waiting!
+07:55:25 WORKER: start processing job (0, 0, 0)
+07:55:25 WORKER: args: ()
+07:55:25 WORKER: kwargs: {'config': {'Nproc': 511, 'P_max_elmts': 10, 'Px': 11, 'Py': 5, 'agg_num_levels': 3, 'coarsen_type': '0', 'interp_type': '4', 'relax_type': '18', 'smooth_num_levels': 4, 'smooth_type': '7', 'strong_threshold': 0.4655586591765072, 'trunc_factor': 0.3457865161914265}, 'budget': 1.0, 'working_directory': '.'}
+Current param (182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 11, 5, 9, 0.46555866, 0.34578652, 10, 0, 18, 7, 4, 4, 3, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '182', '152', '161', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '11', '5', '9', '-th', '0.4655586591765072', '-tr', '0.3457865161914265', '-Pmx', '10', '-rlx', '18', '-smtype', '7', '-smlv', '4', '-interptype', '4', '-agg_nl', '3', '-cljp', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/hpbandster/0/ijoutput_182_152_161_11_5_9_0.4655586591765072_0.3457865161914265_10_0_18_7_4_4_3'] nproc 495
+07:56:25 DISPATCHER: Starting worker discovery
+07:56:25 DISPATCHER: Found 1 potential workers, 1 currently in the pool.
+07:56:25 DISPATCHER: Finished worker discovery
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (182, 152, 161)
+    (Px, Py, Pz) = (11, 5, 9)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+[nid00111][[36663,2],4][btl_ugni_smsg.c:86:mca_btl_ugni_smsg_process] unhandled GNI_SmsgGetNextWTag error
+[nid00112:16068] *** Process received signal ***
+[nid00112:16068] Signal: Segmentation fault (11)
+[nid00112:16068] Signal code: Address not mapped (1)
+[nid00112:16068] Failing at address: 0x48
+[nid00122:20764] *** Process received signal ***
+[nid00122:20764] Signal: Segmentation fault (11)
+[nid00122:20764] Signal code: Address not mapped (1)
+[nid00122:20764] Failing at address: 0x48
+[nid00113:56024] *** Process received signal ***
+[nid00113:56024] Signal: Segmentation fault (11)
+[nid00113:56024] Signal code: Address not mapped (1)
+[nid00113:56024] Failing at address: 0x38
+[nid00126:03840] *** Process received signal ***
+[nid00126:03840] Signal: Segmentation fault (11)
+[nid00126:03840] Signal code: Address not mapped (1)
+[nid00126:03840] Failing at address: 0x10
+[nid00121:35415] *** Process received signal ***
+[nid00121:35415] Signal: Segmentation fault (11)
+[nid00121:35415] Signal code: Address not mapped (1)
+[nid00121:35415] Failing at address: 0x10
+[nid00111:01674] *** Process received signal ***
+[nid00111:01674] Signal: Segmentation fault (11)
+[nid00111:01674] Signal code: Address not mapped (1)
+[nid00111:01674] Failing at address: 0x38
+[nid00114][[36663,2],103][btl_ugni_smsg.c:86:mca_btl_ugni_smsg_process] unhandled GNI_SmsgGetNextWTag error
+[nid00114:51150] *** Process received signal ***
+[nid00114:51150] Signal: Segmentation fault (11)
+[nid00114:51150] Signal code: Address not mapped (1)
+[nid00114:51150] Failing at address: 0x38
+[nid00119:39129] *** Process received signal ***
+[nid00119:39129] Signal: Segmentation fault (11)
+[nid00119:39129] Signal code: Address not mapped (1)
+[nid00119:39129] Failing at address: 0x48
+[nid00122:20766] *** Process received signal ***
+[nid00122:20766] Signal: Segmentation fault (11)
+[nid00122:20766] Signal code: Address not mapped (1)
+[nid00122:20766] Failing at address: 0x394
+[nid00124:14421] *** Process received signal ***
+[nid00124:14421] Signal: Segmentation fault (11)
+[nid00124:14421] Signal code: Invalid permissions (2)
+[nid00124:14421] Failing at address: 0x2aaaabefa300
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000d85ed0 ***
+[nid00117:62215] *** Process received signal ***
+[nid00117:62215] Signal: Aborted (6)
+[nid00117:62215] Signal code:  (-6)
+[nid00121][[36663,2],334][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 14420912, hdr_len = 18, payload_len = 956
+[nid00120:54111] *** Process received signal ***
+[nid00120:54111] Signal: Segmentation fault (11)
+[nid00120:54111] Signal code: Address not mapped (1)
+[nid00120:54111] Failing at address: 0xc8
+[nid00123:18362] *** Process received signal ***
+[nid00123:18362] Signal: Segmentation fault (11)
+[nid00123:18362] Signal code: Address not mapped (1)
+[nid00123:18362] Failing at address: 0x8
+[nid00111:01681] *** Process received signal ***
+[nid00111:01681] Signal: Segmentation fault (11)
+[nid00111:01681] Signal code: Address not mapped (1)
+[nid00111:01681] Failing at address: 0x38
+[nid00114:51166] *** Process received signal ***
+[nid00114:51166] Signal: Floating point exception (8)
+[nid00114:51166] Signal code: Integer divide-by-zero (1)
+[nid00114:51166] Failing at address: 0x2aaab6c976d8
+[nid00119:39130] *** Process received signal ***
+[nid00119:39130] Signal: Segmentation fault (11)
+[nid00119:39130] Signal code: Address not mapped (1)
+[nid00119:39130] Failing at address: 0xc8
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000d8c600 ***
+[nid00122:20768] *** Process received signal ***
+[nid00122:20768] Signal: Aborted (6)
+[nid00122:20768] Signal code:  (-6)
+[nid00124][[36663,2],424][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 13890304, hdr_len = 18, payload_len = 956
+[nid00120][[36663,2],294][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 3. handle = 14327728, hdr_len = 18, payload_len = 956
+[nid00123:18372] *** Process received signal ***
+[nid00123:18372] Signal: Segmentation fault (11)
+[nid00123:18372] Signal code: Address not mapped (1)
+[nid00123:18372] Failing at address: 0x3e000002f5
+[nid00125][[36663,2],452][btl_ugni_endpoint.c:47:mca_btl_ugni_endpoint_get_modex] error receiving modex
+[nid00125][[36663,2],452][btl_ugni_add_procs.c:227:mca_btl_ugni_get_ep] btl/ugni error initializing endpoint
+[nid00114:51168] *** Process received signal ***
+[nid00114:51168] Signal: Segmentation fault (11)
+[nid00114:51168] Signal code: Address not mapped (1)
+[nid00114:51168] Failing at address: 0x38
+[nid00119:39132] *** Process received signal ***
+[nid00119:39132] Signal: Segmentation fault (11)
+[nid00119:39132] Signal code: Address not mapped (1)
+[nid00119:39132] Failing at address: 0x8
+[nid00122][[36663,2],368][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 3. handle = 14237216, hdr_len = 18, payload_len = 956
+[nid00124][[36663,2],425][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 3. handle = 13504096, hdr_len = 18, payload_len = 956
+[nid00120:54116] *** Process received signal ***
+[nid00120:54116] Signal: Segmentation fault (11)
+[nid00120:54116] Signal code: Address not mapped (1)
+[nid00120:54116] Failing at address: 0x8
+[nid00123:18374] *** Process received signal ***
+[nid00123:18374] Signal: Segmentation fault (11)
+[nid00123:18374] Signal code: Address not mapped (1)
+[nid00123:18374] Failing at address: 0x10
+[nid00125][[36663,2],455][btl_ugni_endpoint.c:47:mca_btl_ugni_endpoint_get_modex] error receiving modex
+[nid00125][[36663,2],455][btl_ugni_add_procs.c:227:mca_btl_ugni_get_ep] btl/ugni error initializing endpoint
+[nid00119][[36663,2],262][btl_ugni_endpoint.c:47:mca_btl_ugni_endpoint_get_modex] error receiving modex
+[nid00119][[36663,2],262][btl_ugni_add_procs.c:227:mca_btl_ugni_get_ep] btl/ugni error initializing endpoint
+[nid00119:39133] *** Process received signal ***
+[nid00119:39133] Signal: Segmentation fault (11)
+[nid00119:39133] Signal code: Address not mapped (1)
+[nid00119:39133] Failing at address: 0x30
+[nid00122:20783] *** Process received signal ***
+[nid00122:20783] Signal: Segmentation fault (11)
+[nid00122:20783] Signal code: Address not mapped (1)
+[nid00122:20783] Failing at address: 0x8
+[nid00124][[36663,2],436][btl_ugni_smsg.c:86:mca_btl_ugni_smsg_process] unhandled GNI_SmsgGetNextWTag error
+[nid00120:54123] *** Process received signal ***
+[nid00120:54123] Signal: Segmentation fault (11)
+[nid00120:54123] Signal code: Address not mapped (1)
+[nid00120:54123] Failing at address: 0x10
+[nid00125][[36663,2],460][btl_ugni_endpoint.c:47:mca_btl_ugni_endpoint_get_modex] error receiving modex
+[nid00125][[36663,2],460][btl_ugni_add_procs.c:227:mca_btl_ugni_get_ep] btl/ugni error initializing endpoint
+[nid00122][[36663,2],373][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 3. handle = 13903232, hdr_len = 18, payload_len = 956
+[nid00124:14440] *** Process received signal ***
+[nid00124:14440] Signal: Segmentation fault (11)
+[nid00124:14440] Signal code: Address not mapped (1)
+[nid00124:14440] Failing at address: 0x48
+[nid00125][[36663,2],463][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 13626992, hdr_len = 18, payload_len = 956
+[nid00122][[36663,2],376][btl_ugni_endpoint.c:47:mca_btl_ugni_endpoint_get_modex] error receiving modex
+[nid00122][[36663,2],376][btl_ugni_add_procs.c:227:mca_btl_ugni_get_ep] btl/ugni error initializing endpoint
+[nid00122:20788] *** Process received signal ***
+[nid00122:20788] Signal: Segmentation fault (11)
+[nid00122:20788] Signal code: Address not mapped (1)
+[nid00122:20788] Failing at address: 0x30
+[nid00124:14444] *** Process received signal ***
+[nid00124:14444] Signal: Segmentation fault (11)
+[nid00124:14444] Signal code: Address not mapped (1)
+[nid00124:14444] Failing at address: 0x48
+[nid00125:23569] *** Process received signal ***
+[nid00125:23569] Signal: Segmentation fault (11)
+[nid00125:23569] Signal code: Address not mapped (1)
+[nid00125:23569] Failing at address: 0x48
+[nid00122:20789] *** Process received signal ***
+[nid00122:20789] Signal: Segmentation fault (11)
+[nid00122:20789] Signal code: Address not mapped (1)
+[nid00122:20789] Failing at address: 0x48
+[nid00125:23571] *** Process received signal ***
+[nid00125:23571] Signal: Segmentation fault (11)
+[nid00125:23571] Signal code: Address not mapped (1)
+[nid00125:23571] Failing at address: 0x10
+[nid00122:20790] *** Process received signal ***
+[nid00122:20790] Signal: Segmentation fault (11)
+[nid00122:20790] Signal code: Address not mapped (1)
+[nid00122:20790] Failing at address: 0x8
+[nid00125:23557] *** Process received signal ***
+[nid00125:23557] Signal: Segmentation fault (11)
+[nid00125:23557] Signal code: Address not mapped (1)
+[nid00125:23557] Failing at address: 0x30
+[nid00125:23560] *** Process received signal ***
+[nid00125:23560] Signal: Segmentation fault (11)
+[nid00125:23560] Signal code: Address not mapped (1)
+[nid00125:23560] Failing at address: 0x30
+[nid00125:23565] *** Process received signal ***
+[nid00125:23565] Signal: Segmentation fault (11)
+[nid00125:23565] Signal code: Address not mapped (1)
+[nid00125:23565] Failing at address: 0x30
+[nid00126:03840] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00126:03840] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00126:03840] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00126:03840] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00126:03840] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00126:03840] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00126:03840] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00126:03840] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00126:03840] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00126:03840] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00126:03840] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00126:03840] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00126:03840] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00126:03840] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00126:03840] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00126:03840] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00126:03840] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00126:03840] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00126:03840] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00126:03840] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00126:03840] *** End of error message ***
+[nid00124:14440] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00124:14440] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00124:14440] [nid00124:14444] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00124:14444] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00124:14444] [ 2] [nid00125:23571] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00125:23571] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00125:23571] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00125:23571] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00125:23571] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00125:23571] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00125:23571] [ 6] [nid00114:51150] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00114:51150] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00114:51150] [nid00122:20764] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20764] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0xb322)[0x2aaabe2c9322]
+[nid00122:20764] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x87)[0x2aaabe2c9d67]
+[nid00122:20764] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00122:20764] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00122:20764] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20764] [ 6] [nid00124:14421] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00124:14421] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_generic_simple_unpack+0x1c0)[0x2aaaabc17ba0]
+[nid00124:14421] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_frag_callback_match+0x4bc)[0x2aaabf4fea2c]
+[nid00121:35415] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00121:35415] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00121:35415] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00121:35415] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00121:35415] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00121:35415] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00121:35415] [ 6] [nid00123:18362] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00123:18362] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00123:18362] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00123:18362] [ 3] [nid00125:23557] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00125:23557] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_proc_create+0x1b4)[0x2aaabdcb0dc4]
+[nid00125:23557] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_add_procs+0x74)[0x2aaabdcaa1a4]
+[nid00125:23557] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_bml_r2.so(+0x2592)[0x2aaabd694592]
+[nid00125:23557] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0xbe4)[0x2aaabf4fa254]
+[nid00125:23557] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00125:23557] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00125:23557] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:51166] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00114:51166] [ 1] /opt/cray/ugni/default/lib64/libugni.so.0(GNI_SmsgGetNextWTag+0x5c)[0x2aaab6c976d8]
+[nid00114:51166] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_smsg_process+0x85)[0x2aaabe2d3685]
+[nid00114:51166] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_progress_remote_smsg+0xb3)[0x2aaabe2d3d53]
+[nid00114:51166] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0x67c4)[0x2aaabe2c47c4]
+[nid00122:20766] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20766] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00122:20766] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00122:20766] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20766] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20766] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20766] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20766] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20766] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20766] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20766] [nid00113:56024] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00113:56024] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00113:56024] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00124:14440] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00121:35415] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00121:35415] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00121:35415] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00121:35415] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00121:35415] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00121:35415] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00121:35415] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00121:35415] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00121:35415] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00121:35415] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00121:35415] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00121:35415] [18] [nid00123:18372] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00123:18372] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00123:18372] [ 2] [nid00125:23560] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00125:23560] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_proc_create+0x1b4)[0x2aaabdcb0dc4]
+[nid00125:23560] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_add_procs+0x74)[0x2aaabdcaa1a4]
+[nid00125:23560] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_bml_r2.so(+0x2592)[0x2aaabd694592]
+[nid00125:23560] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0xbe4)[0x2aaabf4fa254]
+[nid00125:23560] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00125:23560] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00125:23560] [ 7] [nid00114:51168] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00114:51168] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00114:51168] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00114:51168] [ 3] [nid00122:20768] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20768] [ 1] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00122:20768] [ 2] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00122:20768] [ 3] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00122:20768] [ 4] [nid00113:56024] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00113:56024] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00124:14444] [ 3] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00121:35415] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00121:35415] *** End of error message ***
+[nid00123:18374] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00123:18374] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00123:18374] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00123:18374] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00123:18374] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00123:18374] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00123:18374] [ 6] [nid00125:23569] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00125:23569] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00125:23569] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00125:23569] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00125:23569] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00125:23569] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00125:23569] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00125:23569] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00125:23569] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00125:23569] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23569] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00112:16068] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00112:16068] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00112:16068] [ 2] [nid00114:51166] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_progress+0x2c)[0x2aaaabbfca0c]
+[nid00114:51166] [ 6] [nid00122:20783] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20783] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00122:20783] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00122:20783] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20783] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20783] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20783] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20783] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20783] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20783] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20783] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20783] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20783] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20783] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20783] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20783] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20783] [16] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00113:56024] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00124:14440] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00123:18372] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00123:18372] [ 4] [nid00125:23565] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00125:23565] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_proc_create+0x1b4)[0x2aaabdcb0dc4]
+[nid00125:23565] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_add_procs+0x74)[0x2aaabdcaa1a4]
+[nid00125:23565] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_bml_r2.so(+0x2592)[0x2aaabd694592]
+[nid00125:23565] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0xbe4)[0x2aaabf4fa254]
+[nid00125:23565] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00125:23565] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00125:23565] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00125:23565] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00125:23565] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00125:23565] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00125:23565] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00125:23565] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23565] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00125:23565] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00125:23565] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00125:23565] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00125:23565] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00125:23565] [18] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00112:16068] [ 3] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00114:51150] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00114:51150] [ 4] [nid00122:20788] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20788] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_proc_create+0x1b4)[0x2aaabdcb0dc4]
+[nid00122:20788] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_add_procs+0x74)[0x2aaabdcaa1a4]
+[nid00122:20788] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_bml_r2.so(+0x2592)[0x2aaabd694592]
+[nid00122:20788] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0xbe4)[0x2aaabf4fa254]
+[nid00122:20788] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20788] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20788] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20788] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20788] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20788] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20788] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20788] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20788] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20788] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20788] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20788] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00113:56024] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00113:56024] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00113:56024] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00113:56024] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00113:56024] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00113:56024] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00113:56024] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00113:56024] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00113:56024] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00124:14421] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_smsg_process+0x477)[0x2aaabe2d3a77]
+[nid00124:14421] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_progress_remote_smsg+0xb3)[0x2aaabe2d3d53]
+[nid00124:14421] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0x67c4)[0x2aaabe2c47c4]
+[nid00124:14421] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_progress+0x2c)[0x2aaaabbfca0c]
+[nid00124:14421] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00123:18362] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00123:18362] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00123:18362] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00123:18362] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00123:18362] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00123:18362] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00123:18362] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23569] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00125:23569] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00125:23569] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00125:23569] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00125:23569] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00125:23569] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00125:23569] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00112:16068] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00112:16068] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00112:16068] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00112:16068] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00114:51168] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00114:51168] [ 5] [nid00122:20789] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20789] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00122:20789] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20789] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20789] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20789] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20789] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20789] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20789] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20789] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20789] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20789] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20789] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20789] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20789] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20789] [15] [nid00113:56024] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00113:56024] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00113:56024] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00124:14444] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00124:14444] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00124:14444] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00124:14444] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00124:14444] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00124:14444] [nid00120:54111] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00120:54111] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00120:54111] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00120:54111] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00120:54111] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00120:54111] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00123:18374] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00123:18374] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00123:18374] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00123:18374] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00123:18374] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00123:18374] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00123:18374] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00123:18374] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00125:23571] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00125:23571] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00125:23571] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00125:23571] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00125:23571] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00125:23571] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23571] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00125:23571] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00125:23571] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00125:23571] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00125:23571] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00125:23571] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00125:23571] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00125:23571] *** End of error message ***
+/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00112:16068] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00112:16068] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00112:16068] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00112:16068] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00112:16068] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00112:16068] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00112:16068] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00112:16068] [15] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00114:51150] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:51150] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00114:51150] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00114:51150] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00114:51150] [nid00122:20790] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00122:20790] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00122:20790] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00122:20790] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00122:20790] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20790] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20790] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20790] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20790] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20790] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20790] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20790] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20790] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20790] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20790] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20790] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20790] [16] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00113:56024] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_request_default_wait+0x105)[0x2aaaab05c105]
+[nid00124:14421] [ 8] [nid00117:62215] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00117:62215] [ 1] [nid00120:54116] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00120:54116] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00120:54116] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00120:54116] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00120:54116] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00120:54116] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00120:54116] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00120:54116] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00120:54116] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00120:54116] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00120:54116] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00120:54116] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00120:54116] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00120:54116] [nid00123:18362] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00123:18362] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00123:18362] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00123:18362] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00123:18362] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00123:18362] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00123:18362] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00123:18362] *** End of error message ***
+[nid00125:23557] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00125:23557] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00125:23557] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00125:23557] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00125:23557] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23557] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00125:23557] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00125:23557] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00125:23557] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00125:23557] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00125:23557] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00125:23557] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00125:23557] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00112:16068] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00112:16068] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_request_default_wait+0x105)[0x2aaaab05c105]
+[nid00114:51166] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0xa3)[0x2aaaab0b57a3]
+[nid00114:51166] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20789] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20789] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00124:14440] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00124:14440] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00124:14440] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00124:14440] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00124:14440] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00124:14440] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00124:14440] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00124:14440] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00124:14440] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00124:14440] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00124:14440] [15] /lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00117:62215] [ 2] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00117:62215] [ 3] [nid00120:54123] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00120:54123] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_wait_list_append+0x3e)[0x2aaabe2c9b8e]
+[nid00120:54123] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_send+0x1b9)[0x2aaabe2c9e99]
+[nid00120:54123] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send_request_start_prepare+0xc8)[0x2aaabf50cab8]
+[nid00120:54123] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x1275)[0x2aaabf4fa8e5]
+[nid00120:54123] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00120:54123] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00120:54123] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00120:54123] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00120:54123] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00120:54123] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00120:54123] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00120:54123] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00120:54123] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00120:54123] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00120:54123] [15] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00123:18372] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00123:18372] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00123:18372] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00123:18372] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00123:18372] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00123:18372] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00123:18372] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00123:18372] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00123:18372] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00123:18372] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00123:18372] [15] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00125:23560] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00125:23560] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00125:23560] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00125:23560] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00125:23560] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00125:23560] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00125:23560] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00125:23560] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00125:23560] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00125:23560] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00125:23560] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00125:23560] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00125:23560] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:51168] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00114:51168] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00114:51168] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00114:51168] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00114:51168] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00114:51168] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00114:51168] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00114:51168] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00114:51168] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00122:20764] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20764] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20764] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20764] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20764] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20764] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20764] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20764] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20764] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20764] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20764] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20764] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20764] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20764] *** End of error message ***
+[ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00124:14444] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00124:14444] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00124:14444] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00124:14444] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00124:14444] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00124:14444] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+/lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00117:62215] [ 4] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00120:54116] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00120:54116] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00120:54116] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00120:54116] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00120:54116] *** End of error message ***
+[nid00123:18374] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00123:18374] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00123:18374] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00123:18374] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00123:18374] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00123:18374] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00125:23565] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00125:23565] *** End of error message ***
+[nid00114:51166] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00114:51166] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00114:51166] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00114:51166] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00114:51166] [13] [nid00119:39129] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00119:39129] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x64)[0x2aaabf4f96d4]
+[nid00119:39129] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00119:39129] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00119:39129] [ 4] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20766] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20766] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20766] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20766] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20766] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20766] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20766] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20766] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00124:14440] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00124:14440] *** End of error message ***
+/lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00117:62215] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[nid00117:62215] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00120:54111] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00120:54111] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00120:54111] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00120:54111] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00120:54111] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00120:54111] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00120:54111] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00120:54111] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00120:54111] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00120:54111] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00120:54111] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00120:54111] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00120:54111] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00123:18372] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00123:18372] *** End of error message ***
+[ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00114:51150] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00114:51150] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00114:51150] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00114:51150] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00114:51150] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00114:51150] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00114:51150] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00114:51150] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00114:51150] *** End of error message ***
+[nid00119:39130] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00119:39130] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00119:39130] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00119:39130] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00119:39130] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00119:39130] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00119:39130] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00119:39130] /lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00122:20768] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[nid00122:20768] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d71e)[0x2aaaabc1471e]
+[nid00122:20768] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0xa3)[0x2aaaab0b57a3]
+[nid00124:14421] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00124:14421] [10] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(+0x4d71e)[0x2aaaabc1471e]
+[nid00117:62215] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00120:54123] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00120:54123] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00120:54123] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00120:54123] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00120:54123] *** End of error message ***
+[nid00114:51168] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00114:51168] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00114:51168] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00114:51168] *** End of error message ***
+[nid00119:39132] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00119:39132] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaedf)[0x2aaabf4f7edf]
+[nid00119:39132] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00119:39132] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00119:39132] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00119:39132] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00119:39132] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00119:39132] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00119:39132] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00119:39132] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00119:39132] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00119:39132] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00119:39132] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00119:39132] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00119:39132] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00119:39132] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20783] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20783] *** End of error message ***
+[nid00124:14444] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00124:14444] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00117:62215] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00114:51166] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00114:51166] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00114:51166] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00114:51166] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00114:51166] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00114:51166] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00114:51166] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00114:51166] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00114:51166] *** End of error message ***
+[nid00119:39133] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00119:39133] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_proc_create+0x1b4)[0x2aaabdcb0dc4]
+[nid00119:39133] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_tcp.so(mca_btl_tcp_add_procs+0x74)[0x2aaabdcaa1a4]
+[nid00119:39133] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_bml_r2.so(+0x2592)[0x2aaabd694592]
+[nid00119:39133] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0xbe4)[0x2aaabf4fa254]
+[nid00119:39133] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00119:39133] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00119:39133] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00119:39133] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00119:39133] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00119:39133] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00119:39133] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00119:39133] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00119:39133] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00119:39133] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00119:39133] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00119:39133] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00119:39133] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00119:39133] [18] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20788] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20788] [18] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20788] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20788] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00124:14421] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00124:14421] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00124:14421] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00124:14421] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00124:14421] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00124:14421] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00124:14421] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00124:14421] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00124:14421] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00117:62215] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00119:39132] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00119:39132] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00119:39132] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20790] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20790] *** End of error message ***
+[nid00124:14421] [20] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00124:14421] [21] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00124:14421] [22] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00124:14421] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00117:62215] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00117:62215] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00117:62215] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00117:62215] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00117:62215] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00117:62215] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00117:62215] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00117:62215] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00117:62215] [18] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00119:39129] [ 5] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00119:39129] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00119:39129] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00119:39129] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00119:39129] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00119:39129] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00119:39129] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00119:39129] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00119:39129] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00119:39129] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00119:39129] [15] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00119:39129] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00119:39129] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_datatype_destroy+0x51)[0x2aaaab06cad1]
+[nid00122:20768] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00117:62215] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00117:62215] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00117:62215] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00117:62215] *** End of error message ***
+[ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00119:39130] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00119:39130] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00119:39130] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00119:39130] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00119:39130] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00119:39130] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00119:39130] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00119:39130] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00119:39130] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00119:39130] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00119:39130] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x378)[0x2aaaab0b8ed8]
+[nid00122:20768] [ 9] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00119:39133] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00119:39133] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00122:20768] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00122:20768] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00122:20768] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00122:20768] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00122:20768] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00122:20768] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00122:20768] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00122:20768] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00122:20768] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00122:20768] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00122:20768] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00122:20768] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00122:20768] *** End of error message ***
+[nid00125:23568] *** An error occurred in MPI_Alltoall
+[nid00125:23568] *** reported by process [2402746370,463]
+[nid00125:23568] *** on communicator MPI_COMM_WORLD
+[nid00125:23568] *** MPI_ERR_OTHER: known error not in list
+[nid00125:23568] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[nid00125:23568] ***    and potentially your MPI job)
+[nid00111:01674] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00111:01674] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00111:01674] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00111:01674] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00111:01674] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00111:01674] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00111:01674] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00111:01674] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00111:01674] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00111:01674] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00111:01674] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00111:01674] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00111:01674] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00111:01674] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00111:01674] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00111:01674] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00111:01674] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00111:01674] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00111:01674] *** End of error message ***
+[nid00111:01681] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00111:01681] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00111:01681] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00111:01681] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00111:01681] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00111:01681] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00111:01681] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00111:01681] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00111:01681] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00111:01681] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00111:01681] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00111:01681] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00111:01681] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00111:01681] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00111:01681] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00111:01681] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00111:01681] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00111:01681] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00111:01681] *** End of error message ***
+[nid00111:01201] 6 more processes have sent help message help-mpi-errors.txt / mpi_errors_are_fatal
+[nid00111:01201] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages

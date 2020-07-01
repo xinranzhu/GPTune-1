@@ -1,0 +1,1641 @@
+Space([Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize'),
+       Integer(low=150, high=200, prior='uniform', transform='normalize')]) Space([Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=1, high=511, prior='uniform', transform='normalize'),
+       Integer(low=510, high=511, prior='uniform', transform='normalize'),
+       Real(low=0, high=1, prior='uniform', transform='normalize'),
+       Real(low=0, high=0.999, prior='uniform', transform='normalize'),
+       Integer(low=1, high=12, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '1', '2', ..., '6', '8', '10'), prior=None),
+       Categorical(categories=('-1', '0', '6', '8', '16', '18'), prior=None),
+       Categorical(categories=('5', '6', '7', '8', '9'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize'),
+       Categorical(categories=('0', '3', '4', '5', '6', '8', '12'), prior=None),
+       Integer(low=0, high=5, prior='uniform', transform='normalize')]) Space([Real(low=-inf, high=inf, prior='uniform', transform='identity')]) {'cst1': 'Px * Py  <= Nproc'}
+
+
+------Validating the options
+  
+  total core counts provided to GPTune: 512
+   ---> distributed_memory_parallelism: False
+   ---> shared_memory_parallelism: False
+   ---> objective_evaluation_parallelism: False
+  
+  total core counts for modeling: 2
+   ---> model_processes: 1
+   ---> model_threads: 1
+   ---> model_restart_processes: 1
+   ---> model_restart_threads: 1
+  
+  total core counts for search: 1
+   ---> search_processes: 1
+   ---> search_threads: 1
+   ---> search_multitask_processes: 1
+   ---> search_multitask_threads: 1
+  
+  total core counts for objective function evaluation: 512
+   ---> core counts in a single application run: 511
+   ---> objective_multisample_processes: 1
+   ---> objective_multisample_threads: 1
+Start OpenTuner
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 76, 6, 0.8005778, 0.20108265, 9, 1, 18, 8, 5, 5, 4, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '76', '6', '-th', '0.8005778030083778', '-tr', '0.20108264956341518', '-Pmx', '9', '-rlx', '18', '-smtype', '8', '-smlv', '5', '-interptype', '5', '-agg_nl', '4', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_76_6_0.8005778030083778_0.20108264956341518_9_1_18_8_5_5_4'] nproc 456
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 76, 6)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 456
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 7
+
+ Strength Threshold = 0.800578
+ Interpolation Truncation Factor = 0.201083
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+
+ No. of levels of aggressive coarsening: 4
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = multipass interpolation with separation of weights
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  531831  9631375  0.000     6   36    18.1  -1.112e-14   6.356e+00
+  2   74254  3631556  0.001     4  105    48.9  -2.000e-01   1.189e+02
+  3   12532   758894  0.005     3  150    60.6  -8.018e+00   4.830e+02
+  4     992    27850  0.028     2   82    28.1   1.437e+01   4.489e+03
+  5      39      217  0.143     2   14     5.6   1.013e+02   8.564e+03
+  6       7       25  0.510     2    6     3.6   2.020e+02   5.198e+03
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 531831    1   10   2.5   9.921e-03   8.333e-01   3.333e-01   1.000e+00
+  1  531831 x 74254     0   20   3.1   6.947e-03   1.151e+00   0.000e+00   1.151e+00
+  2   74254 x 12532     0   12   1.6   9.413e-04   1.420e+00   0.000e+00   1.490e+00
+  3   12532 x 992       0    8   0.7   9.013e-05   1.678e+00   0.000e+00   1.694e+00
+  4     992 x 39        0    2   0.4   1.012e-03   1.005e+00   0.000e+00   1.005e+00
+  5      39 x 7         0    1   0.9   6.921e-10   2.129e-01   0.000e+00   1.000e+00
+
+
+     Complexity:    grid = 1.133400
+                operator = 1.434336
+                memory = 1.814320
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     18   18     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ ParaSails smoother level 0
+ ParaSails smoother level 1
+ ParaSails smoother level 2
+ ParaSails smoother level 3
+ ParaSails smoother level 4
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.033998e+03    0.943743   9.437432e-01
+    2    1.932251e+03    0.949977   8.965345e-01
+    3    1.827644e+03    0.945863   8.479986e-01
+    4    1.672264e+03    0.914983   7.759046e-01
+    5    1.475788e+03    0.882509   6.847426e-01
+    6    1.411164e+03    0.956210   6.547580e-01
+    7    1.365216e+03    0.967440   6.334392e-01
+    8    1.209108e+03    0.885653   5.610075e-01
+    9    9.598803e+02    0.793874   4.453695e-01
+   10    7.110521e+02    0.740772   3.299171e-01
+   11    6.310682e+02    0.887513   2.928058e-01
+   12    5.671739e+02    0.898752   2.631599e-01
+   13    5.102642e+02    0.899661   2.367546e-01
+   14    4.709893e+02    0.923030   2.185317e-01
+   15    4.043838e+02    0.858584   1.876278e-01
+   16    3.627519e+02    0.897049   1.683112e-01
+   17    3.346332e+02    0.922485   1.552646e-01
+   18    2.925545e+02    0.874254   1.357407e-01
+   19    2.505077e+02    0.856277   1.162317e-01
+   20    2.179833e+02    0.870166   1.011409e-01
+   21    2.000131e+02    0.917562   9.280298e-02
+   22    1.766602e+02    0.883243   8.196760e-02
+   23    1.619180e+02    0.916550   7.512743e-02
+   24    1.534535e+02    0.947724   7.120005e-02
+   25    1.210420e+02    0.788786   5.616161e-02
+   26    1.008347e+02    0.833055   4.678573e-02
+   27    9.530741e+01    0.945185   4.422115e-02
+   28    8.777271e+01    0.920943   4.072517e-02
+   29    7.586422e+01    0.864326   3.519982e-02
+   30    6.299004e+01    0.830300   2.922640e-02
+   31    5.671308e+01    0.900350   2.631398e-02
+   32    5.018056e+01    0.884815   2.328300e-02
+   33    4.512403e+01    0.899233   2.093685e-02
+   34    4.179696e+01    0.926268   1.939314e-02
+   35    3.860249e+01    0.923572   1.791095e-02
+   36    3.601509e+01    0.932973   1.671044e-02
+   37    3.336900e+01    0.926528   1.548269e-02
+   38    2.890151e+01    0.866119   1.340985e-02
+   39    2.404756e+01    0.832052   1.115769e-02
+   40    2.124906e+01    0.883626   9.859233e-03
+   41    1.909229e+01    0.898501   8.858526e-03
+   42    1.632914e+01    0.855274   7.576469e-03
+   43    1.465709e+01    0.897603   6.800660e-03
+   44    1.367008e+01    0.932660   6.342703e-03
+   45    1.253680e+01    0.917098   5.816881e-03
+   46    1.164343e+01    0.928740   5.402368e-03
+   47    1.100125e+01    0.944847   5.104410e-03
+   48    9.696943e+00    0.881440   4.499230e-03
+   49    7.095458e+00    0.731721   3.292182e-03
+   50    6.176428e+00    0.870476   2.865766e-03
+   51    5.482296e+00    0.887616   2.543700e-03
+   52    4.259715e+00    0.776995   1.976442e-03
+   53    3.804005e+00    0.893019   1.764999e-03
+   54    3.574542e+00    0.939679   1.658532e-03
+   55    3.161606e+00    0.884479   1.466936e-03
+   56    2.851115e+00    0.901794   1.322873e-03
+   57    2.717969e+00    0.953300   1.261095e-03
+   58    2.417669e+00    0.889513   1.121761e-03
+   59    1.608176e+00    0.665176   7.461685e-04
+   60    1.346997e+00    0.837593   6.249856e-04
+   61    1.180096e+00    0.876094   5.475461e-04
+   62    8.394849e-01    0.711370   3.895079e-04
+   63    7.346163e-01    0.875080   3.408505e-04
+   64    6.880509e-01    0.936613   3.192449e-04
+   65    6.176505e-01    0.897681   2.865802e-04
+   66    5.684299e-01    0.920310   2.637426e-04
+   67    5.468791e-01    0.962087   2.537434e-04
+   68    4.939551e-01    0.903225   2.291875e-04
+   69    3.615779e-01    0.732006   1.677665e-04
+   70    2.545797e-01    0.704080   1.181210e-04
+   71    2.072582e-01    0.814119   9.616459e-05
+   72    1.588195e-01    0.766288   7.368977e-05
+   73    1.312852e-01    0.826631   6.091428e-05
+   74    1.183785e-01    0.901690   5.492579e-05
+   75    1.116438e-01    0.943108   5.180097e-05
+   76    1.073820e-01    0.961827   4.982359e-05
+   77    9.831114e-02    0.915527   4.561484e-05
+   78    7.832092e-02    0.796664   3.633969e-05
+   79    5.924721e-02    0.756467   2.748978e-05
+   80    4.682942e-02    0.790407   2.172812e-05
+   81    3.885084e-02    0.829625   1.802618e-05
+   82    2.983827e-02    0.768021   1.384449e-05
+   83    2.434087e-02    0.815760   1.129379e-05
+   84    2.188978e-02    0.899301   1.015652e-05
+   85    2.079879e-02    0.950160   9.650313e-06
+   86    1.999180e-02    0.961200   9.275882e-06
+   87    1.854769e-02    0.927765   8.605841e-06
+   88    1.523376e-02    0.821329   7.068228e-06
+   89    1.024610e-02    0.672592   4.754032e-06
+   90    8.313994e-03    0.811430   3.857564e-06
+   91    6.866793e-03    0.825932   3.186085e-06
+   92    4.881351e-03    0.710863   2.264871e-06
+   93    4.047752e-03    0.829228   1.878094e-06
+   94    3.699785e-03    0.914035   1.716643e-06
+   95    3.454541e-03    0.933714   1.602853e-06
+   96    3.289912e-03    0.952344   1.526468e-06
+   97    3.087999e-03    0.938627   1.432784e-06
+   98    2.576153e-03    0.834247   1.195295e-06
+   99    1.521820e-03    0.590734   7.061009e-07
+  100    1.230266e-03    0.808417   5.708243e-07
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 5.708243e-07
+
+[----- runtime = 6.040000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 76, 6, 0.8005778030083778, 0.20108264956341518, 9, '1', '18', '8', 5, '5', 4, 1, 32)]  hypre time:  [6.039999999999999]
+[184, 165, 153] [1, 76, 510, 0.8005778030083778, 0.20108264956341518, 9, '1', '18', '8', 5, '5', 4] 6.039999999999999 OK 174 1
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 206, 1, 2, 0.34160326, 0.16510906, 9, 2, 0, 5, 2, 6, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '206', '1', '2', '-th', '0.3416032617966479', '-tr', '0.1651090624419177', '-Pmx', '9', '-rlx', '0', '-smtype', '5', '-smlv', '2', '-interptype', '6', '-agg_nl', '5', '-ruge2b', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_206_1_2_0.3416032617966479_0.1651090624419177_9_2_0_5_2_6_5'] nproc 412
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (206, 1, 2)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 412
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 9
+
+ Strength Threshold = 0.341603
+ Interpolation Truncation Factor = 0.165109
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge2B
+
+ No. of levels of aggressive coarsening: 5
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  611235 15985323  0.000     5   39    26.2  -1.049e-14   6.048e+00
+  2    4791   110239  0.005     4   41    23.0   5.219e-03   3.572e+01
+  3     880    15694  0.020     4   36    17.8   2.881e+00   9.457e+01
+  4     204     2878  0.069     4   26    14.1   4.139e+00   2.207e+02
+  5      48      490  0.213     4   18    10.2   1.496e+01   3.364e+02
+  6      22      220  0.455     4   16    10.0   4.103e+01   3.547e+02
+  7      10       72  0.720     5    9     7.2   1.388e+02   2.914e+02
+  8       4       16  1.000     4    4     4.0   1.392e+02   2.526e+02
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 611235    1    7   1.7   4.630e-02   8.333e-01   3.611e-01   1.000e+00
+  1  611235 x 4791      0   12   0.1   3.451e-03   1.000e+00   0.000e+00   1.000e+00
+  2    4791 x 880       1    8   1.7   1.178e-02   9.997e-01   1.147e-01   1.000e+00
+  3     880 x 204       1    6   1.7  -2.043e-02   8.175e-01  -4.392e-02   1.000e+00
+  4     204 x 48        1    5   1.4   7.606e-03   6.292e-01   1.635e-02   1.000e+00
+  5      48 x 22        1    5   1.8   3.203e-03   1.360e-01   1.227e-02   1.000e+00
+  6      22 x 10        1    2   1.3   4.223e-04   6.062e-02   1.415e-03   1.000e+00
+  7      10 x 4         1    3   1.3   1.554e-05   1.069e-02   1.554e-05   1.000e+00
+
+
+     Complexity:    grid = 1.132870
+                operator = 1.498173
+                memory = 1.735802
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      0    0     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.042629e+03    0.947748   9.477479e-01
+    2    1.931686e+03    0.945686   8.962722e-01
+    3    1.799907e+03    0.931780   8.351286e-01
+    4    1.676887e+03    0.931652   7.780494e-01
+    5    1.559611e+03    0.930064   7.236353e-01
+    6    1.501424e+03    0.962691   6.966372e-01
+    7    1.443643e+03    0.961516   6.698278e-01
+    8    1.368622e+03    0.948034   6.350193e-01
+    9    1.279360e+03    0.934780   5.936031e-01
+   10    1.172411e+03    0.916404   5.439805e-01
+   11    1.120812e+03    0.955989   5.200394e-01
+   12    1.081189e+03    0.964647   5.016546e-01
+   13    1.040816e+03    0.962659   4.829223e-01
+   14    1.006579e+03    0.967106   4.670370e-01
+   15    9.791824e+02    0.972783   4.543254e-01
+   16    9.581744e+02    0.978545   4.445780e-01
+   17    9.326636e+02    0.973376   4.327414e-01
+   18    8.930212e+02    0.957496   4.143479e-01
+   19    8.385454e+02    0.938998   3.890720e-01
+   20    7.659922e+02    0.913477   3.554085e-01
+   21    7.184412e+02    0.937922   3.333455e-01
+   22    6.838931e+02    0.951912   3.173157e-01
+   23    6.539482e+02    0.956214   3.034218e-01
+   24    6.333653e+02    0.968525   2.938716e-01
+   25    6.202563e+02    0.979303   2.877892e-01
+   26    6.096080e+02    0.982832   2.828486e-01
+   27    5.944101e+02    0.975069   2.757970e-01
+   28    5.665431e+02    0.953118   2.628672e-01
+   29    5.249732e+02    0.926625   2.435794e-01
+   30    4.709858e+02    0.897162   2.185301e-01
+   31    4.317120e+02    0.916614   2.003077e-01
+   32    4.043923e+02    0.936718   1.876317e-01
+   33    3.830820e+02    0.947303   1.777441e-01
+   34    3.710218e+02    0.968518   1.721483e-01
+   35    3.646912e+02    0.982937   1.692110e-01
+   36    3.592120e+02    0.984976   1.666688e-01
+   37    3.503708e+02    0.975387   1.625666e-01
+   38    3.292395e+02    0.939689   1.527620e-01
+   39    3.006832e+02    0.913266   1.395123e-01
+   40    2.642346e+02    0.878781   1.226008e-01
+   41    2.364713e+02    0.894929   1.097190e-01
+   42    2.184534e+02    0.923805   1.013590e-01
+   43    2.044962e+02    0.936109   9.488306e-02
+   44    1.979688e+02    0.968080   9.185444e-02
+   45    1.947171e+02    0.983574   9.034568e-02
+   46    1.919000e+02    0.985533   8.903862e-02
+   47    1.873319e+02    0.976195   8.691908e-02
+   48    1.734991e+02    0.926159   8.050089e-02
+   49    1.566226e+02    0.902728   7.267043e-02
+   50    1.344565e+02    0.858475   6.238572e-02
+   51    1.173591e+02    0.872841   5.445280e-02
+   52    1.068801e+02    0.910710   4.959070e-02
+   53    9.902196e+01    0.926477   4.594465e-02
+   54    9.569649e+01    0.966417   4.440168e-02
+   55    9.429408e+01    0.985345   4.375098e-02
+   56    9.304968e+01    0.986803   4.317360e-02
+   57    9.075061e+01    0.975292   4.210687e-02
+   58    8.429068e+01    0.928817   3.910956e-02
+   59    7.409351e+01    0.879024   3.437823e-02
+   60    6.137909e+01    0.828400   2.847894e-02
+   61    5.190969e+01    0.845723   2.408529e-02
+   62    4.634361e+01    0.892774   2.150271e-02
+   63    4.268861e+01    0.921132   1.980685e-02
+   64    4.128841e+01    0.967200   1.915718e-02
+   65    4.068368e+01    0.985354   1.887659e-02
+   66    4.015030e+01    0.986890   1.862911e-02
+   67    3.917728e+01    0.975765   1.817765e-02
+   68    3.542011e+01    0.904098   1.643438e-02
+   69    3.074397e+01    0.867981   1.426472e-02
+   70    2.461385e+01    0.800607   1.142044e-02
+   71    2.019724e+01    0.820564   9.371204e-03
+   72    1.783172e+01    0.882879   8.273642e-03
+   73    1.603319e+01    0.899139   7.439151e-03
+   74    1.554826e+01    0.969755   7.214150e-03
+   75    1.527854e+01    0.982653   7.089003e-03
+   76    1.504779e+01    0.984897   6.981938e-03
+   77    1.469047e+01    0.976254   6.816148e-03
+   78    1.332070e+01    0.906758   6.180598e-03
+   79    1.154415e+01    0.866632   5.356307e-03
+   80    9.641434e+00    0.835179   4.473475e-03
+   81    8.321979e+00    0.863148   3.861269e-03
+   82    7.524738e+00    0.904201   3.491361e-03
+   83    6.944543e+00    0.922895   3.222160e-03
+   84    6.684769e+00    0.962593   3.101629e-03
+   85    6.477598e+00    0.969009   3.005505e-03
+   86    6.309540e+00    0.974055   2.927528e-03
+   87    6.152788e+00    0.975156   2.854798e-03
+   88    5.787698e+00    0.940663   2.685402e-03
+   89    5.396480e+00    0.932405   2.503883e-03
+   90    4.968590e+00    0.920709   2.305348e-03
+   91    4.659053e+00    0.937701   2.161728e-03
+   92    4.461901e+00    0.957684   2.070252e-03
+   93    4.280431e+00    0.959329   1.986054e-03
+   94    4.155626e+00    0.970843   1.928146e-03
+   95    3.991306e+00    0.960459   1.851904e-03
+   96    3.849586e+00    0.964493   1.786148e-03
+   97    3.756769e+00    0.975889   1.743082e-03
+   98    3.610027e+00    0.960939   1.674996e-03
+   99    3.441230e+00    0.953242   1.596677e-03
+  100    3.210693e+00    0.933007   1.489711e-03
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 1.489711e-03
+
+[----- runtime = 3.540000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 206, 1, 2, 0.3416032617966479, 0.1651090624419177, 9, '2', '0', '5', 2, '6', 5, 1, 32)]  hypre time:  [3.54]
+[184, 165, 153] [206, 1, 510, 0.3416032617966479, 0.1651090624419177, 9, '2', '0', '5', 2, '6', 5] 3.54 OK 176 2
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 285, 1, 0.73356656, 0.30163739, 5, 1, 6, 8, 1, 6, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '285', '1', '-th', '0.7335665645011069', '-tr', '0.30163739490500324', '-Pmx', '5', '-rlx', '6', '-smtype', '8', '-smlv', '1', '-interptype', '6', '-agg_nl', '5', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_285_1_0.7335665645011069_0.30163739490500324_5_1_6_8_1_6_5'] nproc 285
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 285, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 285
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 2
+
+ Strength Threshold = 0.733567
+ Interpolation Truncation Factor = 0.301637
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+
+ No. of levels of aggressive coarsening: 5
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  590535 15529993  0.000     8   27    26.3   0.000e+00   5.200e+00
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 590535    1    4   1.7   4.012e-02   8.333e-01   3.611e-01   1.000e+00
+
+
+     Complexity:    grid = 1.127131
+                operator = 1.480091
+                memory = 1.713283
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      6    6     6 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ ParaSails smoother level 0
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.068025e+03    0.959531   9.595314e-01
+    2    1.976407e+03    0.955698   9.170222e-01
+    3    1.887206e+03    0.954867   8.756342e-01
+    4    1.800366e+03    0.953985   8.353417e-01
+    5    1.715904e+03    0.953086   7.961528e-01
+    6    1.673838e+03    0.975485   7.766349e-01
+    7    1.630918e+03    0.974358   7.567206e-01
+    8    1.587321e+03    0.973268   7.364920e-01
+    9    1.543146e+03    0.972170   7.159955e-01
+   10    1.498768e+03    0.971242   6.954048e-01
+   11    1.466426e+03    0.978422   6.803990e-01
+   12    1.434093e+03    0.977951   6.653969e-01
+   13    1.402592e+03    0.978034   6.507806e-01
+   14    1.371970e+03    0.978168   6.365727e-01
+   15    1.342891e+03    0.978805   6.230805e-01
+   16    1.318787e+03    0.982050   6.118964e-01
+   17    1.293715e+03    0.980989   6.002635e-01
+   18    1.268224e+03    0.980297   5.884364e-01
+   19    1.242402e+03    0.979639   5.764551e-01
+   20    1.215855e+03    0.978632   5.641376e-01
+   21    1.193083e+03    0.981271   5.535717e-01
+   22    1.170960e+03    0.981458   5.433072e-01
+   23    1.149355e+03    0.981549   5.332827e-01
+   24    1.128301e+03    0.981682   5.235141e-01
+   25    1.108698e+03    0.982626   5.144186e-01
+   26    1.091143e+03    0.984166   5.062735e-01
+   27    1.072493e+03    0.982908   4.976202e-01
+   28    1.053553e+03    0.982340   4.888321e-01
+   29    1.034386e+03    0.981807   4.799389e-01
+   30    1.014249e+03    0.980533   4.705959e-01
+   31    9.961093e+02    0.982115   4.621792e-01
+   32    9.788831e+02    0.982707   4.541865e-01
+   33    9.620361e+02    0.982790   4.463698e-01
+   34    9.455963e+02    0.982911   4.387420e-01
+   35    9.305878e+02    0.984128   4.317782e-01
+   36    9.167216e+02    0.985100   4.253446e-01
+   37    9.017022e+02    0.983616   4.183758e-01
+   38    8.864816e+02    0.983120   4.113137e-01
+   39    8.711110e+02    0.982661   4.041819e-01
+   40    8.546729e+02    0.981130   3.965549e-01
+   41    8.395159e+02    0.982266   3.895223e-01
+   42    8.254096e+02    0.983197   3.829772e-01
+   43    8.116102e+02    0.983282   3.765745e-01
+   44    7.981410e+02    0.983404   3.703250e-01
+   45    7.860762e+02    0.984884   3.647271e-01
+   46    7.747436e+02    0.985583   3.594689e-01
+   47    7.622529e+02    0.983878   3.536735e-01
+   48    7.496293e+02    0.983439   3.478163e-01
+   49    7.369138e+02    0.983038   3.419165e-01
+   50    7.231042e+02    0.981260   3.355091e-01
+   51    7.101988e+02    0.982153   3.295212e-01
+   52    6.984085e+02    0.983399   3.240506e-01
+   53    6.868773e+02    0.983489   3.187004e-01
+   54    6.756245e+02    0.983617   3.134792e-01
+   55    6.657215e+02    0.985342   3.088844e-01
+   56    6.563235e+02    0.985883   3.045239e-01
+   57    6.457999e+02    0.983966   2.996411e-01
+   58    6.351935e+02    0.983576   2.947199e-01
+   59    6.245366e+02    0.983223   2.897753e-01
+   60    6.127977e+02    0.981204   2.843286e-01
+   61    6.017317e+02    0.981942   2.791941e-01
+   62    5.917941e+02    0.983485   2.745833e-01
+   63    5.820782e+02    0.983582   2.700752e-01
+   64    5.725992e+02    0.983715   2.656771e-01
+   65    5.643912e+02    0.985665   2.618687e-01
+   66    5.565471e+02    0.986102   2.582292e-01
+   67    5.476340e+02    0.983985   2.540936e-01
+   68    5.386737e+02    0.983638   2.499362e-01
+   69    5.296907e+02    0.983324   2.457682e-01
+   70    5.196620e+02    0.981067   2.411151e-01
+   71    5.101507e+02    0.981697   2.367020e-01
+   72    5.017455e+02    0.983524   2.328021e-01
+   73    4.935299e+02    0.983626   2.289902e-01
+   74    4.855154e+02    0.983761   2.252716e-01
+   75    4.786781e+02    0.985917   2.220992e-01
+   76    4.721109e+02    0.986281   2.190521e-01
+   77    4.645458e+02    0.983976   2.155420e-01
+   78    4.569580e+02    0.983666   2.120214e-01
+   79    4.493655e+02    0.983385   2.084986e-01
+   80    4.407793e+02    0.980893   2.045147e-01
+   81    4.326004e+02    0.981445   2.007199e-01
+   82    4.254806e+02    0.983542   1.974164e-01
+   83    4.185224e+02    0.983646   1.941879e-01
+   84    4.117341e+02    0.983780   1.910382e-01
+   85    4.060223e+02    0.986127   1.883880e-01
+   86    4.005155e+02    0.986437   1.858330e-01
+   87    3.940893e+02    0.983955   1.828513e-01
+   88    3.876568e+02    0.983678   1.798667e-01
+   89    3.812308e+02    0.983423   1.768852e-01
+   90    3.738732e+02    0.980700   1.734714e-01
+   91    3.668417e+02    0.981193   1.702088e-01
+   92    3.608070e+02    0.983549   1.674088e-01
+   93    3.549094e+02    0.983655   1.646724e-01
+   94    3.491545e+02    0.983785   1.620023e-01
+   95    3.443744e+02    0.986310   1.597844e-01
+   96    3.397529e+02    0.986580   1.576400e-01
+   97    3.342926e+02    0.983929   1.551065e-01
+   98    3.288371e+02    0.983680   1.525753e-01
+   99    3.233945e+02    0.983449   1.500500e-01
+  100    3.170880e+02    0.980499   1.471239e-01
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 1.471239e-01
+
+[----- runtime = 7.520000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 285, 1, 0.7335665645011069, 0.30163739490500324, 5, '1', '6', '8', 1, '6', 5, 1, 32)]  hypre time:  [7.52]
+[184, 165, 153] [1, 285, 511, 0.7335665645011069, 0.30163739490500324, 5, '1', '6', '8', 1, '6', 5] 7.52 OK 176 3
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 28, 18, 0.36914687, 0., 9, 1, 8, 8, 5, 6, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '28', '18', '-th', '0.36914687240538924', '-tr', '0.0', '-Pmx', '9', '-rlx', '8', '-smtype', '8', '-smlv', '5', '-interptype', '6', '-agg_nl', '5', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_28_18_0.36914687240538924_0.0_9_1_8_8_5_6_5'] nproc 504
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 28, 18)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 504
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 6
+
+ Strength Threshold = 0.369147
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+
+ No. of levels of aggressive coarsening: 5
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  577521 12805015  0.000     7   33    22.2  -1.135e-14   6.472e+00
+  2   81492  3976056  0.001     5   99    48.8  -4.039e-14   3.008e+01
+  3    9938   542256  0.005    10  115    54.6  -7.024e-14   7.654e+01
+  4    1027    76499  0.073    11  187    74.5   8.189e-14   1.824e+03
+  5       9       65  0.802     5    9     7.2   9.969e+02   1.169e+04
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 577521    1   10   2.7   7.440e-03   8.333e-01   3.333e-01   1.000e+00
+  1  577521 x 81492     1   17   2.4   2.709e-03   1.000e+00   2.351e-01   1.000e+00
+  2   81492 x 9938      1   12   2.0   5.974e-03   1.000e+00   1.773e-01   1.000e+00
+  3    9938 x 1027      0   27   2.6   3.119e-05   1.000e+00   0.000e+00   1.000e+00
+  4    1027 x 9         0    3   1.0   3.944e-02   1.000e+00   0.000e+00   1.000e+00
+
+
+     Complexity:    grid = 1.144236
+                operator = 1.537896
+                memory = 1.944827
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      8    8     9 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ ParaSails smoother level 0
+ ParaSails smoother level 1
+ ParaSails smoother level 2
+ ParaSails smoother level 3
+ ParaSails smoother level 4
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    1.974987e+03    0.916363   9.163634e-01
+    2    1.705082e+03    0.863338   7.911315e-01
+    3    1.393266e+03    0.817125   6.464536e-01
+    4    1.072144e+03    0.769519   4.974581e-01
+    5    8.144423e+02    0.759639   3.778885e-01
+    6    7.491850e+02    0.919875   3.476102e-01
+    7    6.410487e+02    0.855661   2.974366e-01
+    8    4.391748e+02    0.685088   2.037703e-01
+    9    2.236458e+02    0.509241   1.037682e-01
+   10    1.381481e+02    0.617709   6.409856e-02
+   11    1.135905e+02    0.822237   5.270423e-02
+   12    7.589103e+01    0.668111   3.521225e-02
+   13    4.082349e+01    0.537922   1.894146e-02
+   14    2.767735e+01    0.677976   1.284186e-02
+   15    1.657555e+01    0.598885   7.690798e-03
+   16    1.309662e+01    0.790117   6.076627e-03
+   17    9.963940e+00    0.760802   4.623113e-03
+   18    7.121371e+00    0.714714   3.304205e-03
+   19    4.786297e+00    0.672103   2.220767e-03
+   20    3.386572e+00    0.707556   1.571317e-03
+   21    2.659145e+00    0.785203   1.233802e-03
+   22    1.829523e+00    0.688012   8.488701e-04
+   23    1.279950e+00    0.699609   5.938771e-04
+   24    8.323908e-01    0.650330   3.862164e-04
+   25    6.673054e-01    0.801673   3.096193e-04
+   26    5.541503e-01    0.830430   2.571171e-04
+   27    3.986277e-01    0.719349   1.849571e-04
+   28    2.848439e-01    0.714561   1.321631e-04
+   29    1.979552e-01    0.694960   9.184812e-05
+   30    1.277226e-01    0.645210   5.926130e-05
+   31    8.974435e-02    0.702650   4.163998e-05
+   32    6.315427e-02    0.703713   2.930260e-05
+   33    4.341040e-02    0.687371   2.014175e-05
+   34    2.725305e-02    0.627800   1.264499e-05
+   35    2.056901e-02    0.754742   9.543700e-06
+   36    1.709761e-02    0.831231   7.933023e-06
+   37    1.130762e-02    0.661357   5.246558e-06
+   38    8.431443e-03    0.745643   3.912058e-06
+   39    5.832972e-03    0.691812   2.706408e-06
+   40    3.424107e-03    0.587026   1.588732e-06
+   41    2.161213e-03    0.631176   1.002769e-06
+   42    1.497338e-03    0.692823   6.947413e-07
+   43    1.072530e-03    0.716291   4.976371e-07
+   44    6.304364e-04    0.587803   2.925127e-07
+   45    4.768490e-04    0.756379   2.212505e-07
+   46    4.069323e-04    0.853378   1.888102e-07
+   47    2.749914e-04    0.675767   1.275917e-07
+   48    1.980007e-04    0.720025   9.186923e-08
+   49    1.355193e-04    0.684439   6.287885e-08
+   50    8.580145e-05    0.633131   3.981053e-08
+   51    5.922027e-05    0.690201   2.747728e-08
+   52    4.068699e-05    0.687045   1.887813e-08
+   53    2.672738e-05    0.656903   1.240109e-08
+   54    1.587251e-05    0.593867   7.364599e-09
+
+
+Final L2 norm of residual: 1.587252e-05
+
+
+
+
+GMRES Iterations = 54
+Final GMRES Relative Residual Norm = 7.364600e-09
+
+[----- runtime = 7.370000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 28, 18, 0.36914687240538924, 0.0, 9, '1', '8', '8', 5, '6', 5, 1, 32)]  hypre time:  [7.37]
+[184, 165, 153] [1, 28, 510, 0.36914687240538924, 0.0, 9, '1', '8', '8', 5, '6', 5] 7.37 OK 197 4
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 195, 2, 0.8005778, 0.20108265, 1, 1, 18, 8, 5, 5, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '195', '2', '-th', '0.8005778030083778', '-tr', '0.20108264956341518', '-Pmx', '1', '-rlx', '18', '-smtype', '8', '-smlv', '5', '-interptype', '5', '-agg_nl', '5', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_195_2_0.8005778030083778_0.20108264956341518_1_1_18_8_5_5_5'] nproc 390
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 195, 2)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 390
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 2
+
+ Strength Threshold = 0.800578
+ Interpolation Truncation Factor = 0.201083
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+
+ No. of levels of aggressive coarsening: 5
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = multipass interpolation with separation of weights
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  597795 15641899  0.000     8   27    26.2   0.000e+00   6.048e+00
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 597795    1    4   1.7   4.012e-02   8.333e-01   3.611e-01   1.000e+00
+
+
+     Complexity:    grid = 1.128694
+                operator = 1.483550
+                memory = 1.716961
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:     18   18    18 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ ParaSails smoother level 0
+ ParaSails smoother level 1
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.057455e+03    0.954627   9.546269e-01
+    2    1.955056e+03    0.950231   9.071157e-01
+    3    1.855790e+03    0.949226   8.610574e-01
+    4    1.759897e+03    0.948328   8.165649e-01
+    5    1.667072e+03    0.947256   7.734956e-01
+    6    1.620821e+03    0.972256   7.520357e-01
+    7    1.573263e+03    0.970658   7.299697e-01
+    8    1.524728e+03    0.969150   7.074502e-01
+    9    1.475033e+03    0.967407   6.843922e-01
+   10    1.425475e+03    0.966402   6.613983e-01
+   11    1.389239e+03    0.974580   6.445854e-01
+   12    1.353287e+03    0.974121   6.279043e-01
+   13    1.318674e+03    0.974423   6.118442e-01
+   14    1.285622e+03    0.974935   5.965084e-01
+   15    1.254131e+03    0.975506   5.818974e-01
+   16    1.228082e+03    0.979229   5.698108e-01
+   17    1.200871e+03    0.977843   5.571856e-01
+   18    1.172810e+03    0.976633   5.441657e-01
+   19    1.144012e+03    0.975445   5.308039e-01
+   20    1.114276e+03    0.974007   5.170065e-01
+   21    1.088729e+03    0.977073   5.051533e-01
+   22    1.064240e+03    0.977507   4.937909e-01
+   23    1.040769e+03    0.977945   4.829005e-01
+   24    1.018515e+03    0.978618   4.725750e-01
+   25    9.975578e+02    0.979424   4.628513e-01
+   26    9.788356e+02    0.981232   4.541645e-01
+   27    9.590210e+02    0.979757   4.449708e-01
+   28    9.384110e+02    0.978509   4.354081e-01
+   29    9.172525e+02    0.977453   4.255909e-01
+   30    8.946436e+02    0.975352   4.151007e-01
+   31    8.742649e+02    0.977221   4.056453e-01
+   32    8.553914e+02    0.978412   3.968883e-01
+   33    8.373699e+02    0.978932   3.885266e-01
+   34    8.204595e+02    0.979805   3.806804e-01
+   35    8.047006e+02    0.980793   3.733686e-01
+   36    7.901871e+02    0.981964   3.666345e-01
+   37    7.746891e+02    0.980387   3.594437e-01
+   38    7.584503e+02    0.979038   3.519091e-01
+   39    7.418283e+02    0.978084   3.441968e-01
+   40    7.234861e+02    0.975274   3.356863e-01
+   41    7.065899e+02    0.976646   3.278467e-01
+   42    6.914910e+02    0.978631   3.208410e-01
+   43    6.770968e+02    0.979184   3.141624e-01
+   44    6.637380e+02    0.980270   3.079641e-01
+   45    6.513962e+02    0.981406   3.022377e-01
+   46    6.398496e+02    0.982274   2.968802e-01
+   47    6.274471e+02    0.980617   2.911257e-01
+   48    6.143677e+02    0.979155   2.850571e-01
+   49    6.010352e+02    0.978299   2.788710e-01
+   50    5.858234e+02    0.974691   2.718129e-01
+   51    5.716443e+02    0.975796   2.652340e-01
+   52    5.594439e+02    0.978657   2.595733e-01
+   53    5.478137e+02    0.979211   2.541770e-01
+   54    5.371215e+02    0.980482   2.492160e-01
+   55    5.273022e+02    0.981719   2.446600e-01
+   56    5.180286e+02    0.982413   2.403572e-01
+   57    5.080324e+02    0.980703   2.357191e-01
+   58    4.974383e+02    0.979147   2.308036e-01
+   59    4.866834e+02    0.978379   2.258135e-01
+   60    4.739611e+02    0.973859   2.199106e-01
+   61    4.620174e+02    0.974800   2.143689e-01
+   62    4.521449e+02    0.978632   2.097882e-01
+   63    4.427298e+02    0.979177   2.054197e-01
+   64    4.341333e+02    0.980583   2.014311e-01
+   65    4.262681e+02    0.981883   1.977818e-01
+   66    4.187938e+02    0.982466   1.943138e-01
+   67    4.107217e+02    0.980725   1.905685e-01
+   68    4.021422e+02    0.979111   1.865877e-01
+   69    3.934614e+02    0.978414   1.825600e-01
+   70    3.827848e+02    0.972865   1.776062e-01
+   71    3.727155e+02    0.973695   1.729342e-01
+   72    3.647376e+02    0.978595   1.692326e-01
+   73    3.571281e+02    0.979137   1.657019e-01
+   74    3.502077e+02    0.980622   1.624909e-01
+   75    3.438900e+02    0.981960   1.595596e-01
+   76    3.378604e+02    0.982466   1.567620e-01
+   77    3.313426e+02    0.980709   1.537378e-01
+   78    3.244113e+02    0.979081   1.505218e-01
+   79    3.174138e+02    0.978430   1.472750e-01
+   80    3.084434e+02    0.971739   1.431129e-01
+   81    2.999579e+02    0.972489   1.391758e-01
+   82    2.935267e+02    0.978560   1.361918e-01
+   83    2.873953e+02    0.979111   1.333469e-01
+   84    2.818253e+02    0.980619   1.307626e-01
+   85    2.767471e+02    0.981981   1.284063e-01
+   86    2.718851e+02    0.982432   1.261505e-01
+   87    2.666281e+02    0.980665   1.237113e-01
+   88    2.610472e+02    0.979069   1.211218e-01
+   89    2.554184e+02    0.978438   1.185102e-01
+   90    2.478825e+02    0.970496   1.150136e-01
+   91    2.407401e+02    0.971187   1.116997e-01
+   92    2.355711e+02    0.978529   1.093013e-01
+   93    2.306485e+02    0.979103   1.070173e-01
+   94    2.261708e+02    0.980587   1.049397e-01
+   95    2.220909e+02    0.981961   1.030467e-01
+   96    2.181758e+02    0.982372   1.012302e-01
+   97    2.139433e+02    0.980601   9.926638e-02
+   98    2.094664e+02    0.979074   9.718915e-02
+   99    2.049504e+02    0.978440   9.509380e-02
+  100    1.986258e+02    0.969141   9.215930e-02
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 9.215930e-02
+
+[----- runtime = 6.540000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 195, 2, 0.8005778030083778, 0.20108264956341518, 1, '1', '18', '8', 5, '5', 5, 1, 32)]  hypre time:  [6.54]
+[184, 165, 153] [1, 195, 510, 0.8005778030083778, 0.20108264956341518, 1, '1', '18', '8', 5, '5', 5] 6.54 OK 200 5
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 59, 1, 8, 0.60890208, 0.25531842, 9, 1, 6, 6, 5, 8, 0, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '59', '1', '8', '-th', '0.6089020809796135', '-tr', '0.2553184212603294', '-Pmx', '9', '-rlx', '6', '-smtype', '6', '-smlv', '5', '-interptype', '8', '-agg_nl', '0', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_59_1_8_0.6089020809796135_0.2553184212603294_9_1_6_6_5_8_0'] nproc 472
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (59, 1, 8)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 472
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 13
+
+ Strength Threshold = 0.608902
+ Interpolation Truncation Factor = 0.255318
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = standard interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1 2322358 59967408  0.000     9   31    25.8  -2.401e-15   3.233e+00
+  2 1527370 123540576  0.000    17  133    80.9  -3.903e-15   4.240e+00
+  3  342318 68991778  0.001    10  288   201.5  -6.002e-15   7.409e+00
+  4   20558  2818852  0.007    12  516   137.1   9.524e-03   1.145e+01
+  5    7618   964020  0.017    14  487   126.5  -3.483e+01   4.905e+01
+  6    2745   222183  0.029    10  315    80.9   1.647e+00   4.459e+01
+  7     876    35538  0.046     8  104    40.6   4.097e+00   1.013e+02
+  8     324     9466  0.090     2   53    29.2   5.022e+00   4.828e+01
+  9     133     3045  0.172     3   40    22.9   5.022e+00   2.717e+01
+ 10      53      907  0.323     5   25    17.1   6.389e+00   1.473e+01
+ 11      26      278  0.411     5   16    10.7   7.039e+00   1.502e+01
+ 12      12       84  0.583     2   10     7.0   7.040e+00   1.502e+01
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 2322358   1    6   5.3   1.667e-01   2.549e-01   5.000e-01   1.000e+00
+  1 2322358 x 1527370   1    9   6.9   4.832e-02   5.000e-01   2.751e-01   1.000e+00
+  2 1527370 x 342318    0    9   0.8   2.590e-02   1.000e+00   0.000e+00   1.000e+00
+  3  342318 x 20558     0    9   0.3  -9.081e-01   1.000e+00   0.000e+00   1.000e+00
+  4   20558 x 7618      0    9   2.9  -3.477e+01   4.121e+01   0.000e+00   1.000e+00
+  5    7618 x 2745      0    9   2.7  -2.264e+00   1.686e+00   0.000e+00   1.026e+00
+  6    2745 x 876       0    9   1.8  -1.375e+00   1.532e+00  -2.353e-01   1.000e+00
+  7     876 x 324       0    4   1.7  -1.245e-01   7.510e-01  -1.245e-01   1.000e+00
+  8     324 x 133       0    4   1.8   6.858e-09   1.629e-01   0.000e+00   1.000e+00
+  9     133 x 53        0    3   1.5   2.837e-10   5.076e-02   0.000e+00   1.000e+00
+ 10      53 x 26        1    2   1.7   1.808e-09   3.476e-02   3.617e-09   1.000e+00
+ 11      26 x 12        1    2   1.6   7.012e-13   4.842e-05   7.012e-13   1.000e+00
+
+
+     Complexity:    grid = 1.909433
+                operator = 8.931055
+                memory = 9.647303
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      6    6     6 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ Schwarz Relaxation Weight 1.000000 level 0
+ Schwarz Relaxation Weight 1.000000 level 1
+ Schwarz Relaxation Weight 1.000000 level 2
+ Schwarz Relaxation Weight 1.000000 level 3
+ Schwarz Relaxation Weight 1.000000 level 4
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.111066e+03    0.979502   9.795018e-01
+    2    1.944915e+03    0.921295   9.024102e-01
+    3    1.844941e+03    0.948597   8.560238e-01
+    4    1.660931e+03    0.900262   7.706461e-01
+    5    1.530513e+03    0.921479   7.101340e-01
+    6    1.515830e+03    0.990407   7.033217e-01
+    7    1.439685e+03    0.949767   6.679914e-01
+    8    1.337635e+03    0.929117   6.206419e-01
+    9    1.098471e+03    0.821204   5.096734e-01
+   10    9.316219e+02    0.848108   4.322581e-01
+   11    8.960861e+02    0.961856   4.157700e-01
+   12    7.877699e+02    0.879123   3.655130e-01
+   13    7.453664e+02    0.946173   3.458384e-01
+   14    6.847301e+02    0.918649   3.177041e-01
+   15    6.334342e+02    0.925086   2.939036e-01
+   16    6.042808e+02    0.953976   2.803769e-01
+   17    5.586432e+02    0.924476   2.592017e-01
+   18    5.319247e+02    0.952173   2.468048e-01
+   19    4.571429e+02    0.859413   2.121072e-01
+   20    4.228143e+02    0.924906   1.961793e-01
+   21    4.029863e+02    0.953105   1.869794e-01
+   22    3.485677e+02    0.864962   1.617300e-01
+   23    3.311234e+02    0.949955   1.536361e-01
+   24    3.112800e+02    0.940072   1.444291e-01
+   25    2.954206e+02    0.949051   1.370705e-01
+   26    2.785175e+02    0.942783   1.292278e-01
+   27    2.651223e+02    0.951905   1.230126e-01
+   28    2.469133e+02    0.931319   1.145639e-01
+   29    2.083810e+02    0.843944   9.668553e-02
+   30    1.853515e+02    0.889484   8.600023e-02
+   31    1.653940e+02    0.892326   7.674023e-02
+   32    1.439099e+02    0.870104   6.677197e-02
+   33    1.307221e+02    0.908361   6.065303e-02
+   34    1.262571e+02    0.965843   5.858131e-02
+   35    1.183899e+02    0.937689   5.493106e-02
+   36    1.135101e+02    0.958782   5.266693e-02
+   37    1.081295e+02    0.952598   5.017042e-02
+   38    9.982480e+01    0.923196   4.631715e-02
+   39    8.284728e+01    0.829927   3.843985e-02
+   40    7.133250e+01    0.861012   3.309717e-02
+   41    6.372952e+01    0.893415   2.956951e-02
+   42    5.257651e+01    0.824995   2.439468e-02
+   43    4.795715e+01    0.912140   2.225137e-02
+   44    4.601308e+01    0.959462   2.134935e-02
+   45    4.307713e+01    0.936193   1.998712e-02
+   46    4.019796e+01    0.933163   1.865123e-02
+   47    3.881027e+01    0.965479   1.800736e-02
+   48    3.538600e+01    0.911769   1.641855e-02
+   49    2.862462e+01    0.808925   1.328138e-02
+   50    2.427564e+01    0.848069   1.126352e-02
+   51    2.066724e+01    0.851357   9.589275e-03
+   52    1.724321e+01    0.834326   8.000582e-03
+   53    1.543798e+01    0.895308   7.162982e-03
+   54    1.500459e+01    0.971927   6.961895e-03
+   55    1.395065e+01    0.929759   6.472883e-03
+   56    1.326740e+01    0.951024   6.155869e-03
+   57    1.273251e+01    0.959683   5.907685e-03
+   58    1.164041e+01    0.914227   5.400967e-03
+   59    9.188795e+00    0.789388   4.263458e-03
+   60    7.405230e+00    0.805898   3.435911e-03
+   61    6.187764e+00    0.835594   2.871026e-03
+   62    4.944274e+00    0.799040   2.294066e-03
+   63    4.416621e+00    0.893280   2.049243e-03
+   64    4.237895e+00    0.959533   1.966317e-03
+   65    3.921993e+00    0.925458   1.819744e-03
+   66    3.665031e+00    0.934482   1.700517e-03
+   67    3.492680e+00    0.952974   1.620549e-03
+   68    3.216161e+00    0.920829   1.492249e-03
+   69    2.690618e+00    0.836593   1.248405e-03
+   70    2.165733e+00    0.804920   1.004866e-03
+   71    1.861089e+00    0.859334   8.635161e-04
+   72    1.611188e+00    0.865723   7.475661e-04
+   73    1.415390e+00    0.878476   6.567190e-04
+   74    1.316163e+00    0.929894   6.106789e-04
+   75    1.279292e+00    0.971986   5.935717e-04
+   76    1.235677e+00    0.965907   5.733350e-04
+   77    1.164282e+00    0.942222   5.402089e-04
+   78    1.002608e+00    0.861138   4.651944e-04
+   79    8.262851e-01    0.824136   3.833834e-04
+   80    6.967188e-01    0.843194   3.232666e-04
+   81    6.134378e-01    0.880467   2.846256e-04
+   82    4.997547e-01    0.814679   2.318784e-04
+   83    4.401310e-01    0.880694   2.042139e-04
+   84    4.074411e-01    0.925727   1.890463e-04
+   85    3.958315e-01    0.971506   1.836597e-04
+   86    3.858981e-01    0.974905   1.790507e-04
+   87    3.605894e-01    0.934416   1.673079e-04
+   88    3.181417e-01    0.882283   1.476128e-04
+   89    2.529955e-01    0.795229   1.173860e-04
+   90    2.210712e-01    0.873815   1.025736e-04
+   91    1.890998e-01    0.855380   8.773935e-05
+   92    1.556724e-01    0.823229   7.222958e-05
+   93    1.324969e-01    0.851126   6.147647e-05
+   94    1.276332e-01    0.963293   5.921983e-05
+   95    1.223179e-01    0.958355   5.675361e-05
+   96    1.192505e-01    0.974922   5.533037e-05
+   97    1.131477e-01    0.948824   5.249878e-05
+   98    9.858467e-02    0.871292   4.574175e-05
+   99    7.685154e-02    0.779549   3.565792e-05
+  100    6.668317e-02    0.867688   3.093995e-05
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 3.093995e-05
+
+[----- runtime = 18.130000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 59, 1, 8, 0.6089020809796135, 0.2553184212603294, 9, '1', '6', '6', 5, '8', 0, 1, 32)]  hypre time:  [18.130000000000003]
+[184, 165, 153] [59, 1, 511, 0.6089020809796135, 0.2553184212603294, 9, '1', '6', '6', 5, '8', 0] 18.130000000000003 OK 200 6
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 285, 1, 0.73356656, 0., 5, 1, 6, 8, 5, 6, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '285', '1', '-th', '0.7335665645011069', '-tr', '0.0', '-Pmx', '5', '-rlx', '6', '-smtype', '8', '-smlv', '5', '-interptype', '6', '-agg_nl', '5', '-ruge', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_285_1_0.7335665645011069_0.0_5_1_6_8_5_6_5'] nproc 285
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 285, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+
+
+ Num MPI tasks = 285
+
+ Num OpenMP threads = 1
+
+
+BoomerAMG SETUP PARAMETERS:
+
+ Max levels = 25
+ Num levels = 2
+
+ Strength Threshold = 0.733567
+ Interpolation Truncation Factor = 0.000000
+ Maximum Row Sum Threshold for Dependency Weakening = 1.000000
+
+ Coarsening Type = Ruge
+
+ No. of levels of aggressive coarsening: 5
+
+ Interpolation on agg. levels= multipass interpolation
+ measures are determined locally
+
+
+ No global partition option chosen.
+
+ Interpolation = extended+i interpolation
+
+Operator Matrix Information:
+
+             nonzero            entries/row          row sums
+lev    rows  entries sparse   min  max     avg      min         max
+======================================================================
+  0 4645080 32348046  0.000     4    7     7.0   0.000e+00   3.000e+00
+  1  590535 15529993  0.000     8   27    26.3   0.000e+00   5.200e+00
+
+
+Interpolation Matrix Information:
+                        entries/row        min        max            row sums
+lev    rows x cols    min  max  avgW     weight      weight       min         max
+====================================================================================
+  0 4645080 x 590535    1    4   1.7   4.012e-02   8.333e-01   3.611e-01   1.000e+00
+
+
+     Complexity:    grid = 1.127131
+                operator = 1.480091
+                memory = 1.713283
+
+
+
+
+BoomerAMG SOLVER PARAMETERS:
+
+  Maximum number of cycles:         1 
+  Stopping Tolerance:               0.000000e+00 
+  Cycle type (1 = V, 2 = W, etc.):  1
+
+  Relaxation Parameters:
+   Visiting Grid:                     down   up  coarse
+            Number of sweeps:            1    1     1 
+   Type 0=Jac, 3=hGS, 6=hSGS, 9=GE:      6    6     6 
+   Point types, partial sweeps (1=C, -1=F):
+                  Pre-CG relaxation (down):   0
+                   Post-CG relaxation (up):   0
+                             Coarsest grid:   0
+
+ ParaSails smoother level 0
+ ParaSails smoother level 1
+L2 norm of b: 2.155245e+03
+Initial L2 norm of residual: 2.155245e+03
+=============================================
+
+Iters     resid.norm     conv.rate  rel.res.norm
+-----    ------------    ---------- ------------
+    1    2.057270e+03    0.954541   9.545414e-01
+    2    1.954685e+03    0.950135   9.069432e-01
+    3    1.855862e+03    0.949443   8.610913e-01
+    4    1.760290e+03    0.948503   8.167473e-01
+    5    1.667429e+03    0.947247   7.736610e-01
+    6    1.621110e+03    0.972221   7.521697e-01
+    7    1.573529e+03    0.970649   7.300929e-01
+    8    1.525023e+03    0.969174   7.075869e-01
+    9    1.475382e+03    0.967449   6.845545e-01
+   10    1.425890e+03    0.966455   6.615908e-01
+   11    1.389663e+03    0.974594   6.447821e-01
+   12    1.353632e+03    0.974072   6.280640e-01
+   13    1.319129e+03    0.974511   6.120555e-01
+   14    1.286204e+03    0.975040   5.967787e-01
+   15    1.254645e+03    0.975464   5.821358e-01
+   16    1.228534e+03    0.979189   5.700209e-01
+   17    1.201374e+03    0.977892   5.574189e-01
+   18    1.173293e+03    0.976626   5.443897e-01
+   19    1.144434e+03    0.975403   5.309994e-01
+   20    1.114691e+03    0.974011   5.171994e-01
+   21    1.089109e+03    0.977050   5.053296e-01
+   22    1.064536e+03    0.977438   4.939282e-01
+   23    1.041154e+03    0.978035   4.830792e-01
+   24    1.019045e+03    0.978765   4.728208e-01
+   25    9.979645e+02    0.979314   4.630400e-01
+   26    9.791363e+02    0.981133   4.543040e-01
+   27    9.594197e+02    0.979863   4.451558e-01
+   28    9.388016e+02    0.978510   4.355893e-01
+   29    9.175333e+02    0.977345   4.257212e-01
+   30    8.947866e+02    0.975209   4.151671e-01
+   31    8.742666e+02    0.977067   4.056461e-01
+   32    8.553011e+02    0.978307   3.968464e-01
+   33    8.373689e+02    0.979034   3.885261e-01
+   34    8.206088e+02    0.979985   3.807497e-01
+   35    8.046815e+02    0.980591   3.733597e-01
+   36    7.900213e+02    0.981781   3.665576e-01
+   37    7.746467e+02    0.980539   3.594240e-01
+   38    7.584168e+02    0.979049   3.518936e-01
+   39    7.416647e+02    0.977912   3.441209e-01
+   40    7.230384e+02    0.974886   3.354785e-01
+   41    7.058750e+02    0.976262   3.275150e-01
+   42    6.906839e+02    0.978479   3.204666e-01
+   43    6.763879e+02    0.979302   3.138335e-01
+   44    6.631774e+02    0.980469   3.077040e-01
+   45    6.506482e+02    0.981107   3.018906e-01
+   46    6.389365e+02    0.982000   2.964566e-01
+   47    6.266682e+02    0.980799   2.907643e-01
+   48    6.136174e+02    0.979174   2.847089e-01
+   49    6.001548e+02    0.978060   2.784625e-01
+   50    5.845236e+02    0.973955   2.712098e-01
+   51    5.699571e+02    0.975080   2.644512e-01
+   52    5.576746e+02    0.978450   2.587523e-01
+   53    5.461556e+02    0.979345   2.534077e-01
+   54    5.356071e+02    0.980686   2.485133e-01
+   55    5.256075e+02    0.981330   2.438737e-01
+   56    5.161742e+02    0.982053   2.394968e-01
+   57    5.063147e+02    0.980899   2.349221e-01
+   58    4.957703e+02    0.979174   2.300297e-01
+   59    4.849002e+02    0.978074   2.249861e-01
+   60    4.716456e+02    0.972665   2.188362e-01
+   61    4.592130e+02    0.973640   2.130677e-01
+   62    4.492771e+02    0.978363   2.084576e-01
+   63    4.399881e+02    0.979325   2.041476e-01
+   64    4.315310e+02    0.980779   2.002236e-01
+   65    4.235110e+02    0.981415   1.965025e-01
+   66    4.159002e+02    0.982029   1.929712e-01
+   67    4.079643e+02    0.980919   1.892891e-01
+   68    3.994562e+02    0.979145   1.853414e-01
+   69    3.906843e+02    0.978041   1.812715e-01
+   70    3.793887e+02    0.971088   1.760305e-01
+   71    3.687532e+02    0.971967   1.710957e-01
+   72    3.607369e+02    0.978261   1.673763e-01
+   73    3.532679e+02    0.979295   1.639108e-01
+   74    3.464850e+02    0.980799   1.607636e-01
+   75    3.400482e+02    0.981423   1.577771e-01
+   76    3.339152e+02    0.981964   1.549314e-01
+   77    3.275335e+02    0.980888   1.519704e-01
+   78    3.206939e+02    0.979118   1.487970e-01
+   79    3.136347e+02    0.977988   1.455216e-01
+   80    3.039864e+02    0.969237   1.410450e-01
+   81    2.948836e+02    0.970055   1.368214e-01
+   82    2.884435e+02    0.978160   1.338333e-01
+   83    2.824635e+02    0.979268   1.310587e-01
+   84    2.770335e+02    0.980776   1.285392e-01
+   85    2.718745e+02    0.981378   1.261455e-01
+   86    2.669450e+02    0.981869   1.238583e-01
+   87    2.618275e+02    0.980829   1.214839e-01
+   88    2.563545e+02    0.979097   1.189445e-01
+   89    2.506962e+02    0.977928   1.163191e-01
+   90    2.424517e+02    0.967114   1.124938e-01
+   91    2.346674e+02    0.967893   1.088820e-01
+   92    2.295217e+02    0.978072   1.064945e-01
+   93    2.247563e+02    0.979237   1.042834e-01
+   94    2.204254e+02    0.980731   1.022740e-01
+   95    2.163012e+02    0.981290   1.003604e-01
+   96    2.123520e+02    0.981742   9.852803e-02
+   97    2.082667e+02    0.980762   9.663251e-02
+   98    2.039080e+02    0.979072   9.461015e-02
+   99    1.993958e+02    0.977871   9.251655e-02
+  100    1.923598e+02    0.964713   8.925193e-02
+
+
+
+GMRES Iterations = 100
+Final GMRES Relative Residual Norm = 8.925193e-02
+
+[----- runtime = 7.680000 -----]
+
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 285, 1, 0.7335665645011069, 0.0, 5, '1', '6', '8', 5, '6', 5, 1, 32)]  hypre time:  [7.68]
+[184, 165, 153] [1, 285, 511, 0.7335665645011069, 0.0, 5, '1', '6', '8', 5, '6', 5] 7.68 OK 202 7
+Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 298, 1, 0.44097267, 0.70830443, 2, 0, 8, 7, 3, 5, 5, 1, 32)
+exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '298', '1', '-th', '0.44097267356563946', '-tr', '0.70830442772089', '-Pmx', '2', '-rlx', '8', '-smtype', '7', '-smlv', '3', '-interptype', '5', '-agg_nl', '5', '-cljp', '-logfile', '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_298_1_0.44097267356563946_0.70830442772089_2_0_8_7_3_5_5'] nproc 298
+Running with these driver parameters:
+  solver ID    = 3
+
+  Laplacian:   num_fun = 1
+    (nx, ny, nz) = (184, 165, 153)
+    (Px, Py, Pz) = (1, 298, 1)
+    (cx, cy, cz) = (1.000000, 1.000000, 1.000000)
+
+  RHS vector has unit components
+  Initial guess is 0
+Solver: AMG-GMRES
+HYPRE_GMRESGetPrecond got good precond
+[nid00107:62357] *** Process received signal ***
+[nid00107:62357] Signal: Segmentation fault (11)
+[nid00107:62357] Signal code: Address not mapped (1)
+[nid00107:62357] Failing at address: 0xc8
+[nid00103:59324] *** Process received signal ***
+[nid00103:59324] Signal: Segmentation fault (11)
+[nid00103:59324] Signal code: Address not mapped (1)
+[nid00103:59324] Failing at address: 0x6df800cfa018
+*** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000d551f0 ***
+[nid00105:36881] *** Process received signal ***
+[nid00105:36881] Signal: Aborted (6)
+[nid00105:36881] Signal code:  (-6)
+[nid00109][[1003,9],204][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 11486640, hdr_len = 18, payload_len = 552
+[nid00105:36897] *** Process received signal ***
+[nid00105:36897] Signal: Segmentation fault (11)
+[nid00105:36897] Signal code: Address not mapped (1)
+[nid00105:36897] Failing at address: 0x6df8000000d8
+[nid00103:59386] *** Process received signal ***
+[nid00103:59386] Signal: Segmentation fault (11)
+[nid00103:59386] Signal code: Address not mapped (1)
+[nid00103:59386] Failing at address: 0x10
+[nid00112][[1003,9],290][btl_ugni_smsg.c:86:mca_btl_ugni_smsg_process] unhandled GNI_SmsgGetNextWTag error
+[nid00104:35946] *** Process received signal ***
+[nid00104:35946] Signal: Segmentation fault (11)
+[nid00104:35946] Signal code: Address not mapped (1)
+[nid00104:35946] Failing at address: 0x38
+[nid00104:35964] *** Process received signal ***
+[nid00104:35964] Signal: Segmentation fault (11)
+[nid00104:35964] Signal code: Address not mapped (1)
+[nid00104:35964] Failing at address: 0x10
+[nid00103:59324] [nid00103:59386] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00103:59386] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2b2)[0x2aaabf506df2]
+[nid00103:59386] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00103:59386] [ 3] [nid00105:36881] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00105:36881] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00103:59386] [ 4] [nid00105:36897] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00105:36897] [ 1] /opt/cray/ugni/default/lib64/libugni.so.0(GNI_SmsgGetNextWTag+0x68)[0x2aaab6c976e4]
+[nid00105:36897] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_smsg_process+0x85)[0x2aaabe2d3685]
+[nid00105:36897] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(mca_btl_ugni_progress_remote_smsg+0xb3)[0x2aaabe2d3d53]
+[nid00105:36897] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_btl_ugni.so(+0x67c4)[0x2aaabe2c47c4]
+[nid00105:36897] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00103:59386] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00103:59386] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00103:59386] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00103:59386] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00103:59386] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00103:59386] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00103:59386] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00103:59386] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00103:59386] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00103:59386] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00103:59386] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00103:59386] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00103:59386] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00103:59386] *** End of error message ***
+/lib64/libc.so.6(gsignal+0x110)[0x2aaaab588520]
+[nid00105:36881] [ 2] /lib64/libc.so.6(abort+0x151)[0x2aaaab589b01]
+[nid00105:36881] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_progress+0x2c)[0x2aaaabbfca0c]
+[nid00105:36897] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_request_default_wait+0x105)[0x2aaaab05c105]
+[nid00105:36897] [ 7] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00103:59324] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x642)[0x2aaabf507182]
+[nid00103:59324] [ 2] /lib64/libc.so.6(+0x7c957)[0x2aaaab5cb957]
+[nid00105:36881] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0xa3)[0x2aaaab0b57a3]
+[nid00105:36897] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00105:36897] [ 9] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00103:59324] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00103:59324] [ 4] /lib64/libc.so.6(+0x83173)[0x2aaaab5d2173]
+[nid00105:36881] [ 5] /lib64/libc.so.6(+0x84a79)[0x2aaaab5d3a79]
+[nid00105:36881] [ 6] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00103:59324] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00105:36897] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00105:36897] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00105:36897] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00105:36897] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00105:36897] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00105:36897] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00105:36897] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00105:36897] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00105:36897] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libopen-pal.so.40(opal_datatype_commit+0x4e7)[0x2aaaabc16087]
+[nid00105:36881] [ 7] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00103:59324] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00103:59324] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00103:59324] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00103:59324] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00103:59324] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00103:59324] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00103:59324] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00103:59324] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00103:59324] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00103:59324] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00103:59324] [16] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00105:36897] [19] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00105:36897] [20] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00105:36897] [21] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00105:36897] *** End of error message ***
+/lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00103:59324] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00103:59324] *** End of error message ***
+/global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x303)[0x2aaaab0b8e63]
+[nid00105:36881] [ 8] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00105:36881] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00105:36881] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00105:36881] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00105:36881] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00105:36881] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00105:36881] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00105:36881] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00105:36881] [16] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00105:36881] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00105:36881] [18] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00105:36881] [19] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00105:36881] [20] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00105:36881] *** End of error message ***
+[nid00104:35946] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00104:35946] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2a0)[0x2aaabf506de0]
+[nid00104:35946] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00104:35946] [ 3] [nid00104:35964] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00104:35964] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_recv_req_start+0x2b2)[0x2aaabf506df2]
+[nid00104:35964] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_irecv+0x132)[0x2aaabf4f5f82]
+[nid00104:35964] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00104:35946] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00104:35946] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x57)[0x2aaaab0b5757]
+[nid00104:35964] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00104:35964] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00104:35946] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00104:35946] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00104:35946] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00104:35946] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00104:35946] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00104:35946] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00104:35946] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00104:35946] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00104:35946] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00104:35964] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00104:35964] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00104:35964] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00104:35964] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00104:35964] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00104:35964] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00104:35964] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00104:35964] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00104:35964] [14] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00104:35946] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00104:35946] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00104:35946] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00104:35946] *** End of error message ***
+/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00104:35964] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00104:35964] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00104:35964] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00104:35964] *** End of error message ***
+[nid00109:15076] *** An error occurred in MPI_Alltoall
+[nid00109:15076] *** reported by process [65732617,204]
+[nid00109:15076] *** on communicator MPI_COMM_WORLD
+[nid00109:15076] *** MPI_ERR_OTHER: known error not in list
+[nid00109:15076] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[nid00109:15076] ***    and potentially your MPI job)
+[nid00107:62357] [ 0] /lib64/libpthread.so.0(+0x132d0)[0x2aaaab3432d0]
+[nid00107:62357] [ 1] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(+0xaee4)[0x2aaabf4f7ee4]
+[nid00107:62357] [ 2] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/openmpi/mca_pml_ob1.so(mca_pml_ob1_send+0x700)[0x2aaabf4f9d70]
+[nid00107:62357] [ 3] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_sendrecv_actual+0x8b)[0x2aaaab0b578b]
+[nid00107:62357] [ 4] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(ompi_coll_base_alltoall_intra_bruck+0x5bd)[0x2aaaab0b911d]
+[nid00107:62357] [ 5] /global/common/software/m3169/openmpi/4.0.1/gnu/lib/libmpi.so.40(MPI_Alltoall+0x162)[0x2aaaab073ac2]
+[nid00107:62357] [ 6] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x5c6169]
+[nid00107:62357] [ 7] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a5a9]
+[nid00107:62357] [ 8] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x60a079]
+[nid00107:62357] [ 9] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x601623]
+[nid00107:62357] [10] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x44b5b9]
+[nid00107:62357] [11] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x462072]
+[nid00107:62357] [12] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x446bbe]
+[nid00107:62357] [13] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x43b10e]
+[nid00107:62357] [14] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x431333]
+[nid00107:62357] [15] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x414ad7]
+[nid00107:62357] [16] /lib64/libc.so.6(__libc_start_main+0xea)[0x2aaaab57334a]
+[nid00107:62357] [17] /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij[0x402b0a]
+[nid00107:62357] *** End of error message ***
+[nid00109:15076] *** Process received signal ***
+[nid00109:15076] Signal: Segmentation fault (11)
+[nid00109:15076] Signal code: Address not mapped (1)
+[nid00109:15076] Failing at address: 0x10
+--------------------------------------------------------------------------
+Child job 9 terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 28 with PID 59386 on node nid00103 exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
