@@ -9,15 +9,11 @@
 ##SBATCH --ntasks=8
 ##SBATCH --tasks-per-node=8
 #SBATCH --cpus-per-task=8
-##SBATCH --constraint=haswell
 
 #OpenMP settings:
 # export OMP_NUM_THREADS=4
 # export OMP_PLACES=threads
 # export OMP_PROC_BIND=spread
-
-# comment 
-# 8 MPI processes with 4 OpenMP threads per process, each OpenMP thread has 1 physical core
 
 module load python/3.7-anaconda-2019.10
 module unload cray-mpich
@@ -42,12 +38,15 @@ CCC=mpicc
 CCCPP=mpicxx
 FTN=mpif90
 
+nxmin=150
+nymin=150
+nzmin=150
 nxmax=200
 nymax=200
 nzmax=200
-ntask=2
+ntask=30
 nrun=10
-nodes=1
+nodes=8
 cores=32
 nprocmin_pernode=32  # nprocmin_pernode=cores means flat MPI 
 
@@ -56,8 +55,8 @@ nprocmin_pernode=32  # nprocmin_pernode=cores means flat MPI
 cd examples
 rm -rf *.pkl
 tuner='GPTune'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
+mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
 tuner='opentuner'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
+mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
 tuner='hpbandster'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
+mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
