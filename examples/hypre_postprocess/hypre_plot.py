@@ -152,6 +152,7 @@ def main(args):
     # plot_histogram(OpenTunervsGPTune, HpBandstervsGPTune, args)
     # plot_size_time(GPTune_time, Opentuner_time, HpBandster_time, size_set, args)
     
+<<<<<<< HEAD
     x = np.arange(1, ntask+1)
     width = 0.35  # the width of the bars
     fig, ax = plt.subplots()
@@ -242,5 +243,7 @@ def main(args):
     # plot_histogram(OpenTunervsGPTune, HpBandstervsGPTune, args)
     # plot_size_time(GPTune_time, Opentuner_time, HpBandster_time, size_set, args)
     
+=======
+>>>>>>> 056a4d7cde3e7b036f23a6451647afaa6cec5c1a
 if __name__ == "__main__":
     main(parse_args())
