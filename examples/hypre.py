@@ -20,7 +20,7 @@
 """
 Example of invocation of this script:
 
-python hypre.py -nxmax 200 -nymax 200 -nzmax 200 -nodes 1 -cores 32 -nprocmin_pernode 1 -ntask 20 -nrun 800 -machine cori -jobid 0
+python hypre.py -nxmax 200 -nymax 200 -nzmax 200 -nxmin 100 -nymin 100 -nzmin 100 -nodes 1 -cores 32 -nprocmin_pernode 1 -ntask 20 -nrun 800 -machine cori -jobid 0
 
 where:
     -nxmax/nymax/nzmax       maximum number of discretization size for each dimension
@@ -215,12 +215,12 @@ def main():
         giventask = [[randint(nxmin,nxmax),randint(nymin,nymax),randint(nzmin,nzmax)] for i in range(ntask)]
 
     # giventask = [[50, 60, 80], [60, 80, 100]]
-    giventask = [[118, 119, 171], [134, 147, 190], [176, 115, 122], [130, 175, 166], [186, 130, 156],
-                 [139, 100, 138], [172, 188, 170], [144, 105, 172], [150, 136, 198], [192, 111, 110],
-                 [108, 155, 101], [178, 123, 185], [104, 176, 131], [172, 115, 143], [165, 161, 106],
-                 [196, 162, 151], [190, 182, 179], [123, 130, 142], [130, 143, 200], [143, 129, 158], 
-                 [163, 188, 162], [138, 199, 190], [112, 119, 129], [144, 148, 124], [118, 168, 145], 
-                 [133, 199, 132], [163, 179, 149], [136, 175, 149], [132, 153, 103], [159, 109, 119]]
+    # giventask = [[118, 119, 171], [134, 147, 190], [176, 115, 122], [130, 175, 166], [186, 130, 156],
+    #              [139, 100, 138], [172, 188, 170], [144, 105, 172], [150, 136, 198], [192, 111, 110],
+    #              [108, 155, 101], [178, 123, 185], [104, 176, 131], [172, 115, 143], [165, 161, 106],
+    #              [196, 162, 151], [190, 182, 179], [123, 130, 142], [130, 143, 200], [143, 129, 158], 
+    #              [163, 188, 162], [138, 199, 190], [112, 119, 129], [144, 148, 124], [118, 168, 145], 
+    #              [133, 199, 132], [163, 179, 149], [136, 175, 149], [132, 153, 103], [159, 109, 119]]
     # # the following will use only task lists stored in the pickle file
     # data = Data(problem)
 
