@@ -76,7 +76,7 @@ class HpBandSterWorker(hpbandster.core.worker.Worker):
                         accepted_configurations = super(MyConstrainedConfigurationSpace, self).sample_configuration(size=size)
                     for config in accepted_configurations:
                         t = self.t
-                        print(config,type(config))
+                        # print(config,type(config))
                         x = [config[p] for p in self.tp.parameter_space.dimension_names]
                         kwargs = {d.name: x[i] for (i, d) in enumerate(self.tp.parameter_space)}
                         kwargs2 = {d.name: t[i] for (i, d) in enumerate(self.tp.input_space)}

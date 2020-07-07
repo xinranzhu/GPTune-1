@@ -87,8 +87,9 @@ solver = 3 # Bommer AMG
 # max_setup_time = 1000.
 # max_solve_time = 1000.
 coeffs_c = "-c 1 1 1 " # specify c-coefficients in format "-c 1 1 1 " 
-coeffs_a = "-a 0 0 0 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
-problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
+coeffs_a = "-a 1 1 1 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
+# problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
+problem_name = "-difconv "
 
 # define objective function
 def objectives(point):
@@ -175,7 +176,7 @@ def main():
     P_max_elmts = Integer(1, 12,  transform="normalize", name="P_max_elmts")
     coarsen_type = Categoricalnorm (['0', '1', '2', '3', '4', '6', '8', '10'], transform="onehot", name="coarsen_type")
     relax_type = Categoricalnorm (['-1', '0', '6', '8', '16', '18'], transform="onehot", name="relax_type")
-    smooth_type = Categoricalnorm (['5', '6', '7', '8', '9'], transform="onehot", name="smooth_type")
+    smooth_type = Categoricalnorm (['5', '6', '8', '9'], transform="onehot", name="smooth_type")
     smooth_num_levels = Integer(0, 5,  transform="normalize", name="smooth_num_levels")
     interp_type = Categoricalnorm (['0', '3', '4', '5', '6', '8', '12'], transform="onehot", name="interp_type")
     agg_num_levels = Integer(0, 5,  transform="normalize", name="agg_num_levels")
@@ -214,6 +215,7 @@ def main():
         giventask = [[randint(nxmin,nxmax),randint(nymin,nymax),randint(nzmin,nzmax)] for i in range(ntask)]
 
     # giventask = [[50, 60, 80], [60, 80, 100]]
+    # giventask = [[200, 200, 200]]
     giventask = [[184, 165, 153], [172, 175, 159], [162, 175, 173], [180, 169, 164], [180, 189, 170], 
                  [165, 193, 169], [196, 166, 189], [194, 168, 157], [173, 188, 188], [196, 197, 160], 
                  [166, 194, 185], [154, 155, 182], [159, 159, 167], [165, 199, 168], [171, 152, 170], 

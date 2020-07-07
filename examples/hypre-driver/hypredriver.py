@@ -124,7 +124,7 @@ def hypredriver(params, niter = 3, JOBID: int=-1):
         print(f"Current param {param}")
         time_cur = execute(param, RUNDIR, niter=niter)
         times.append(time_cur)
-    # os.system('rm -fr %s'%(RUNDIR))
+    os.system('rm -fr %s'%(RUNDIR))
     return times
 
 
