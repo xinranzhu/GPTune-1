@@ -87,9 +87,9 @@ solver = 3 # Bommer AMG
 # max_setup_time = 1000.
 # max_solve_time = 1000.
 coeffs_c = "-c 1 1 1 " # specify c-coefficients in format "-c 1 1 1 " 
-coeffs_a = "-a 1 1 1 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
-# problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
-problem_name = "-difconv "
+coeffs_a = "-a 0 0 0 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
+problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
+# problem_name = "-difconv "
 
 # define objective function
 def objectives(point):
