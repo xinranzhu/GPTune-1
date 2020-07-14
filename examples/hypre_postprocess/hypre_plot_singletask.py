@@ -16,7 +16,7 @@ def parse_args():
     return parser.parse_args()
 
 def gen_source(args):
-    my_source = [f"./exp_hypre_{args.equation}_singletask{args.ntask}_performance.pkl", f"./exp_hypre_{args.equation}_singletask{args.ntask}_time.pkl"]
+    my_source = [f"./data_singletask/exp_hypre_{args.equation}_singletask{args.ntask}_performance.pkl", f"./exp_hypre_{args.equation}_singletask{args.ntask}_time.pkl"]
     return my_source
 
 def data_process(args):

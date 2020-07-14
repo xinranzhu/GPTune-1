@@ -21,8 +21,8 @@ def get_results_from_line(line):
 
 def main(args):
     summary = []
-    my_source = f"./exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.txt"
-    save_path = f"./exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
+    my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.txt"
+    save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
     with open(my_source, "r") as f:
         line = f.readline()
         while line:
@@ -46,7 +46,7 @@ def main(args):
     summary = sorted(summary, key=itemgetter(4))
     pickle.dump(summary, open(save_path, "wb"))  
     # print()
-    # print(summary)
+    print(summary)
 
 if __name__ == "__main__":
     main(parse_args())

@@ -122,12 +122,18 @@ def objectives(point):
                Px, Py, Pz, strong_threshold, 
                trunc_factor, P_max_elmts, coarsen_type, relax_type, 
                smooth_type, smooth_num_levels, interp_type, agg_num_levels, nthreads, npernode)]
+    
+    # if(P_max_elmts==10 and coarsen_type=='6' 
+    #     and relax_type=='18' and smooth_type=='6' 
+    #     and smooth_num_levels==3 and interp_type=='8' 
+    #     and agg_num_levels==1):
+    #     return [float("Inf")]
+    
     runtime = hypredriver(params, niter=1, JOBID=JOBID)
     print(params, ' hypre time: ', runtime)
 
     return runtime
-
-
+    
 def models(): # todo
     pass
 
@@ -174,7 +180,8 @@ def main():
     strong_threshold = Real(0, 1, transform="normalize", name="strong_threshold")
     trunc_factor =  Real(0, 0.999, transform="normalize", name="trunc_factor")
     P_max_elmts = Integer(1, 12,  transform="normalize", name="P_max_elmts")
-    coarsen_type = Categoricalnorm (['0', '1', '2', '3', '4', '6', '8', '10'], transform="onehot", name="coarsen_type")
+    # coarsen_type = Categoricalnorm (['0', '1', '2', '3', '4', '6', '8', '10'], transform="onehot", name="coarsen_type")
+    coarsen_type = Categoricalnorm (['0', '1', '2', '3', '4', '8', '10'], transform="onehot", name="coarsen_type")
     relax_type = Categoricalnorm (['-1', '0', '6', '8', '16', '18'], transform="onehot", name="relax_type")
     smooth_type = Categoricalnorm (['5', '6', '8', '9'], transform="onehot", name="smooth_type")
     smooth_num_levels = Integer(0, 5,  transform="normalize", name="smooth_num_levels")
@@ -187,7 +194,8 @@ def main():
     OS = Space([r])
     
     cst1 = f"Px * Py  <= Nproc"
-    constraints = {"cst1": cst1}
+    cst2 = f"not(P_max_elmts==10 and coarsen_type=='6' and relax_type=='18' and smooth_type=='6' and smooth_num_levels==3 and interp_type=='8' and agg_num_levels==1)"
+    constraints = {"cst1": cst1,"cst2": cst2}
 
     print(IS, PS, OS, constraints)
 
@@ -212,16 +220,23 @@ def main():
         giventask = data.I
     except (OSError, IOError) as e:
         data = Data(problem)
+        print("=========pringting Data(problem)=========")
+        print(data)
+        print(data.NI)
+        print(data.I)
+        print(data.P)
+        print(data.O)
+        print(data.D)
+
         giventask = [[randint(nxmin,nxmax),randint(nymin,nymax),randint(nzmin,nzmax)] for i in range(ntask)]
 
-    # giventask = [[50, 60, 80], [60, 80, 100]]
-    # giventask = [[200, 200, 200]]
-    giventask = [[184, 165, 153], [172, 175, 159], [162, 175, 173], [180, 169, 164], [180, 189, 170], 
-                 [165, 193, 169], [196, 166, 189], [194, 168, 157], [173, 188, 188], [196, 197, 160], 
-                 [166, 194, 185], [154, 155, 182], [159, 159, 167], [165, 199, 168], [171, 152, 170], 
-                 [151, 194, 170], [189, 176, 195], [197, 174, 170], [179, 153, 157], [187, 190, 155], 
-                 [174, 152, 162], [166, 192, 179], [176, 200, 187], [188, 188, 174], [182, 158, 153], 
-                 [184, 161, 157], [175, 184, 183], [181, 159, 178], [184, 175, 153], [161, 160, 193]]
+    # giventask = [[50, 60, 80]]
+    giventask = [[38, 15, 23], [21, 22, 47], [44, 17, 39], [56, 16, 54], [74, 31, 23], 
+              [70, 74, 11], [21, 45, 61], [41, 50, 40], [65, 36, 36], [74, 52, 22], 
+              [27, 50, 71], [61, 32, 54], [99, 26, 41], [83, 60, 23], [99, 83, 14], 
+              [30, 67, 61], [85, 38, 42], [60, 28, 83], [47, 86, 36], [27, 62, 88], 
+              [93, 93, 19], [66, 30, 92], [79, 72, 37], [28, 86, 94], [55, 66, 70], 
+              [73, 98, 48], [69, 63, 97], [74, 65, 100], [87, 71, 86], [93, 98, 72]]
     # # the following will use only task lists stored in the pickle file
     # data = Data(problem)
 

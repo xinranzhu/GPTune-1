@@ -55,3 +55,8 @@ examples/hypre_outputs/failure_summary.txt
 .gitignore
 examples/opentuner.db/nid00015.db
 examples/opentuner.db/nid00015.db-journal
+examples/log_debug.txt
+examples/new_failed_params.txt
+examples/opentuner.db/nid00023.db
+examples/opentuner.db/nid00034.db
+examples/opentuner.db/nid00107.db

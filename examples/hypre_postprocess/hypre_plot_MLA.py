@@ -17,7 +17,7 @@ def parse_args():
     return parser.parse_args()
 
 def gen_source(args):
-    my_source = f"./exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
+    my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
     return my_source
 
 def data_process(args):
@@ -88,7 +88,7 @@ def autolabel(rects, ax):
             if cur_height > 0:
                 ax.annotate(f'{cur_height:.2f}',
                             xy=((rects[1][i] + rects[1][i+1])/2, cur_height),
-                            ha='center', va='bottom', fontsize=8)
+                            ha='center', va='bottom', fontsize=5)
 
 def plot_histogram(data1, data2, args):
     my_source = gen_source(args)
@@ -98,12 +98,14 @@ def plot_histogram(data1, data2, args):
     
     plt.clf()
     fig, (ax1, ax2) = plt.subplots(2, 1)
-    rects1 = ax1.hist(data1, bins=np.arange(0, int(np.ceil(max(data1)))+1, 0.5), weights=np.ones(ntask) / ntask, 
+    rects1 = ax1.hist(data1, bins=np.arange(0, int(np.ceil(max(data1)))+1, 0.25), weights=np.ones(ntask) / ntask, 
              label=f'OpenTuner/GPTune', color='#1f77b4')
-    rects2 = ax2.hist(data2, bins=np.arange(0, int(np.ceil(max(data2)))+1, 0.5) , weights=np.ones(ntask) / ntask, 
+    rects2 = ax2.hist(data2, bins=np.arange(0, int(np.ceil(max(data2)))+1, 0.25) , weights=np.ones(ntask) / ntask, 
              label=f'HpBandster/GPTune', color='#ff7f0e')
     ax1.plot([1, 1], [0, 1], c='black', linestyle=':')
     ax2.plot([1, 1], [0, 1], c='black', linestyle=':')
+    ax1.set_xticks(np.arange(0, int(np.ceil(max(data1)))+1, step=0.5))
+    ax2.set_xticks(np.arange(0, int(np.ceil(max(data2)))+1, step=0.5))
     ax1.legend(fontsize=8)
     ax2.legend(fontsize=8)
     autolabel(rects1, ax1)
@@ -113,8 +115,8 @@ def plot_histogram(data1, data2, args):
     # if args.equation == "convdiff":
     #     equation_name = "Convection-diffusion"
     # ax1.set_title(f'{equation_name}, [nx, ny, nz] in [{args.nmin}, {args.nmax}], nrun = {nrun}')
-    ax1.set_ylabel('Fraction')
-    ax2.set_ylabel('Fraction')
+    ax1.set_ylabel('Density')
+    ax2.set_ylabel('Density')
     ax2.set_xlabel('Ratio of best performance')
     fig.tight_layout()
     filename = os.path.splitext(os.path.basename(my_source))[0]

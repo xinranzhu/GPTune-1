@@ -20,8 +20,8 @@ def get_results_from_line(line):
 
 def main(args):
     summary = []
-    my_source = f"./exp_hypre_{args.equation}_singletask{args.ntask}_{args.typeofresults}.txt"
-    save_path = f"./exp_hypre_{args.equation}_singletask{args.ntask}_{args.typeofresults}.pkl"
+    my_source = f"./data_singletask/exp_hypre_{args.equation}_singletask{args.ntask}_{args.typeofresults}.txt"
+    save_path = f"./data_singletask/exp_hypre_{args.equation}_singletask{args.ntask}_{args.typeofresults}.pkl"
     with open(my_source, "r") as f:
         line = f.readline()
         while line:

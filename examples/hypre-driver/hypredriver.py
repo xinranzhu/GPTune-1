@@ -102,7 +102,7 @@ def execute(params, RUNDIR, niter = 1):
     runtime = v_parallel()
     return runtime
 
-def hypredriver(params, niter = 3, JOBID: int=-1):
+def hypredriver(params, niter=1, JOBID: int=-1):
     global EXPDIR 
     global ROOTDIR
 

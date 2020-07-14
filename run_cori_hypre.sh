@@ -12,7 +12,7 @@
 
 #OpenMP settings:
 # export OMP_NUM_THREADS=4
-# export OMP_PLACES=threads
+export OMP_PLACES=threads
 # export OMP_PROC_BIND=spread
 
 module load python/3.7-anaconda-2019.10
@@ -38,38 +38,46 @@ CCC=mpicc
 CCCPP=mpicxx
 FTN=mpif90
 
-nxmin=150
-nymin=150
-nzmin=150
-nxmax=200
-nymax=200
-nzmax=200
-nodes=32
+nxmin=10
+nymin=10
+nzmin=10
+nxmax=100
+nymax=100
+nzmax=100
+nodes=1
 cores=32
 nprocmin_pernode=32  # nprocmin_pernode=cores means flat MPI 
-nrun=10
+nrun=30
+ntask=30
+
 
 # test hypredriver, the following calling sequence will first dump the data to file when using GPTune, then read data when using opentuner or hpbandster to make sure they use the same tasks as GPTune
 cd examples
 rm -rf *.pkl
 
 # MLA
-ntask=30
 tuner='GPTune'
 mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
-# tuner='opentuner'
-# mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
-# tuner='hpbandster'
-# mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
+tuner='opentuner'
+mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
+tuner='hpbandster'
+mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_nxmax${nxmax}_nymax${nymax}_nzmax${nzmax}_nxmin${nxmin}_nymin${nymin}_nzmin${nzmin}_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
 
+# Single task tuning
 # ntask=1
 # tasksize=200
-# # single task 
 # tuner='GPTune'
 # mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_covdiff_nodes${nodes}_core${cores}_tasksize${tasksize}_nrun${nrun}_${tuner}
 # tuner='hpbandster'
 # mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_covdiff_nodes${nodes}_core${cores}_tasksize${tasksize}_nrun${nrun}_${tuner}
 
 # debug
-# tuner='GPTune'
+# ntask=1
+# tuner='opentuner'
 # mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre_debug.py -machine cori1 -jobid 0 -optimization ${tuner} 2>&1 | tee log_debug.txt
+
+# test GPTune
+# nodes=1
+# ntask=1
+# tuner='TEST'
+# mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python ./hypre.py -nxmax ${nxmax} -nymax ${nymax} -nzmax ${nzmax} -nxmin ${nxmin} -nymin ${nymin} -nzmin ${nzmin} -nodes ${nodes} -cores ${cores} -nprocmin_pernode ${nprocmin_pernode} -ntask ${ntask} -nrun ${nrun} -machine cori1 -jobid 0 -optimization ${tuner}   2>&1 | tee a.out_hypre_ML_test_nodes${nodes}_core${cores}_ntask${ntask}_nrun${nrun}_${tuner}
