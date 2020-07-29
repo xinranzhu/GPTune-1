@@ -10,6 +10,10 @@ def parse_args():
     parser.add_argument('--nmin', type=int, default=10, help='minimum discretization size')
     parser.add_argument('--ntask', type=int, default=30, help='number of tasks')
     parser.add_argument("--equation", type=str, default="Poisson", help ='type of PDE to solve')
+    parser.add_argument('--multistart', type=int, default=None, help='number of model restarts')
+    parser.add_argument('--bandit', type=int, default=None, help='use bandit strategy in HpBandster or not')
+    parser.add_argument('--tuner4', type=int, default=0, help='4 tuners or the usual 3 tuners')
+    parser.add_argument('--rerun', type=int, default=0, help='rerun id')
     return parser.parse_args()
 
 def get_results_from_line(line):
@@ -18,11 +22,29 @@ def get_results_from_line(line):
     results = list(map(lambda x: float(x.split()[0]), info[1:]))
     return tuner, results
 
-
+ 
 def main(args):
+    print(args.tuner4)
     summary = []
-    my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.txt"
-    save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
+    if args.tuner4 == True and args.multistart > 0 :
+        if args.rerun == 0:
+            my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}_tuner4.txt"
+            save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}_tuner4.pkl"
+        else:
+            my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}_tuner4_rerun{args.rerun}.txt"
+            save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}_tuner4_rerun{args.rerun}.pkl"
+    elif args.multistart == None and args.bandit == None:
+        my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.txt"
+        save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}.pkl"
+    elif args.bandit != None and args.multistart == None:
+        my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_bandit.txt"
+        save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_bandit.pkl"
+    elif args.multistart > 0 and args.bandit == None:
+        my_source = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}.txt"
+        save_path = f"./data_MLA/exp_hypre_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_multistart{args.multistart}.pkl"
+    else:
+        raise NotImplementedError
+    
     with open(my_source, "r") as f:
         line = f.readline()
         while line:

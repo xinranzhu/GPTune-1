@@ -15,7 +15,7 @@ EXCUDIR = os.path.abspath(os.path.join(ROOTDIR, "hypre/src/test/ij"))
 max_setup_time = 1000
 max_solve_time = 1000
 
-def execute(params, RUNDIR, niter = 1):
+def execute(params, RUNDIR, niter = 1, max_iter = '1000', tol = '1e-8'):
     # extract arguments
     Problem = params['problem_name']; solver = params['solver']
     coeffs_c = params['coeffs_c']; coeffs_a = params['coeffs_a']
@@ -32,7 +32,6 @@ def execute(params, RUNDIR, niter = 1):
     agg_num_levels = params['agg_num_levels']
     nthreads = params['nthreads']
     npernode = params['npernode']
-
     
     # reshape for args
     NProc = Px*Py*Pz
@@ -52,7 +51,7 @@ def execute(params, RUNDIR, niter = 1):
     outputfilename = os.path.abspath(os.path.join(RUNDIR,f"ijoutput_{nx}_{ny}_{nz}_{Px}_{Py}_{Pz}_{strong_threshold}_{trunc_factor}_{P_max_elmts}_{coarsen_type}_{relax_type}_{smooth_type}_{smooth_num_levels}_{interp_type}_{agg_num_levels}"))
     myargs = Problem + Size + coeffs_c + coeffs_a + f"-solver {solver} " + ProcTopo + StrThr + TrunFac + PMax + RelType + SmooType + SmooLev + InterType + AggLev + CoarsType
     myargslist = [Problem, '-n', f'{nx}', f'{ny}', f'{nz}', coeffs_c, coeffs_a, '-solver', f'{solver}', '-P', f'{Px}', f'{Py}', f'{Pz}', '-th', f'{strong_threshold}', '-tr', f'{trunc_factor}', 
-                  '-Pmx', f'{P_max_elmts}', '-rlx', f'{relax_type}', '-smtype', f'{smooth_type}', '-smlv', f'{smooth_num_levels}', '-interptype', f'{interp_type}', '-agg_nl', f'{agg_num_levels}', CoarsType, '-logfile', outputfilename]
+                  '-Pmx', f'{P_max_elmts}', '-rlx', f'{relax_type}', '-smtype', f'{smooth_type}', '-smlv', f'{smooth_num_levels}', '-interptype', f'{interp_type}', '-agg_nl', f'{agg_num_levels}', CoarsType, '-logfile', outputfilename, '-max_iter', max_iter, '-tol', tol]
     
     def read_output(outputfilename):
         setup_time = max_setup_time
@@ -102,7 +101,7 @@ def execute(params, RUNDIR, niter = 1):
     runtime = v_parallel()
     return runtime
 
-def hypredriver(params, niter=1, JOBID: int=-1):
+def hypredriver(params, niter=1, JOBID: int=-1, max_iter = '1000', tol = '1e-8', budget=None):
     global EXPDIR 
     global ROOTDIR
 
@@ -110,6 +109,14 @@ def hypredriver(params, niter=1, JOBID: int=-1):
     TUNER_NAME = os.environ['TUNER_NAME']
     EXPDIR = os.path.abspath(os.path.join(ROOTDIR, "hypre-driver/exp", MACHINE_NAME + '/' + TUNER_NAME))
 
+    # map budget to tol or max_iter, if budget is given
+    if budget != None:
+        assert budget<=10, "Max_budget = 10"
+        assert budget>=1, "Min_budget = 1"
+        tol = str(10**(-14*budget/15 + 4/3))
+        max_iter = '1000'
+        # print(f"Hypredriver received budget, budget={budget}, tol={tol}")
+        
     if (JOBID==-1):  # -1 is the default value if jobid is not set from command line
         JOBID = os.getpid()
     RUNDIR = os.path.abspath(os.path.join(EXPDIR, str(JOBID)))
@@ -121,8 +128,8 @@ def hypredriver(params, niter=1, JOBID: int=-1):
     params = np.array(params, dtype=dtype)
     times = []
     for param in params:
-        print(f"Current param {param}")
-        time_cur = execute(param, RUNDIR, niter=niter)
+        print(f"Current param {param}, tol={tol}")
+        time_cur = execute(param, RUNDIR, niter=niter, max_iter = max_iter, tol = tol)
         times.append(time_cur)
     os.system('rm -fr %s'%(RUNDIR))
     return times

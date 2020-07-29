@@ -12,13 +12,18 @@ def parse_args():
     parser.add_argument('--ntask', type=int, default=30, help='number of tasks')
     parser.add_argument("--equation", type=str, default="Poisson", help ='type of PDE to solve')
     parser.add_argument("--nrun", type=str, default="10", help ='number of hypre runs')
+    parser.add_argument("--multistart", type=int, default=0, help ='number of model restarts')
     return parser.parse_args()
 
 
 def main(args):
     summary = []
-    my_source = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}.txt'
-    save_path = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}.pkl'
+    if args.multistart == 0:
+        my_source = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}.txt'
+        save_path = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}.pkl'
+    else:
+        my_source = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}_multistart{args.multistart}.txt'
+        save_path = f'./data_MLA_history/exp_hypre_history_{args.equation}_nmax{args.nmax}_nmin{args.nmin}_ntask{args.ntask}_nrun{args.nrun}_multistart{args.multistart}.pkl'
     with open(my_source, "r") as f:
         line = f.readline()
         while line:

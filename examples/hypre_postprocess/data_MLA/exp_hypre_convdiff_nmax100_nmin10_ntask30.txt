@@ -177,3 +177,4 @@ Tuner / #runs	10	20	30	40	50
 GPTune	0.13 nth  8	0.11 nth  3	0.14 nth  17	0	0
 OpenTuner	0.14 nth  1	0.1 nth  14	0.09 nth  27	0	0
 Hpbandster	0.14 nth  4	0.15 nth  2	0.12 nth  16	0	0
+

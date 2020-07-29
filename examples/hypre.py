@@ -87,9 +87,9 @@ solver = 3 # Bommer AMG
 # max_setup_time = 1000.
 # max_solve_time = 1000.
 coeffs_c = "-c 1 1 1 " # specify c-coefficients in format "-c 1 1 1 " 
-coeffs_a = "-a 0 0 0 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
-problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
-# problem_name = "-difconv "
+coeffs_a = "-a 1 1 1 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
+# problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
+problem_name = "-difconv "
 
 # define objective function
 def objectives(point):
@@ -111,12 +111,12 @@ def objectives(point):
     smooth_num_levels = point['smooth_num_levels']
     interp_type = point['interp_type']
     agg_num_levels = point['agg_num_levels']
-
+    # budget = point["budget"] 
     # CoarsTypes = {0:"-cljp ", 1:"-ruge ", 2:"-ruge2b ", 3:"-ruge2b ", 4:"-ruge3c ", 6:"-falgout ", 8:"-pmis ", 10:"-hmis "}
     # CoarsType = CoarsTypes[coarsen_type]
     npernode =  math.ceil(float(Nproc)/nodes)  
     nthreads = int(cores / npernode)
-
+    
     # call Hypre 
     params = [(nx, ny, nz, coeffs_a, coeffs_c, problem_name, solver,
                Px, Py, Pz, strong_threshold, 
@@ -210,6 +210,7 @@ def main():
     options['shared_memory_parallelism'] = False
     # options['mpi_comm'] = None
     options['model_class '] = 'Model_LCM'
+    # options['model_class '] = 'Model_GPy_LCM'
     options['verbose'] = False
     options.validate(computer=computer)
     
@@ -220,23 +221,23 @@ def main():
         giventask = data.I
     except (OSError, IOError) as e:
         data = Data(problem)
-        print("=========pringting Data(problem)=========")
-        print(data)
-        print(data.NI)
-        print(data.I)
-        print(data.P)
-        print(data.O)
-        print(data.D)
+        # print("=========pringting Data(problem)=========")
+        # print(data)
+        # print(data.NI)
+        # print(data.I)
+        # print(data.P)
+        # print(data.O)
+        # print(data.D)
 
         giventask = [[randint(nxmin,nxmax),randint(nymin,nymax),randint(nzmin,nzmax)] for i in range(ntask)]
 
-    # giventask = [[50, 60, 80]]
-    giventask = [[38, 15, 23], [21, 22, 47], [44, 17, 39], [56, 16, 54], [74, 31, 23], 
-              [70, 74, 11], [21, 45, 61], [41, 50, 40], [65, 36, 36], [74, 52, 22], 
-              [27, 50, 71], [61, 32, 54], [99, 26, 41], [83, 60, 23], [99, 83, 14], 
-              [30, 67, 61], [85, 38, 42], [60, 28, 83], [47, 86, 36], [27, 62, 88], 
-              [93, 93, 19], [66, 30, 92], [79, 72, 37], [28, 86, 94], [55, 66, 70], 
-              [73, 98, 48], [69, 63, 97], [74, 65, 100], [87, 71, 86], [93, 98, 72]]
+    giventask = [[50, 60, 80]]
+    # giventask = [[89, 10, 10], [70, 17, 16], [10, 40, 51], [32, 10, 97], [14, 52, 45], 
+    #           [71, 11, 46], [70, 29, 25], [62, 14, 72], [43, 20, 75], [63, 95, 11], 
+    #           [78, 40, 22], [28, 57, 61], [42, 44, 54], [39, 99, 26], [43, 60, 40], 
+    #           [38, 55, 54], [53, 38, 61], [58, 47, 46], [89, 94, 15], [65, 44, 54], 
+    #           [81, 43, 46], [38, 63, 67], [75, 55, 39], [92, 27, 82], [46, 84, 53], 
+    #           [96, 86, 27], [68, 87, 38], [81, 84, 39], [94, 32, 98], [52, 77, 76]]
     # # the following will use only task lists stored in the pickle file
     # data = Data(problem)
 
@@ -303,6 +304,31 @@ def main():
             print("    Os ", data.O[tid].tolist())
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
+    if TUNER_NAME.startswith('GPTune_multistart'):
+        data = Data(problem)
+        options['model_restarts'] = int(TUNER_NAME[17:])
+        print(f"Multistart in GPTune = {options['model_restarts']}")
+        gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
+        """ Building MLA with the given list of tasks """
+        NI = len(giventask)
+        NS = nruns
+        (data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=max(NS//2, 1))
+        print("stats: ", stats)
+        
+        """ Dump the data to file as a new check point """
+        pickle.dump(data, open('Data_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
+        
+        """ Dump the tuner to file for TLA use """
+        pickle.dump(gt, open('MLA_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
+
+
+        """ Print all input and parameter samples """
+        for tid in range(NI):
+            print("tid: %d" % (tid))
+            print("    nx:%d ny:%d nz:%d" % (data.I[tid][0], data.I[tid][1], data.I[tid][2]))
+            print("    Ps ", data.P[tid])
+            print("    Os ", data.O[tid])
+            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
 def parse_args():
     parser = argparse.ArgumentParser()
