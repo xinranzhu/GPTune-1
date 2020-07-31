@@ -1,6 +1,7 @@
+#!/bin/bash
 rm -rf  ~/.cache/pip
 rm -rf ~/.local/cori/
-
+  
 module load python/3.7-anaconda-2019.10
 module unload cray-mpich
 
@@ -12,7 +13,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.
 # module use /global/common/software/m3169/cori/modulefiles
 # module unload openmpi
 module load openmpi/4.0.1
-
+export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
 export PYTHONPATH=$PYTHONPATH:$PWD/autotune/
 export PYTHONPATH=$PYTHONPATH:$PWD/scikit-optimize/
 export PYTHONPATH=$PYTHONPATH:$PWD/mpi4py/
@@ -120,6 +121,7 @@ cd ../../
 rm -rf hypre
 git clone https://github.com/hypre-space/hypre.git
 cd hypre/src/
+# ./configure CC=$CCC CXX=$CCCPP FC=$FTN CFLAGS="-DTIMERUSEMPI -g -O0 -v -Q"
 ./configure CC=$CCC CXX=$CCCPP FC=$FTN CFLAGS="-DTIMERUSEMPI"
 make
 cp ../../hypre-driver/src/ij.c ./test/.

@@ -176,7 +176,7 @@ def main():
 	options['search_algo'] = 'nsga2' #'maco' #'moead' #'nsga2' #'nspso' 
 	options['search_pop_size'] = 1000 # 1000
 	options['search_gen'] = 10
-	options['search_best_N'] = 4
+	options['search_more_samples'] = 4
 	options.validate(computer = computer)
 
 	""" Intialize the tuner with existing data"""		

@@ -21,7 +21,7 @@ module swap PrgEnv-intel PrgEnv-gnu
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/global/homes/x/xinranz/projects/GPTune/scalapack-2.1.0/build/lib
 module load openmpi/4.0.1
 export OMPI_MCA_btl_ugni_virtual_device_count=1
-
+export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
 export PYTHONPATH=$PYTHONPATH:$PWD/autotune/
 export PYTHONPATH=$PYTHONPATH:$PWD/scikit-optimize/
 export PYTHONPATH=$PYTHONPATH:$PWD/mpi4py/
