@@ -1,10 +1,10 @@
 # set -x 
 
-nmax=200
-nmin=100
+nmax=100
+nmin=10
 ntask=30
-equation="convdiff"
-# equation="Poisson"
+# equation="convdiff"
+equation="Poisson"
 # nrun=10
 # xtype="iter"
 # xtype="time"
@@ -12,9 +12,9 @@ equation="convdiff"
 taskid=0 # single plot of a given task, sorted
 multistart=0 # 0 or 5
 ratio2best="anytime" # anytime, alltime, or None
-# ratio2best="alltime"
+ratio2best="alltime"
 # ratio2best="None"
-for nrun in 10
+for nrun in 10 20 30
 do
     # read results
     # python parse_results_MLA_history.py --nmax ${nmax} --nmin ${nmin} --ntask ${ntask} --equation ${equation} --nrun ${nrun} --multistart ${multistart}

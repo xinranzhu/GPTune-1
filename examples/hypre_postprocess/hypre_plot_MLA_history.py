@@ -76,11 +76,11 @@ def plot_single(args, i, GPTune_results, OpenTuner_results, HpBandster_results, 
     OpenTuner_timehist = total_time_estimate(OpenTuner_hist)
     HpBandster_timehist = total_time_estimate(HpBandster_hist)
 
-    print(f"Original history for check, task id = {taskID}, tasksize = {tasksize}")
-    print("GPTune, ", GPTune_hist)
-    print("OpenTuner, ", OpenTuner_hist)
-    print("HpBandster, ", HpBandster_hist)
-    print("")
+    # print(f"Original history for check, task id = {taskID}, tasksize = {tasksize}")
+    # print("GPTune, ", GPTune_hist)
+    # print("OpenTuner, ", OpenTuner_hist)
+    # print("HpBandster, ", HpBandster_hist)
+    # print("")
     
     # historical best
     historical_best(GPTune_hist)
@@ -206,7 +206,8 @@ def plot_group_meanset_hist(data1, data2, data3, args):
     plt.clf()
     maxrange = np.ceil(4*max(data1+data2+data3))/4
     print(f"maxrange = {maxrange}")
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 8))
+    # fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(6, 8))
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
     rects1 = ax1.hist(data1, bins=np.arange(1, maxrange+0.5, 0.25), weights=np.ones(ntask) / ntask, 
                       label=f'GPTune, mean={np.mean(data1):.2f}, median={np.median(data1):.2f}', color='#2ca02c')
     rects2 = ax2.hist(data2, bins=np.arange(1, maxrange+0.5, 0.25) , weights=np.ones(ntask) / ntask, 
@@ -236,9 +237,52 @@ def plot_group_meanset_hist(data1, data2, data3, args):
     ax1.set_ylabel('Density')
     ax2.set_ylabel('Density')
     ax3.set_ylabel('Density')
-    ax1.set_xlabel('mean(ratio2best)')
-    ax2.set_xlabel('mean(ratio2best)')
-    ax3.set_xlabel('mean(ratio2best)')
+    if args.ratio2best == 'anytime':
+        ax3.set_xlabel('Distribution of Stability')
+    elif args.ratio2best == 'alltime':
+        ax3.set_xlabel('Distribution of Stability*')
+    else:
+        raise NotImplementedError()
+    fig.tight_layout()
+    fig.savefig(savepath)
+    print("Figure saved:, ", savepath)
+
+
+def plot_group_meanset_hist_comb(data1, data2, data3, args):
+    my_source = gen_source(args)
+    filename = os.path.splitext(os.path.basename(my_source))[0]
+    nrun = args.nrun
+    savepath = os.path.join("./plots_MLA_history", f"hist_comb_{filename}_best{args.ratio2best}.pdf")
+    assert len(data1) == len(data2) 
+    assert len(data1) == len(data3)
+    ntask = len(data1)
+    
+    plt.clf()
+    maxrange = np.ceil(4*max(data1+data2+data3))/4
+    print(f"maxrange = {maxrange}")
+    fig, ax = plt.subplots()
+    rects3 = ax.hist(data3, bins=np.arange(1, maxrange+0.5, 0.25) , weights=np.ones(ntask) / ntask, 
+                      label=f'HpBandster, mean={np.mean(data3):.2f}, median={np.median(data3):.2f}', color='#ff7f0e', alpha=0.3)  
+    rects2 = ax.hist(data2, bins=np.arange(1, maxrange+0.5, 0.25) , weights=np.ones(ntask) / ntask, 
+                      label=f'OpenTuner, mean={np.mean(data2):.2f}, median={np.median(data2):.2f}', color='#1f77b4', alpha=0.3)    
+    rects1 = ax.hist(data1, bins=np.arange(1, maxrange+0.5, 0.25), weights=np.ones(ntask) / ntask, 
+                      label=f'GPTune, mean={np.mean(data1):.2f}, median={np.median(data1):.2f}', color='#2ca02c', alpha=0.3) 
+    # ax1.set_xticks(np.arange(1, np.ceil(2*maxrange)/2, step=0.5))
+    # ax2.set_xticks(np.arange(1, np.ceil(2*maxrange)/2, step=0.5))
+    # ax3.set_xticks(np.arange(1, np.ceil(2*maxrange)/2, step=0.5))
+    ax.set_xlim(1, np.ceil(maxrange))
+    ax.set_ylim(0, 1)
+    ax.legend(fontsize=8)
+    autolabel(rects1, ax)
+    autolabel(rects2, ax)
+    autolabel(rects3, ax)
+    ax.set_ylabel('Density')
+    if args.ratio2best == 'anytime':
+        ax.set_xlabel('Distribution of Stability')
+    elif args.ratio2best == 'alltime':
+        ax.set_xlabel('Distribution of Stability*')
+    else:
+        raise NotImplementedError()
     fig.tight_layout()
     fig.savefig(savepath)
     print("Figure saved:, ", savepath)
@@ -260,11 +304,12 @@ def main(args):
     else:
         if args.ratio2best != "None":
             # plot all 30 tasks 
-            GPTune_meanset, OpenTuner_meanset, HpBandster_meanset = plot_group(args, GPTune_results, OpenTuner_results, HpBandster_results)
-            print(f"GPTune_meanset = {GPTune_meanset}")
-            print(f"OpenTuner_meanset = {OpenTuner_meanset}") 
-            print(f"HpBandster_meanset = {HpBandster_meanset}") 
-            plot_group_meanset_hist(GPTune_meanset, OpenTuner_meanset, HpBandster_meanset, args)
+            GPTune_stability, OpenTuner_stability, HpBandster_stability = plot_group(args, GPTune_results, OpenTuner_results, HpBandster_results)
+            print(f"GPTune_meanset = {GPTune_stability}")
+            print(f"OpenTuner_meanset = {OpenTuner_stability}") 
+            print(f"HpBandster_meanset = {HpBandster_stability}") 
+            plot_group_meanset_hist(GPTune_stability, OpenTuner_stability, HpBandster_stability, args)
+            # plot_group_meanset_hist_comb(GPTune_stability, OpenTuner_stability, HpBandster_stability, args)
         else:
             plot_group(args, GPTune_results, OpenTuner_results, HpBandster_results)
 
