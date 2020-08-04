@@ -10,11 +10,11 @@ equation="Poisson"
 # xtype="time"
 
 taskid=0 # single plot of a given task, sorted
-multistart=0 # 0 or 5
-ratio2best="anytime" # anytime, alltime, or None
+multistart=5 # 0 or 5
+# ratio2best="anytime" # anytime, alltime, or None
 ratio2best="alltime"
 # ratio2best="None"
-for nrun in 10 20 30
+for nrun in 20
 do
     # read results
     # python parse_results_MLA_history.py --nmax ${nmax} --nmin ${nmin} --ntask ${ntask} --equation ${equation} --nrun ${nrun} --multistart ${multistart}

@@ -104,14 +104,14 @@ def plot(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_t
     # ax.bar(x - width/2, data1, width, label=f'OpenTuner/GPTune, {p1}(>=1), {p3}(<0.5)')
     # ax.bar(x + width/2, data2, width, label=f'HpBandster/GPTune, {p2}(>=1), {p4}(<0.5)')
     if args.bandit == None:
-        ax.bar(x - width/2, data1, width, label=f'OpenTuner/GPTune', color='#1f77b4')
-        ax.bar(x + width/2, data2, width, label=f'HpBandster/GPTune', color='#ff7f0e')
+        ax.bar(x - width/2, data1, width, label=f'OpenTuner/GPTune, {p1}(>=1)', color='#1f77b4')
+        ax.bar(x + width/2, data2, width, label=f'HpBandster/GPTune, {p2}(>=1)', color='#ff7f0e')
     else:
-        ax.bar(x - width/2, data1, width, label=f'OpenTuner/GPTune', color='#1f77b4')
-        ax.bar(x + width/2, data2, width, label=f'HpBandster_bandit/GPTune', color='#ff7f0e')
+        ax.bar(x - width/2, data1, width, label=f'OpenTuner/GPTune, {p1}(>=1)', color='#1f77b4')
+        ax.bar(x + width/2, data2, width, label=f'HpBandster_bandit/GPTune, {p1}(>=1)', color='#ff7f0e')
         
     ax.plot([0,ntask+1], [1, 1], c='black', linestyle=':')
-    ax.plot([0,ntask+1], [0.5, 0.5], linestyle=':', linewidth=1)
+    # ax.plot([0,ntask+1], [0.5, 0.5], linestyle=':', linewidth=1)
     ax.set_ylabel('Ratio of best performance')
     ax.set_xlabel('Task ID')
     # equation_name = "Poisson"
@@ -252,9 +252,9 @@ def main(args):
         print("Average GPTune_multistart_time, ", GPTune_multistart_time)
 
     # plot(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = GPTune_multistart_time)
-    # plot(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = [])
-    plot_histogram(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = GPTune_multistart_time)
-    plot_histogram(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = [])
+    plot(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = [])
+    # plot_histogram(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = GPTune_multistart_time)
+    # plot_histogram(GPTune_time, Opentuner_time, HpBandster_time, args, GPTune_multistart_time = [])
     # plot_size_time(GPTune_time, Opentuner_time, HpBandster_time, size_set, args)
     
 if __name__ == "__main__":

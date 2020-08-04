@@ -83,8 +83,9 @@ def objectives(point):
     # x = point['x']
     # f = 20*x**2+t
     # time.sleep(1.0)
-
-    return [f*(1+np.cos(c)*(-np.log10(bgt))*0.1)]
+    out = [f*(1+np.cos(c)*(-np.log10(bgt))*0.1)]
+    print(f"One demo run, x = {x:.4f}, t = {t:.4f}, budget = {bgt:.4f}, out = {out[0]:.4f}")
+    return out
 
 
 """ Plot the objective function for t=1,2,3,4,5,6 """
@@ -150,11 +151,11 @@ if __name__ == '__main__':
 
     os.environ['TUNER_NAME'] = 'GPTune'
     
-    giventask = [[1]]
+    giventask = [[1.0], [2.0]]
     # giventask = [[i] for i in np.arange(0, 10, 0.5).tolist()]
 
     NI=len(giventask)
-    NS=6	    
+    NS=2	    
     
     TUNER_NAME = os.environ['TUNER_NAME']
 
