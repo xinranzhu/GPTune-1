@@ -22,6 +22,8 @@ import hpbandster.optimizers
 
 import numpy as np
 from autotune.problem import TuningProblem
+from data import Data
+from options import Options
 from computer import Computer
 from typing import Collection
 
@@ -146,14 +148,15 @@ class HpBandSterWorker(hpbandster.core.worker.Worker):
 
 ####################################################################################################
 
-def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, run_id="HpBandSter", niter=1):
+def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, options: Options = None, run_id="HpBandSter", niter=1):
 
     # Initialize
-    min_budget   = 1. # Minimum budget used during the optimization.
-    max_budget   = 10. # Maximum budget used during the optimization.
+    min_budget   = options['budget_min'] # Minimum budget used during the optimization.
+    max_budget   = options['budget_max'] # Maximum budget used during the optimization.
+    budget_base  = options['budget_base']
     n_iterations = NS # Number of iterations performed by the optimizer
     n_workers    = 1  # Number of workers to run in parallel.
-
+    
     X = []
     Y = []
     # Xopt = []
@@ -180,8 +183,8 @@ def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, run_id="HpBandSte
             w.run(background=True)
             workers.append(w)
             
-        # XZ: set eta=4, bmin=1, bmax=10, so smax=1
-        bohb = hpbandster.optimizers.BOHB(configspace=workers[0].get_configspace(), run_id=run_id, nameserver='127.0.0.1', min_budget=min_budget, max_budget=max_budget, eta=4)
+        # XZ: set eta=3, bmin=.1, bmax=1, so smax=2
+        bohb = hpbandster.optimizers.BOHB(configspace=workers[0].get_configspace(), run_id=run_id, nameserver='127.0.0.1', min_budget=min_budget, max_budget=max_budget, eta=budget_base)
         res = bohb.run(n_iterations=n_iterations, min_n_workers=n_workers)
 
         config_mapping = res.get_id2config_mapping()

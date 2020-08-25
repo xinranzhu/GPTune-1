@@ -22,7 +22,6 @@ def get_results_from_line(line):
     results = list(map(lambda x: float(x.split()[0]), info[1:]))
     return tuner, results
 
- 
 def main(args):
     print(args.tuner4)
     summary = []
