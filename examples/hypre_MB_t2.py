@@ -270,7 +270,7 @@ def main():
     
     data = Data(problem)
     # giventask = [[(amax-amin)*random.random()+amin,(cmax-cmin)*random.random()+cmin] for i in range(ntask)]
-    giventask = [[0.2, 0.5]]
+    giventask = [[0.159, 0.545]]
     # a, c in [0, 2], 20 tasks
     # giventask = [[1.764404747086545, 0.1690780613092806], [0.04112427493772097, 0.8085715496434904], 
     #              [0.22710987838880214, 1.88151014852883], [1.4295598579456825, 0.6777959247566412], 
