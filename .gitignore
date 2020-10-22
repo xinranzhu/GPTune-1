@@ -9,6 +9,7 @@ a.*
 
 examples/core
 examples/hypre_outputs/failed
+examples/hypre_MLA/outputs
 
 examples/opentuner.log
 lib_gptuneclcm.so
