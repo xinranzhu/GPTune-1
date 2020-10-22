@@ -1,0 +1,209 @@
+16 nodes, [150, 200]
+
+=================================================================================================================================================================================
+FAILED 1
+EXP DESCRIPTION
+    nodes 111-126, Hpbandster, giventask: first set of tasks in hypre_input/tasts.txt
+PROBLEMATIC CONFIG
+    Current param (182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 11, 5, 9, 0.46555866, 0.34578652, 10, 0, 18, 7, 4, 4, 3, 1, 32)
+    exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij 
+    args:  ['-laplacian', '-n', '182', '152', '161', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '11', '5', '9', 
+            '-th', '0.4655586591765072', '-tr', '0.3457865161914265', '-Pmx', '10', '-rlx', '18', '-smtype', '7', 
+            '-smlv', '4', '-interptype', '4', '-agg_nl', '3', '-cljp', '-logfile', 
+            '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/hpbandster/0/ijoutput_182_152_161_11_5_9_0.4655586591765072_0.3457865161914265_10_0_18_7_4_4_3'] 
+    nproc 495
+ERROR START FROM 
+    Solver: AMG-GMRES
+    HYPRE_GMRESGetPrecond got good precond
+    [nid00111][[36663,2],4][btl_ugni_smsg.c:86:mca_btl_ugni_smsg_process] unhandled GNI_SmsgGetNextWTag error
+    [nid00112:16068] *** Process received signal ***
+    [nid00112:16068] Signal: Segmentation fault (11)
+    [nid00112:16068] Signal code: Address not mapped (1)
+    ......
+FINISHED HYPRE RUN BEFORE ERROR
+    0
+
+
+=================================================================================================================================================================================
+FAILED 2
+EXP DESCRIPTION
+    nodes 103-118, GPTune, giventask: first set of tasks in hypre_input/tasts.txt
+PROBLEMATIC CONFIG
+    Current param (182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 19, 5, 5, 0.6243, 0.699, 9, 0, 6, 7, 2, 6, 3, 1, 32)
+    exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij 
+    args:  ['-laplacian', '-n', '182', '152', '161', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '19', '5', '5', 
+            '-th', '0.6243088111946323', '-tr', '0.6990200959864268', '-Pmx', '9', '-rlx', '6', '-smtype', '7', 
+            '-smlv', '2', '-interptype', '6', '-agg_nl', '3', '-cljp', '-logfile', 
+            '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_182_152_161_19_5_5_0.6243088111946323_0.6990200959864268_9_0_6_7_2_6_3'] 
+    nproc 475
+ERROR START FROM 
+    Solver: AMG-GMRES
+    HYPRE_GMRESGetPrecond got good precond
+    [nid00105:33807] *** Process received signal ***
+    [nid00105:33807] Signal: Segmentation fault (11)
+    [nid00105:33807] Signal code: Address not mapped (1)
+    ......
+FINISHED HYPRE RUN BEFORE ERROR
+    3
+SUCCESS RUNS
+    hypre time:  [8.15]
+    [(182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 2, 143, 1, 0.6580401357545079, 0.1721224400403871, 3, '3', '8', '6', 3, '0', 3, 1, 32)]  
+    Nproc = 2 * 143 = 286
+
+    hypre time:  [6.970000000000001]
+    [(182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 339, 1, 1, 0.6432250320098365, 0.38559692657126843, 5, '3', '18', '6', 3, '0', 3, 1, 32)]  
+    Nproc = 339
+
+    hypre time:  [4.9]
+    [(182, 152, 161, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 123, 3, 1, 0.9941415331216241, 0.34799598471261683, 6, '4', '18', '6', 2, '3', 1, 1, 32)]  
+    Nproc = 123 * 3 = 369
+
+
+=================================================================================================================================================================================
+FAILED 3
+EXP DESCRIPTION
+    nodes 103-118, GPTune, giventask: second set of tasks in hypre_input/tasts.txt
+PROBLEMATIC CONFIG
+    Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 19, 5, 5, 0.6243, 0.699, 9, 0, 6, 7, 2, 6, 3, 1, 32)
+    exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij 
+    args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '19', '5', '5', 
+            '-th', '0.6243088111946323', '-tr', '0.6990200959864268', '-Pmx', '9', '-rlx', '6', '-smtype', '7', 
+            '-smlv', '2', '-interptype', '6', '-agg_nl', '3', '-cljp', '-logfile', 
+            '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/GPTune/0/ijoutput_184_165_153_19_5_5_0.6243088111946323_0.6990200959864268_9_0_6_7_2_6_3'] 
+    nproc 475
+ERROR START FROM 
+    Solver: AMG-GMRES
+    HYPRE_GMRESGetPrecond got good precond
+    [nid00108:43017] *** Process received signal ***
+    [nid00108:43017] Signal: Segmentation fault (11)
+    [nid00108:43017] Signal code: Address not mapped (1)
+    [nid00108:43017] Failing at address: 0x10
+    [nid00114:53881] *** Process received signal ***
+    ......
+FINISHED HYPRE RUN BEFORE ERROR
+    3
+SUCCESS RUNS
+hypre time:  [8.540000000000001]
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 2, 143, 1, 0.6580401357545079, 0.1721224400403871, 3, '3', '8', '6', 3, '0', 3, 1, 32)]  
+Nproc = 143 * 2 = 286
+
+hypre time:  [7.14]
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 339, 1, 1, 0.6432250320098365, 0.38559692657126843, 5, '3', '18', '6', 3, '0', 3, 1, 32)] 
+Nproc = 339
+
+hypre time:  [5.140000000000001]
+[(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 123, 3, 1, 0.9941415331216241, 0.34799598471261683, 6, '4', '18', '6', 2, '3', 1, 1, 32)]  
+Nproc = 123 * 3 = 369
+
+
+=================================================================================================================================================================================
+FAILED 4
+EXP DESCRIPTION
+    nodes 103-118, OpenTuner, giventask: second set of tasks in hypre_input/tasts.txt
+PROBLEMATIC CONFIG
+    Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 1, 298, 1, 0.44097267, 0.70830443, 2, 0, 8, 7, 3, 5, 5, 1, 32)
+    exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij 
+    args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '1', '298', '1', 
+            '-th', '0.44097267356563946', '-tr', '0.70830442772089', '-Pmx', '2', '-rlx', '8', '-smtype', '7', 
+            '-smlv', '3', '-interptype', '5', '-agg_nl', '5', '-cljp', '-logfile', 
+            '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/opentuner/0/ijoutput_184_165_153_1_298_1_0.44097267356563946_0.70830442772089_2_0_8_7_3_5_5'] 
+    nproc 298
+ERROR START FROM 
+    Solver: AMG-GMRES
+    HYPRE_GMRESGetPrecond got good precond
+    [nid00107:62357] *** Process received signal ***
+    [nid00107:62357] Signal: Segmentation fault (11)
+    [nid00107:62357] Signal code: Address not mapped (1)
+    [nid00107:62357] Failing at address: 0xc8
+    [nid00103:59324] *** Process received signal ***
+    [nid00103:59324] Signal: Segmentation fault (11)
+    [nid00103:59324] Signal code: Address not mapped (1)
+    [nid00103:59324] Failing at address: 0x6df800cfa018
+    *** Error in `/global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij': free(): invalid pointer: 0x0000000000d551f0 ***
+    [nid00105:36881] *** Process received signal ***
+    [nid00105:36881] Signal: Aborted (6)
+    [nid00105:36881] Signal code:  (-6)
+    [nid00109][[1003,9],204][btl_ugni_smsg.h:106:opal_mca_btl_ugni_smsg_send] GNI_SmsgSendWTag failed with rc = 2. handle = 11486640, hdr_len = 18, payload_len = 552
+    [nid00105:36897] *** Process received signal ***
+    [nid00105:36897] Signal: Segmentation fault (11)
+    ......
+FINISHED HYPRE RUN BEFORE ERROR
+    7
+SUCCESS RUNS
+    hypre time:  [6.039999999999999]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 76, 6, 0.8005778030083778, 0.20108264956341518, 9, '1', '18', '8', 5, '5', 4, 1, 32)]  
+    Nproc = 1 * 76 * 6 = 456
+
+    hypre time:  [3.54]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 206, 1, 2, 0.3416032617966479, 0.1651090624419177, 9, '2', '0', '5', 2, '6', 5, 1, 32)]  
+    Nproc = 206 * 1 * 2 = 412
+
+    hypre time:  [7.52]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 285, 1, 0.7335665645011069, 0.30163739490500324, 5, '1', '6', '8', 1, '6', 5, 1, 32)]  
+    Nproc = 285
+
+    hypre time:  [7.37]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 28, 18, 0.36914687240538924, 0.0, 9, '1', '8', '8', 5, '6', 5, 1, 32)]  
+    Nproc = 1 * 28 * 18 = 504
+
+    hypre time:  [6.54]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 195, 2, 0.8005778030083778, 0.20108264956341518, 1, '1', '18', '8', 5, '5', 5, 1, 32)]  
+    Nproc = 195 * 2 = 390
+
+    hypre time:  [18.130000000000003]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 59, 1, 8, 0.6089020809796135, 0.2553184212603294, 9, '1', '6', '6', 5, '8', 0, 1, 32)]  
+    Nproc = 59 * 8 * 1 = 472
+
+    hypre time:  [7.68]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 1, 285, 1, 0.7335665645011069, 0.0, 5, '1', '6', '8', 5, '6', 5, 1, 32)]  
+    Nproc = 285
+
+=================================================================================================================================================================================
+FAILED 5
+EXP DESCRIPTION
+    nodes 103-118, HpBandster, giventask: second set of tasks in hypre_input/tasts.txt
+PROBLEMATIC CONFIG
+    Current param (184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian', 3, 2, 177, 1, 0.30017979, 0.80794053, 12, 3, 6, 7, 5, 6, 2, 1, 32)
+    exec  /global/u2/x/xinranz/projects/GPTune/examples/hypre/src/test/ij 
+    args:  ['-laplacian', '-n', '184', '165', '153', '-c 1 1 1 ', '-a 0 0 0 ', '-solver', '3', '-P', '2', '177', '1', 
+            '-th', '0.30017978619891117', '-tr', '0.8079405254833681', '-Pmx', '12', '-rlx', '6', '-smtype', '7', 
+            '-smlv', '5', '-interptype', '6', '-agg_nl', '2', '-ruge2b', '-logfile', 
+            '/global/u2/x/xinranz/projects/GPTune/examples/hypre-driver/exp/cori1/hpbandster/0/ijoutput_184_165_153_2_177_1_0.30017978619891117_0.8079405254833681_12_3_6_7_5_6_2'] 
+    nproc 354
+ERROR START FROM 
+    Solver: AMG-GMRES
+    HYPRE_GMRESGetPrecond got good precond
+    09:34:01 DISPATCHER: Starting worker discovery
+    09:34:01 DISPATCHER: Found 1 potential workers, 1 currently in the pool.
+    09:34:01 DISPATCHER: Finished worker discovery
+    [nid00103:60516] *** Process received signal ***
+    [nid00103:60516] Signal: Segmentation fault (11)
+    [nid00103:60516] Signal code: Address not mapped (1)
+    ......
+FINISHED HYPRE RUN BEFORE ERROR
+    5
+SUCCESS CASE
+    hypre time:  [2.99]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 31, 9, 1, 0.03920433378552035, 0.46315533977422224, 10, '2', '0', '6', 0, '6', 4, 1, 32)]  
+    Nproc = 31 * 9 * 1 = 279
+
+    hypre time:  [4.1]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 162, 1, 3, 0.7135883087093936, 0.13725805553864348, 12, '10', '6', '5', 5, '12', 4, 1, 32)]  
+    Nproc = 162 * 1 * 3 = 486
+
+    hypre time:  [3.71]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 22, 1, 23, 0.17927643772415036, 0.4794427825943006, 7, '10', '0', '6', 1, '6', 2, 1, 32)]  
+    Nproc = 22 * 1 * 23 = 506
+
+    hypre time:  [3.31]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 118, 4, 1, 0.7530867062844729, 0.43627536138743467, 6, '10', '0', '5', 3, '4', 2, 1, 32)]  
+    Nproc = 118 * 4 * 1 = 472
+
+    hypre time:  [33.72]
+    [(184, 165, 153, '-a 0 0 0 ', '-c 1 1 1 ', '-laplacian ', 3, 289, 1, 1, 0.6447158971442472, 0.708669013906544, 3, '10', '8', '9', 5, '8', 0, 1, 32)]  
+    Nproc = 289
+
+
+
+
+
