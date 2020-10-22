@@ -28,3 +28,5 @@ graphite_job_outputs
 
 autotune
 scikit-optimize
+examples/hypre_bandit.py
+examples/hypre_fidelitytest.py
