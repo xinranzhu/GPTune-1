@@ -45,13 +45,14 @@ lscpu
 
 nodes=1
 cores=2
-ntask=10
-Nrestarts=1
+ntask=1
+dim_task=1
+Nrestarts=5
 nruns=20
 
-expid='1'
+expid='VerD-2'
 tuner='GPTune'
-mpirun -n 1 python -u mydgemm.py -nodes ${nodes} -Nrestarts ${Nrestarts} -cores ${cores} -ntask ${ntask} -nruns ${nruns} -optimization ${tuner} 2>&1 | tee a.ntask${ntask}_expid${expid}
+mpirun -n 1 python -u mydgemm.py -dim_task ${dim_task} -nodes ${nodes} -Nrestarts ${Nrestarts} -cores ${cores} -ntask ${ntask} -nruns ${nruns} -optimization ${tuner} 2>&1 | tee a.ntask${ntask}_expid${expid}
 
 
 # for expid in {0..4}

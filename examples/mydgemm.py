@@ -59,17 +59,20 @@ def objectives(point):
     matrix_size = point['matrix_size']
     
     # tuning params / input params
+    # Opt_level = point['Opt_level']
     fastmath = point['fastmath']
     marchnative = point['marchnative']
     ftreevectorize = point['ftreevectorize']
     funrollloops = point['funrollloops']
+    fallowstoredataraces = point['fallowstoredataraces']
     
     # call Hypre 
     # can also include task param here, like matrix size!
-    params = [(matrix_size, fastmath, marchnative, ftreevectorize, funrollloops)]
+    params = [(matrix_size, fastmath, marchnative, ftreevectorize, funrollloops, fallowstoredataraces)]
   
     mflop = dgemmdriver(params)
 
+    # to minimize negative objective 
     return mflop
     
 def models(): # todo
@@ -90,6 +93,7 @@ def main():
     nodes = 1
     cores = 2
 
+    dim_task = args.dim_task
     ntask = args.ntask
     nruns = args.nruns
     TUNER_NAME = args.optimization
@@ -98,18 +102,36 @@ def main():
     nprocmax = 1 # YL: there is one proc doing spawning, so nodes*cores should be at least 2
     nprocmin = 1  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space 
 
-    
+    # matrix_size_min_multi = np.repeat(matrix_size_min, dim_task)
+    # matrix_size_max_multi = np.repeat(matrix_size_max, dim_task)
+
     matrix_size = Integer(matrix_size_min, matrix_size_max, transform="normalize", name="matrix_size")
+    # matrix_size = Categoricalnorm(["1", "2"], transform="onehot", name="matrix_size")
+    # Opt_level = Integer(1, 4, transform="normalize", name="Opt_level")
     fastmath = Categoricalnorm(["0", "fastmath"], transform="onehot", name="fastmath")
     marchnative = Categoricalnorm(["0", "marchnative"], transform="onehot", name="marchnative")
     ftreevectorize = Categoricalnorm(["0", "ftreevectorize"], transform="onehot", name="ftreevectorize")
     funrollloops = Categoricalnorm(["0", "funrollloops"], transform="onehot", name="funrollloops")
+    fallowstoredataraces = Categoricalnorm(["0", "fallowstoredataraces"], transform="onehot", name="fallowstoredataraces")
+    # falign-loops = Categoricalnorm(["0", "fprefetch-loop-arrays"], transform="onehot", name="fprefetch-loop-arrays")
+    
     mflop = Real(float(0), float("Inf"), name="mflop")
-    
+    # mflop2 = Real(float(0), float("Inf"), name="mflop2")
+    # mflop3 = Real(float(0), float("Inf"), name="mflop3")
+    # mflop4 = Real(float(0), float("Inf"), name="mflop4")
+    # mflop5 = Real(float(0), float("Inf"), name="mflop5")
+    # mflop6 = Real(float(0), float("Inf"), name="mflop6")
+    # mflop7 = Real(float(0), float("Inf"), name="mflop7")
+    # mflop8 = Real(float(0), float("Inf"), name="mflop8")
+    # mflop9 = Real(float(0), float("Inf"), name="mflop9")
+    # mflop10 = Real(float(0), float("Inf"), name="mflop10")
+
     IS = Space([matrix_size])
-    PS = Space([fastmath, marchnative, ftreevectorize, funrollloops])
+    PS = Space([fastmath, marchnative, ftreevectorize, funrollloops, fallowstoredataraces])
+    # OS = Space([mflop1, mflop2, mflop3, mflop4, mflop5, mflop6, mflop7, mflop8, mflop9, mflop10])
+    # OS = Space([mflop1, mflop2])
     OS = Space([mflop])
-    
+
     constraints = {}
 
     print(IS, PS, OS, constraints)
@@ -126,6 +148,7 @@ def main():
     # options['mpi_comm'] = None
     options['model_class '] = 'Model_LCM'
     # options['model_class '] = 'Model_GPy_LCM'
+    # options['search_algo'] = "nsga2"
     options['verbose'] = False
     options.validate(computer=computer)
     
@@ -133,8 +156,12 @@ def main():
     """ Intialize the tuner with existing data stored as last check point"""
    
 
-    giventask = [[31], [32], [96], [97], [127], [128], [129], [191], [192], [229]]
+    # giventask = [[31], [32], [96], [97], [127], [128], [129], [191], [192], [229]]
+    # giventask = [[800], [1200], [1600]]
+    giventask = [[800]]
     # giventask = [[31], [32], [96]]
+    # giventask = [[31]]
+    # giventask = [[2]]
     assert ntask == len(giventask)
     # # the following will use only task lists stored in the pickle file
     data = Data(problem)
@@ -206,8 +233,9 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser()
     # Problem related arguments
+    parser.add_argument('-dim_task', type=int, default=1, help='length of matrix sizes to test')
     parser.add_argument('-matrix_size_min', type=int, default=1, help='minimum matrix size')
-    parser.add_argument('-matrix_size_max', type=int, default=1600, help='maximum matrix size')
+    parser.add_argument('-matrix_size_max', type=int, default=2000, help='maximum matrix size')
     # Machine related arguments
     parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
