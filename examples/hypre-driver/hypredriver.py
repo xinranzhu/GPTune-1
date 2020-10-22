@@ -15,6 +15,10 @@ EXCUDIR = os.path.abspath(os.path.join(ROOTDIR, "hypre/src/test/ij"))
 max_setup_time = 1000
 max_solve_time = 1000
 
+comm = MPI.COMM_WORLD
+nprocs = comm.Get_size()
+print("ENTER HYPRE DRIVER, nprocs=", nprocs)
+
 def execute(params, RUNDIR, niter = 1, max_iter = '1000', tol = '1e-8'):
     # extract arguments
     Problem = params['problem_name']; solver = params['solver']

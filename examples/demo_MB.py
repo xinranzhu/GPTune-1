@@ -120,6 +120,8 @@ def main():
     
     args = parse_args()
     ntask = args.ntask
+    nodes = args.nodes
+    cores = args.cores
     Nloop = args.Nloop
     TUNER_NAME = args.optimization
     
@@ -133,8 +135,8 @@ def main():
     output_space = Space([Real(float('-Inf'), float('Inf'), name="time")])
     constraints = {"cst1": "x >= 0. and x <= 1."}
     # problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
-    problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None)  # no performance model
-    computer = Computer(nodes=1, cores=16, hosts=None)
+    problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None)  # no performance model
+    computer = Computer(nodes=1, cores=cores, hosts=None)
     options = Options()
     options['model_restarts'] = 1
     options['distributed_memory_parallelism'] = False
@@ -307,9 +309,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
+    parser.add_argument('-nodes', type=int, default=1, help='Number of nodes')
+    parser.add_argument('-cores', type=int, default=1, help='Number of cpu cores')
     parser.add_argument('-Nloop', type=int, default=1, help='Number of outer loops in multi-armed bandit per task')
     # parser.add_argument('-sample_class', type=str,default='SampleOpenTURNS',help='Supported sample classes: SampleLHSMDU, SampleOpenTURNS')
-
     args = parser.parse_args()
     
     return args   

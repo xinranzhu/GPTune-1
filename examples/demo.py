@@ -216,11 +216,12 @@ if __name__ == '__main__':
 
 
 
-    plot=0
+    plot=1
     if plot==1:
         x = np.arange(0., 1., 0.00001)
         Nplot=9.5
-        for t in np.linspace(0,Nplot,20):
+        # for t in np.linspace(0,Nplot,20):
+        for t in [1, 2, 4, 6]:
             fig = plt.figure(figsize=[12.8, 9.6])
             I_orig=[t]
             kwargst = {input_space[k].name: I_orig[k] for k in range(len(input_space))}
@@ -242,5 +243,6 @@ if __name__ == '__main__':
             annot_min(x,y)
             # plt.show()
             # plt.show(block=False)
-            fig.savefig('obj_t_%d.eps'%t)                
+            # fig.savefig('obj_t_%d.eps'%t)   
+            fig.savefig('obj_t_%d.pdf'%t)                
 

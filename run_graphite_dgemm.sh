@@ -2,8 +2,8 @@
 ##SBATCH -J test_driver  
 #SBATCH --partition=bindel-cpu
 ##SBATCH -t 04:00:00
-#SBATCH -N 2
-#SBATCH -n 16
+#SBATCH -N 1
+#SBATCH -n 2
 ##SBATCH --tasks-per-node=8
 ##SBATCH --cpus-per-task=4
 
@@ -39,12 +39,21 @@ CCCPP=mpicxx
 FTN=mpif90
 
 cd examples
-rm -rf *.pkl
 
-Nloop=1
+lscpu
+
+
 nodes=1
-cores=16
-ntask=10
+cores=2
+ntask=1
+dim_task=1
+Nrestarts=5
+nruns=20
+
+expid='VerD-2'
+tuner='GPTune'
+mpirun -n 1 python -u mydgemm.py -dim_task ${dim_task} -nodes ${nodes} -Nrestarts ${Nrestarts} -cores ${cores} -ntask ${ntask} -nruns ${nruns} -optimization ${tuner} 2>&1 | tee a.ntask${ntask}_expid${expid}
+
 
 # for expid in {0..4}
 # do
@@ -68,8 +77,3 @@ ntask=10
 
 
 
-# TEST all random config sampling in GPTune
-testid='demoplot'
-# ntask=1
-tuner='GPTune'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo.py -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner}  2>&1 | tee a.out_graphite_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_testid${testid}

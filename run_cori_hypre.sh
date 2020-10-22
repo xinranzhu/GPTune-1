@@ -12,7 +12,7 @@
 
 #OpenMP settings:
 # export OMP_NUM_THREADS=4
-export OMP_PLACES=threads
+# export OMP_PLACES=threads
 # export OMP_PROC_BIND=spread
 
 module load python/3.7-anaconda-2019.10
