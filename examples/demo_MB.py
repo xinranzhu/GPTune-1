@@ -155,8 +155,8 @@ def main():
     # options['mpi_comm'] = mpi4py.MPI.COMM_WORLD
     options['model_class'] = 'Model_LCM' #'Model_GPy_LCM'
     options['verbose'] = False
-    # options['sample_algo'] = 'MCS'
     options['sample_class'] = 'SampleLHSMDU'
+    options['sample_algo'] = 'LHS-MDU'
     options.validate(computer=computer)
 
     options['budget_min'] = bmin
@@ -176,33 +176,44 @@ def main():
     print("samples in one multi-armed bandit loop, NSs_all = ", NSs_all)
     print("total number of samples: ", Ntotal)
     print("total number of evaluations at highest budget: ", Btotal)
+    print(f"Sampler: {options['sample_class']}, {options['sample_algo']}")
     print()
     
     data = Data(problem)
     # giventask = [[1.0], [1.1], [1.2]]
     # giventask = [[1.0], [1.2], [1.3]]
     # giventask = [[1.0]]
-    giventask = [[i] for i in np.arange(1, 1.5, 0.05).tolist()] # 10 tasks
+    t_end = args.t_end
+    giventask = [[i] for i in np.arange(1, t_end, (t_end-1)/ntask).tolist()] # 10 tasks
     # giventask = [[i] for i in np.arange(1.0, 6.0, 0.5).tolist()] # 10 tasks
     NI=len(giventask)
     assert NI == ntask # make sure number of tasks match
 	    
     np.set_printoptions(suppress=False, precision=4)
-    if(TUNER_NAME=='GPTune_MB'):
+    if(TUNER_NAME=='GPTuneBand'):
         NS = Nloop
         data = Data(problem)
-        gt = GPTune_MB(problem, computer=computer, NS=NS, options=options)
-        (data, stats)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
+        gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
+        (data, stats, data_hist)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
         print("Tuner: ", TUNER_NAME)
         print("stats: ", stats)
         """ Print all input and parameter samples """
         for tid in range(NI):
             print("tid: %d" % (tid))
-            print(f"    t: {data.I[tid][0]:.2f} ")
+            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid].tolist())
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-    
+            nth = np.argmin(data.O[tid])
+            Popt = data.P[tid][nth]
+            # find which arm and which sample the optimal param is from
+            for arm in range(len(data_hist.P)):
+                try:
+                    idx = (data_hist.P[arm]).index(Popt)
+                    arm_opt = arm
+                except ValueError:
+                    pass
+            print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
+         
     if(TUNER_NAME=='GPTune'):
         NS = Btotal
         NS1 = max(NS//2, 1)
@@ -245,7 +256,7 @@ def main():
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
             
     
-    if(TUNER_NAME=='hpbandster_bandit'):
+    if(TUNER_NAME=='TPE'):
         NS = Ntotal
         (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
         print("Tuner: ", TUNER_NAME)
@@ -309,6 +320,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
+    parser.add_argument('-t_end', type=float, default=2.0, help='end of task value')
     parser.add_argument('-nodes', type=int, default=1, help='Number of nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cpu cores')
     parser.add_argument('-Nloop', type=int, default=1, help='Number of outer loops in multi-armed bandit per task')

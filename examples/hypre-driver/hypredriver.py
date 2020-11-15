@@ -16,8 +16,8 @@ max_setup_time = 1000
 max_solve_time = 1000
 
 comm = MPI.COMM_WORLD
-nprocs = comm.Get_size()
-print("ENTER HYPRE DRIVER, nprocs=", nprocs)
+# nprocs = comm.Get_size()
+# print("ENTER HYPRE DRIVER, nprocs=", nprocs)
 
 def execute(params, RUNDIR, niter = 1, max_iter = '1000', tol = '1e-8'):
     # extract arguments
@@ -95,7 +95,7 @@ def execute(params, RUNDIR, niter = 1, max_iter = '1000', tol = '1e-8'):
         print('exec ', EXCUDIR, 'args: ', myargslist, 'nproc', NProc)
         runtimes = []
         for i in range(niter):
-            os.system("rm -rf %s"%(outputfilename))
+            # os.system("rm -rf %s"%(outputfilename))
             comm = MPI.COMM_SELF.Spawn(EXCUDIR, args=myargslist, maxprocs=NProc,info=info)
             comm.Disconnect()
             runtime = read_output(outputfilename)
@@ -124,7 +124,7 @@ def hypredriver(params, niter=1, JOBID: int=-1, max_iter = '1000', tol = '1e-8',
     if (JOBID==-1):  # -1 is the default value if jobid is not set from command line
         JOBID = os.getpid()
     RUNDIR = os.path.abspath(os.path.join(EXPDIR, str(JOBID)))
-    os.makedirs("%s"%(RUNDIR),exist_ok=True)
+    os.makedirs("%s"%(RUNDIR), exist_ok=True)
     dtype = [("nx", int), ("ny", int), ("nz", int), ("coeffs_a", 'U10'), ("coeffs_c", 'U10'), ("problem_name", 'U10'), ("solver", int), 
             ("Px", int), ("Py", int), ("Pz", int), ("strong_threshold", float), 
             ("trunc_factor", float), ("P_max_elmts", int), ("coarsen_type", int), ("relax_type", int),

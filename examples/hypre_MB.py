@@ -94,8 +94,8 @@ solver = 3 # Bommer AMG
 # problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
 problem_name = "-difconv "
 bmin = 1
-bmax = 8
-eta = 2
+bmax = 27
+eta = 3
 smax = int(np.floor(np.log10(bmax/bmin)/np.log10(eta)))
 
 # define objective function
@@ -245,7 +245,11 @@ def main():
     options['distributed_memory_parallelism'] = False
     options['shared_memory_parallelism'] = False
     # options['mpi_comm'] = None
-    options['model_class '] = 'Model_LCM'
+    options['model_class'] = 'Model_LCM'
+    # options['sample_class'] = 'SampleOpenTURNS'
+    if args.lhs == 1:
+        options['sample_class'] = 'SampleLHSMDU'
+        options['sample_algo'] = 'LHS-MDU'
     options['verbose'] = False
     options.validate(computer=computer)
     
@@ -261,16 +265,20 @@ def main():
             NSs_all.append(int(NSs[s]/options['budget_base']**(n+1)))
             budget_all.append(int(budgets[s]*options['budget_base']**(n+1)))
     Ntotal = int(sum(NSs_all) * Nloop)
-    Btotal = int(np.dot(np.array(NSs_all), np.array(budget_all))/options['budget_max']) # total number of evaluations at highest budget -- used for single-fidelity tuners
+    Btotal = int(np.dot(np.array(NSs_all), np.array(budget_all))/options['budget_max'] * Nloop) # total number of evaluations at highest budget -- used for single-fidelity tuners
     print(f"bmin = {bmin}, bmax = {bmax}, eta = {eta}, smax = {smax}")
     print("samples in one multi-armed bandit loop, NSs_all = ", NSs_all)
     print("total number of samples: ", Ntotal)
     print("total number of evaluations at highest budget: ", Btotal)
+    print(f"Sampler: {options['sample_class']}, {options['sample_algo']}")
     print()
     
     data = Data(problem)
     # giventask = [[(amax-amin)*random.random()+amin,(cmax-cmin)*random.random()+cmin] for i in range(ntask)]
-    giventask = [[0.2, 0.5]]
+    # giventask = [[0.2, 0.5]]
+    
+
+        
     # a, c in [0, 2], 20 tasks
     # giventask = [[1.764404747086545, 0.1690780613092806], [0.04112427493772097, 0.8085715496434904], 
     #              [0.22710987838880214, 1.88151014852883], [1.4295598579456825, 0.6777959247566412], 
@@ -284,10 +292,42 @@ def main():
     #              [0.6840593333787133, 1.2532549528173518], [0.808378518110451, 0.7833341762792181]]
     # a, c in [0, 1], 10 tasks
     # giventask = [[0.023181354151175504, 0.6816796355829654], [0.15948672790394447, 0.545007082153842], 
-                #  [0.3061777407959666, 0.2613262568641622], [0.13635922601717265, 0.42633245310802903], 
-                #  [0.007106878341192613, 0.1275649768730277], [0.14739645464726914, 0.7387029572331887], 
-                #  [0.03343150589405264, 0.5281563810546017], [0.09379810626184892, 0.4018339729841335],
-                #  [0.698222888451084, 0.30201670579496664], [0.6026109961485946, 0.07835020207209975]]
+    #              [0.3061777407959666, 0.2613262568641622], [0.13635922601717265, 0.42633245310802903], 
+    #              [0.007106878341192613, 0.1275649768730277], [0.14739645464726914, 0.7387029572331887], 
+    #              [0.03343150589405264, 0.5281563810546017], [0.09379810626184892, 0.4018339729841335],
+    #              [0.698222888451084, 0.30201670579496664], [0.6026109961485946, 0.07835020207209975]]
+    if ntask == 10:
+        giventask = [[0.2, 0.5], [0.159, 0.545], 
+                    [0.02, 0.682], [0.9, 0.02], 
+                    [0.7, 0.3], [0.147, 0.739], 
+                    [0.033, 0.528], [0.094, 0.402],
+                    [0.698, 0.302], [0.603, 0.0784]]
+    if ntask == 3:
+        # giventask = [[0.2, 0.5], [0.159, 0.545], 
+        #             [0.02, 0.682]]
+        # giventask = [[0.9, 0.02], 
+        #             [0.7, 0.3], [0.147, 0.739]]
+        giventask = [[0.147, 0.739], 
+                    [0.033, 0.528], [0.094, 0.402]]
+        
+    if ntask == 2:
+        # giventask = [[0.9, 0.02], 
+        #             [0.7, 0.3]]
+        giventask = [[0.698, 0.302], 
+                    [0.603, 0.0784]]
+    if ntask == 4:
+        giventask = [[0.033, 0.528], [0.094, 0.402],
+                    [0.698, 0.302], [0.603, 0.0784]]
+    
+    if ntask == 6:
+        giventask = [[0.2, 0.5], [0.159, 0.545], 
+                    [0.02, 0.682], [0.9, 0.02], 
+                    [0.7, 0.3], [0.147, 0.739]]
+        
+    
+    if ntask == 1:
+        giventask = [[args.a, args.c]]
+    
     
     NI=len(giventask)
     assert NI == ntask # make sure number of tasks match
@@ -344,7 +384,7 @@ def main():
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
 
-    if(TUNER_NAME=='hpbandster'):
+    if(TUNER_NAME=='TPE'):
         NS = Btotal
         (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
         print("stats: ", stats)
@@ -356,10 +396,10 @@ def main():
             print("    Os ", data.O[tid].tolist())
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
     
-    if(TUNER_NAME=='GPTune_MB'):
+    if(TUNER_NAME=='GPTuneBand'):
         data = Data(problem)
         gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
-        (data, stats)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
+        (data, stats, data_hist)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
         print("Tuner: ", TUNER_NAME)
         print("stats: ", stats)
         """ Print all input and parameter samples """
@@ -368,9 +408,57 @@ def main():
             print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid].tolist())
+            nth = np.argmin(data.O[tid])
+            Popt = data.P[tid][nth]
+            # find which arm and which sample the optimal param is from
+            for arm in range(len(data_hist.P)):
+                try:
+                    idx = (data_hist.P[arm]).index(Popt)
+                    arm_opt = arm
+                except ValueError:
+                    pass
+            print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
+         
+    if(TUNER_NAME=='GPTuneBand_single'):
+        
+        def merge_dict(mydict, newdict):
+            for key in mydict.keys():
+                mydict[key] += newdict[key]
+                
+        data_all = []
+        stats_all = {}
+        for singletask in giventask:
+            NI = 1
+            cur_task = [singletask]
+            data = Data(problem)
+            gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
+            (data, stats)=gt.MB_LCM(NS = Nloop, Igiven = cur_task)
+            data_all.append(data)
+            merge_dict(stats_all, stats)
+            print("Finish one single task tuning")
+            print("Tuner: ", TUNER_NAME)
+            print("stats: ", stats)
+            tid = 0
+            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+            print("    Ps ", data.P[tid])
+            print("    Os ", data.O[tid].tolist())
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-                               
-    if(TUNER_NAME=='hpbandster_bandit'):
+        
+        print("Finish tuning...")
+        print("Tuner: ", TUNER_NAME)
+        print("stats_all: ", stats_all)
+        for i in range(len(data_all)):
+            data = data_all[i]
+            for tid in range(NI):
+                print("tid: %d" % (i))
+                print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+                print("    Ps ", data.P[tid])
+                print("    Os ", data.O[tid].tolist())
+                print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+         
+         
+                              
+    if(TUNER_NAME=='hpbandster'):
         NS = Ntotal
         (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
         print("stats: ", stats)
@@ -408,6 +496,8 @@ def parse_args():
     parser.add_argument('-amax', type=float, default=2, help='max value of coeffs_a')
     parser.add_argument('-cmin', type=float, default=0, help='min value of coeffs_c')
     parser.add_argument('-cmax', type=float, default=2, help='max value of coeffs_c')
+    parser.add_argument('-a', type=float, default=0.5, help='a value in a single task')
+    parser.add_argument('-c', type=float, default=0.5, help='c value in a single task')
     # Machine related arguments
     parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
@@ -419,6 +509,7 @@ def parse_args():
     parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
     parser.add_argument('-Nloop', type=int, default=-1, help='Number of loops')
     parser.add_argument('-Nrestarts', type=int, default=1, help='Number of model restarts')
+    parser.add_argument('-lhs', type=int, default=0, help='use LHS-MDU sampler or not')
     # parser.add_argument('-truns', type=int, default=-1, help='Time of runs')
     # Experiment related arguments
     # 0 means interactive execution (not batch)

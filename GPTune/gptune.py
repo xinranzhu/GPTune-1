@@ -596,4 +596,4 @@ class GPTune_MB(object):
             print('data1_hist.P = ', data1_hist.P)
             print('data1_hist.O = ', data1_hist.O)
             
-        return (copy.deepcopy(self.data), stats)
+        return (copy.deepcopy(self.data), stats, data1_hist)
