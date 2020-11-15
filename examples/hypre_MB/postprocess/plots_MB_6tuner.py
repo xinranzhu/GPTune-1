@@ -11,6 +11,10 @@ from scipy import stats
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--amax', type=int, default=2, help='maximum of coeff_a')
+    parser.add_argument('--amin', type=int, default=0, help='minimum of coeff_a')
+    parser.add_argument('--cmax', type=int, default=2, help='maximum of coeff_c')
+    parser.add_argument('--cmin', type=int, default=0, help='minimum of coeff_c')
     parser.add_argument('--ntask', type=int, default=20, help='number of tasks')
     parser.add_argument('--eta', type=int, default=3, help='eta value in bandit structure')
     parser.add_argument('--bmax', type=int, default=100, help='maximum budget in bandit structure')
@@ -21,7 +25,7 @@ def parse_args():
     return parser.parse_args()
 
 def gen_source(args):
-    my_source = f"./data/data_demo_ntask{args.ntask}_bmin{args.bmin}_bmax{args.bmax}_eta{args.eta}_expid{args.expid}.pkl"
+    my_source = f"./data/MLA_MB_amin{args.amin}_cmin{args.cmin}_amax{args.amax}_cmax{args.cmax}_ntask{args.ntask}_bmin{args.bmin}_bmax{args.bmax}_eta{args.eta}_expid{args.expid}.pkl"
     return my_source
 
 def gen_savepath(args, figurename, src=None):
@@ -36,31 +40,34 @@ def data_process(args):
     tasks = results_summary[0]
 
     GPTune_MB_data = results_summary[1]
-    Hp_data = results_summary[2]
-    GPTune_data = results_summary[3]
-    Op_data = results_summary[4]
-    TPE_data = results_summary[5]
+    GPTune_MBS_data = results_summary[2]
+    Hp_data = results_summary[3]
+    GPTune_data = results_summary[4]
+    Op_data = results_summary[5]
+    TPE_data = results_summary[6]
 
     # absolute performance 
     x1 = GPTune_MB_data[1]
-    x2 = Hp_data[1]
-    x3 = GPTune_data[1]
-    x4 = Op_data[1]
-    x5 = TPE_data[1]
-    Xset = [x1, x2, x3, x4, x5]
+    x2 = GPTune_MBS_data[1]
+    x3 = Hp_data[1]
+    x4 = GPTune_data[1]
+    x5 = Op_data[1]
+    x6 = TPE_data[1]
+    Xset = [x1, x2, x3, x4, x5, x6]
 
     # relative performance
-    Rset = np.array([x1, x2, x3, x4, x5])
+    Rset = np.array([x1, x2, x3, x4, x5, x6])
     Rmin = np.min(Rset, axis=0)
     Rset /= np.expand_dims(Rmin, 0)
 
     # std of absolute performance
     s1 = GPTune_MB_data[2]
-    s2 = Hp_data[2]
-    s3 = GPTune_data[2]
-    s4 = Op_data[2]
-    s5 = TPE_data[2]
-    Sset = [s1, s2, s3, s4, s5]
+    s2 = GPTune_MBS_data[2]
+    s3 = Hp_data[2]
+    s4 = GPTune_data[2]
+    s5 = Op_data[2]
+    s6 = TPE_data[2]
+    Sset = [s1, s2, s3, s4, s5, s6]
 
     # x21 = np.array(x2)/np.array(x1)
     # x31 = np.array(x3)/np.array(x1)
@@ -81,6 +88,7 @@ def errorbar_plot(args, Xset, Rset, Sset):
     p13 = len([x for x,y in zip(Xset[0],Xset[2]) if x <= y])
     p14 = len([x for x,y in zip(Xset[0],Xset[3]) if x <= y])
     p15 = len([x for x,y in zip(Xset[0],Xset[4]) if x <= y])
+    # p16 = len([x for x,y in zip(Xset[0],Xset[5]) if x <= y])
 
     plt.clf()
     fig, axs = plt.subplots(nrows=2, ncols=2, sharey=True, sharex=True, figsize=(12, 10))
@@ -100,8 +108,8 @@ def errorbar_plot(args, Xset, Rset, Sset):
 
     axs[1,0].set_xlabel('Task ID')
     axs[1,1].set_xlabel('Task ID')
-    axs[0,0].set_ylabel('Optimal objective value')
-    axs[1,0].set_ylabel('Optimal objective value')
+    axs[0,0].set_ylabel('Optimal Hypre Time')
+    axs[1,0].set_ylabel('Optimal Hypre Time')
     axs[0,0].legend(fontsize=8)
     axs[0,1].legend(fontsize=8)
     axs[1,0].legend(fontsize=8)
@@ -124,7 +132,7 @@ def autolabel(rects, ax):
 def dist_relative(args, Rset):
     ntask = args.ntask
     plt.clf()
-    fig, axs = plt.subplots(nrows=5, ncols=1, sharey=True, sharex=True, figsize=(6,10))
+    fig, axs = plt.subplots(nrows=6, ncols=1, sharey=True, sharex=True, figsize=(6,10))
 
     def single_hist(data, ax, tuner, colorcode):
         width = args.width
@@ -134,13 +142,14 @@ def dist_relative(args, Rset):
                         color=colorcode)
         autolabel(rects, ax)
         ax.legend(fontsize=8)
-        ax.set_ylim(0, 1)
+        ax.set_ylim(0,1)
 
     single_hist(Rset[0], axs[0], 'GPTuneBand', '#C33734')
-    single_hist(Rset[1], axs[1], 'HpBandster', '#ff7f0e')
-    single_hist(Rset[2], axs[2], 'GPTune',     '#2ca02c')
-    single_hist(Rset[3], axs[3], 'OpenTuner',  '#1f77b4')
-    single_hist(Rset[4], axs[4], 'TPE',        '#9467bd')
+    single_hist(Rset[1], axs[1], 'GPTBand-Single', '#d62728')
+    single_hist(Rset[2], axs[2], 'HpBandster', '#ff7f0e')
+    single_hist(Rset[3], axs[3], 'GPTune',     '#2ca02c')
+    single_hist(Rset[4], axs[4], 'OpenTuner',  '#1f77b4')
+    single_hist(Rset[5], axs[5], 'TPE',        '#9467bd')
 
     figurename = "hist_relative"
     savepath = gen_savepath(args, figurename)
@@ -149,7 +158,7 @@ def dist_relative(args, Rset):
 
 def main(args):
     Xset, Rset, Sset = data_process(args)
-    errorbar_plot(args, Xset, Rset, Sset)
+    # errorbar_plot(args, Xset, Rset, Sset)
     dist_relative(args, Rset)
 
 if __name__ == "__main__":

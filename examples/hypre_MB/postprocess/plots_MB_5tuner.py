@@ -11,6 +11,10 @@ from scipy import stats
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--amax', type=int, default=2, help='maximum of coeff_a')
+    parser.add_argument('--amin', type=int, default=0, help='minimum of coeff_a')
+    parser.add_argument('--cmax', type=int, default=2, help='maximum of coeff_c')
+    parser.add_argument('--cmin', type=int, default=0, help='minimum of coeff_c')
     parser.add_argument('--ntask', type=int, default=20, help='number of tasks')
     parser.add_argument('--eta', type=int, default=3, help='eta value in bandit structure')
     parser.add_argument('--bmax', type=int, default=100, help='maximum budget in bandit structure')
@@ -21,7 +25,7 @@ def parse_args():
     return parser.parse_args()
 
 def gen_source(args):
-    my_source = f"./data/data_demo_ntask{args.ntask}_bmin{args.bmin}_bmax{args.bmax}_eta{args.eta}_expid{args.expid}.pkl"
+    my_source = f"./data/MLA_MB_amin{args.amin}_cmin{args.cmin}_amax{args.amax}_cmax{args.cmax}_ntask{args.ntask}_bmin{args.bmin}_bmax{args.bmax}_eta{args.eta}_expid{args.expid}.pkl"
     return my_source
 
 def gen_savepath(args, figurename, src=None):
@@ -100,8 +104,8 @@ def errorbar_plot(args, Xset, Rset, Sset):
 
     axs[1,0].set_xlabel('Task ID')
     axs[1,1].set_xlabel('Task ID')
-    axs[0,0].set_ylabel('Optimal objective value')
-    axs[1,0].set_ylabel('Optimal objective value')
+    axs[0,0].set_ylabel('Optimal Hypre Time')
+    axs[1,0].set_ylabel('Optimal Hypre Time')
     axs[0,0].legend(fontsize=8)
     axs[0,1].legend(fontsize=8)
     axs[1,0].legend(fontsize=8)
@@ -134,7 +138,7 @@ def dist_relative(args, Rset):
                         color=colorcode)
         autolabel(rects, ax)
         ax.legend(fontsize=8)
-        ax.set_ylim(0, 1)
+        ax.set_ylim(0,1)
 
     single_hist(Rset[0], axs[0], 'GPTuneBand', '#C33734')
     single_hist(Rset[1], axs[1], 'HpBandster', '#ff7f0e')
