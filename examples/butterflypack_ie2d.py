@@ -53,7 +53,7 @@ from gptune import GPTune
 from autotune.problem import *
 from autotune.space import *
 from autotune.search import *
-
+import pygmo as pg
 from callopentuner import OpenTuner
 from callhpbandster import HpBandSter
 import math
@@ -61,58 +61,46 @@ import math
 ################################################################################
 def objectives(point):                  # should always use this name for user-defined objective function
     
-	matrix = point['matrix']
-	COLPERM = point['COLPERM']
-	LOOKAHEAD = point['LOOKAHEAD']
-	nprows = point['nprows']
-	
-	npernode = 2**point['npernode']
-	nproc = nodes*npernode
+	model2d = point['model2d']
+	nunk = point['nunk']
+	wavelength = point['wavelength']
+
+	lrlevel = point['lrlevel']
+	xyzsort = point['xyzsort']
+	nmin_leaf = 2**point['nmin_leaf']
+	nproc     = point['nproc']
+
+	npernode =  math.ceil(float(nproc)/nodes)  
 	nthreads = int(cores / npernode)
 
+	params = ['model2d', model2d,'nunk', nunk,'wavelength', wavelength,'lrlevel', lrlevel,'xyzsort', xyzsort,'nmin_leaf', nmin_leaf, 'nproc', nproc]
 
-	NSUP = point['NSUP']
-	NREL = point['NREL']
-	npcols     = int(nproc / nprows)
-	params = [matrix, 'COLPERM', COLPERM, 'LOOKAHEAD', LOOKAHEAD, 'nthreads', nthreads, 'npernode', npernode, 'nprows', nprows, 'npcols', npcols, 'NSUP', NSUP, 'NREL', NREL]
-	RUNDIR = os.path.abspath(__file__ + "/../superlu_dist/build/EXAMPLE")
-	INPUTDIR = os.path.abspath(__file__ + "/../superlu_dist/EXAMPLE/")
+	RUNDIR = os.path.abspath(__file__ + "/../ButterflyPACK/build/EXAMPLE")
 	TUNER_NAME = os.environ['TUNER_NAME']
-	nproc     = int(nprows * npcols)
+	
+
 
 	""" pass some parameters through environment variables """	
 	info = MPI.Info.Create()
 	envstr= 'OMP_NUM_THREADS=%d\n' %(nthreads)   
-	envstr+= 'NREL=%d\n' %(NREL)   
-	envstr+= 'NSUP=%d\n' %(NSUP)   
 	info.Set('env',envstr)
 	info.Set('npernode','%d'%(npernode))  # YL: npernode is deprecated in openmpi 4.0, but no other parameter (e.g. 'map-by') works
     
 
 	""" use MPI spawn to call the executable, and pass the other parameters and inputs through command line """
-	print('exec', "%s/pddrive_spawn"%(RUNDIR), 'args', ['-c', '%s'%(npcols), '-r', '%s'%(nprows), '-l', '%s'%(LOOKAHEAD), '-p', '%s'%(COLPERM), '%s/%s'%(INPUTDIR,matrix)], 'nproc', nproc, 'env', 'OMP_NUM_THREADS=%d' %(nthreads), 'NSUP=%d' %(NSUP), 'NREL=%d' %(NREL)  )
-	comm = MPI.COMM_SELF.Spawn("%s/pddrive_spawn"%(RUNDIR), args=['-c', '%s'%(npcols), '-r', '%s'%(nprows), '-l', '%s'%(LOOKAHEAD), '-p', '%s'%(COLPERM), '%s/%s'%(INPUTDIR,matrix)], maxprocs=nproc,info=info)
+	print('exec', "%s/ie2d"%(RUNDIR), 'args', ['-quant', '--model2d', '%s'%(model2d), '--wavelength', '%s'%(wavelength),'--nunk', '%s'%(nunk),'-option', '--tol_comp', '1d-4','--lrlevel', '%s'%(lrlevel),'--xyzsort', '%s'%(xyzsort),'--nmin_leaf', '%s'%(nmin_leaf),'--format', '1','--precon', '3','--sample_para','2d0','--knn','20','--verbosity','1'], 'nproc', nproc, 'env', 'OMP_NUM_THREADS=%d' %(nthreads))
+	comm = MPI.COMM_SELF.Spawn("%s/ie2d"%(RUNDIR), args=['-quant', '--model2d', '%s'%(model2d), '--wavelength', '%s'%(wavelength),'--nunk', '%s'%(nunk),'-option', '--tol_comp', '1d-4','--lrlevel', '%s'%(lrlevel),'--xyzsort', '%s'%(xyzsort),'--nmin_leaf', '%s'%(nmin_leaf),'--format', '1','--precon', '3','--sample_para','2d0','--knn','20','--verbosity','1'], maxprocs=nproc,info=info)
 
-	""" gather the return value using the inter-communicator, also refer to the INPUTDIR/pddrive_spawn.c to see how the return value are communicated """																	
-	tmpdata = array('f', [0,0])
-	comm.Reduce(sendbuf=None, recvbuf=[tmpdata,MPI.FLOAT],op=MPI.MAX,root=mpi4py.MPI.ROOT) 
+
+	""" gather the return value using the inter-communicator """							
+	tmpdata = np.array([0],dtype=np.float64)
+	comm.Reduce(sendbuf=None, recvbuf=[tmpdata,MPI.DOUBLE],op=MPI.MAX,root=mpi4py.MPI.ROOT) 
 	comm.Disconnect()	
+	print(params, 'time:', tmpdata[0])
 
-	if(target=='time'):	
-		retval = tmpdata[0]
-		print(params, ' superlu time: ', retval)
+	return [tmpdata[0]] 
 
-	if(target=='memory'):	
-		retval = tmpdata[1]
-		print(params, ' superlu memory: ', retval)
-
-	return [retval] 
 	
-def cst1(NSUP,NREL):
-	return NSUP >= NREL
-def cst2(npernode,nprows):
-	return nodes * 2**npernode >= nprows
-			
 def main():
 
 	global ROOTDIR
@@ -120,7 +108,9 @@ def main():
 	global cores
 	global target
 	global nprocmax
+	global nprocmin
 
+	
 	# Parse command line arguments
 
 	args   = parse_args()
@@ -144,38 +134,36 @@ def main():
 	os.environ['TUNER_NAME'] = TUNER_NAME
 	
 	
-	nprocmax = nodes*cores  # YL: there is one proc doing spawning, so nodes*cores should be at least 2
+	nprocmax = nodes*cores-1  # YL: there is one proc doing spawning, so nodes*cores should be at least 2
+	nprocmin = min(nodes*nprocmin_pernode,nprocmax-1)  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space
 
 
-	# matrices = ["big.rua", "g4.rua", "g20.rua"]
-	# matrices = ["Si2.bin", "SiH4.bin", "SiNa.bin", "Na5.bin", "benzene.bin", "Si10H16.bin", "Si5H12.bin", "SiO.bin", "Ga3As3H12.bin","H2O.bin"]
-	matrices = ["big.rua","Si2.bin", "SiH4.bin", "SiNa.bin", "Na5.bin", "benzene.bin", "Si10H16.bin", "Si5H12.bin", "SiO.bin", "Ga3As3H12.bin", "GaAsH6.bin", "H2O.bin"]
 
 	# Task parameters
-	matrix    = Categoricalnorm (matrices, transform="onehot", name="matrix")
+	model2d 	= Integer     (1, 13, transform="normalize", name="model2d")
+	nunk 		= Integer     (5000, 10000000, transform="normalize", name="nunk")
+	wavelength  = Real        (0.00001 , 0.02,name="wavelength")
+
 
 	# Input parameters
-	COLPERM   = Categoricalnorm (['2', '4'], transform="onehot", name="COLPERM")
-	LOOKAHEAD = Integer     (5, 20, transform="normalize", name="LOOKAHEAD")
-	nprows    = Integer     (1, nprocmax, transform="normalize", name="nprows")
-	npernode     = Integer     (int(math.log2(nprocmin_pernode)), int(math.log2(cores)), transform="normalize", name="npernode")
-	NSUP      = Integer     (30, 300, transform="normalize", name="NSUP")
-	NREL      = Integer     (10, 40, transform="normalize", name="NREL")	
-	result   = Real        (float("-Inf") , float("Inf"),name="r")
-	IS = Space([matrix])
-	PS = Space([COLPERM, LOOKAHEAD, npernode, nprows, NSUP, NREL])
-	OS = Space([result])
+	lrlevel   = Categoricalnorm (['0','100'], transform="onehot", name="lrlevel")
+	xyzsort   = Categoricalnorm (['0','1','2'], transform="onehot", name="xyzsort")
+	nmin_leaf = Integer     (5, 9, transform="normalize", name="nmin_leaf")
+	nproc     = Integer     (nprocmin, nprocmax, transform="normalize", name="nproc")
 
-	constraints = {"cst1" : cst1, "cst2" : cst2}
+
+	result1   = Real        (float("-Inf") , float("Inf"),name="r1")
+
+
+	IS = Space([model2d,nunk,wavelength])
+	PS = Space([lrlevel,xyzsort,nmin_leaf,nproc])
+	OS = Space([result1])
+
+	constraints = {}
 	models = {}
 
 	""" Print all input and parameter samples """	
 	print(IS, PS, OS, constraints, models)
-
-
-
-	# target='memory'
-	target='time'
 
 
 	problem = TuningProblem(IS, PS, OS, objectives, constraints, None)
@@ -193,23 +181,16 @@ def main():
 	options['model_class '] = 'Model_LCM' # 'Model_GPy_LCM'
 	options['verbose'] = False
 
+	# options['search_algo'] = 'nsga2' #'maco' #'moead' #'nsga2' #'nspso' 
+	# options['search_pop_size'] = 1000 # 1000
+	# options['search_gen'] = 10
+
 	options.validate(computer = computer)
 	
 
-
-	""" Intialize the tuner with existing data stored as last check point"""
-	try:
-		data = pickle.load(open('Data_SLU_nodes_%d_cores_%d_nprocmin_pernode_%d_tasks_%s_machine_%s.pkl' % (nodes, cores, nprocmin_pernode, matrices, machine), 'rb'))
-		giventask = data.I
-	except (OSError, IOError) as e:
-		data = Data(problem)
-		giventask = [[np.random.choice(matrices,size=1)[0]] for i in range(ntask)]
-
-
-	# """ Building MLA with the given list of tasks """
-	# giventask = [["big.rua"]]		
-	# giventask = [["Si2.bin"]]	
-	giventask = [["Si2.bin"],["SiH4.bin"], ["SiNa.bin"], ["Na5.bin"], ["benzene.bin"], ["Si10H16.bin"], ["Si5H12.bin"]]	
+	# """ Building MLA with the given list of tasks """	
+	giventask = [[7,100000,0.001]]			
+	# giventask = [[7,5000,0.02]]			
 	data = Data(problem)
 
 
@@ -222,22 +203,25 @@ def main():
 		(data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=max(NS//2, 1))
 		print("stats: ", stats)
 
-
-		""" Dump the data to file as a new check point """
-		pickle.dump(data, open('Data_SLU_nodes_%d_cores_%d_nprocmin_pernode_%d_tasks_%s_machine_%s.pkl' % (nodes, cores, nprocmin_pernode, matrices, machine), 'wb'))
-
-		""" Dump the tuner to file for TLA use """
-		pickle.dump(gt, open('MLA_SLU_nodes_%d_cores_%d_nprocmin_pernode_%d_tasks_%s_machine_%s.pkl' % (nodes, cores, nprocmin_pernode, matrices, machine), 'wb'))
-
 		""" Print all input and parameter samples """	
 		for tid in range(NI):
 			print("tid: %d"%(tid))
-			print("    matrix:%s"%(data.I[tid][0]))
+			print("    model2d:%d nunk:%d wavelength:%1.6e" % (data.I[tid][0], data.I[tid][1], data.I[tid][2]))
 			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
+			
+
+			OL=np.asarray([o[0] for o in data.O[tid]], dtype=np.float64)
+			np.set_printoptions(suppress=False,precision=8)	
+			print("    Os ", OL)
 			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
-
+			# ndf, dl, dc, ndr = pg.fast_non_dominated_sorting(data.O[tid])
+			# front = ndf[0]
+			# # print('front id: ',front)
+			# fopts = data.O[tid][front]
+			# xopts = [data.P[tid][i] for i in front]
+			# print('    Popts ', xopts)		
+			# print('    Oopts ', fopts)
 
 	if(TUNER_NAME=='opentuner'):
 		NI = ntask
@@ -250,7 +234,7 @@ def main():
 			print("tid: %d"%(tid))
 			print("    matrix:%s"%(data.I[tid][0]))
 			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
+			print("    Os ", data.O[tid])
 			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
 	if(TUNER_NAME=='hpbandster'):
@@ -263,7 +247,7 @@ def main():
 			print("tid: %d"%(tid))
 			print("    matrix:%s"%(data.I[tid][0]))
 			print("    Ps ", data.P[tid])
-			print("    Os ", data.O[tid].tolist())
+			print("    Os ", data.O[tid])
 			print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
 

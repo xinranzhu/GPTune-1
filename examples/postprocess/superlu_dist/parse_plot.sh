@@ -1,15 +1,13 @@
 set -x 
 
-mmax=40000
-nmax=40000
-ntask=10
-nrun=10
-nodes=64
+ntask=7
+nrun=20
+nodes=32
 exp=tuners
 # read results
-python scalapack_parse_results.py --mmax ${mmax} --nmax ${nmax} --ntask ${ntask} --nodes ${nodes} --exp ${exp}
+python superlu_dist_parse_results.py --ntask ${ntask} --nodes ${nodes} --exp ${exp}
 # plot
-python scalapack_plot_tunercompare.py --mmax ${mmax} --nmax ${nmax} --ntask ${ntask} --nodes ${nodes} --nrun ${nrun} --exp ${exp}
+python superlu_dist_plot_tunercompare.py --ntask ${ntask} --nodes ${nodes} --nrun ${nrun} --exp ${exp}
 
 
 # mmax=20000

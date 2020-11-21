@@ -19,11 +19,11 @@ works, and perform publicly and display publicly, and to permit other to do so.
 GPTune is part of the xSDK4ECP effort supported by the Exascale Computing Project (ECP).
 
 ## Dependency
-GPTune relies on OpenMPI (4.0 or higher), Python (3.7 or higher), BLAS/LAPACK, SCALAPACK (2.0.1 or higher), mpi4py, scikit-optimize and autotune, which need to be installed by the user. In what follows, we assume OpenMPI, Python, BLAS/LAPACK have been installed (with the same compiler version):
+GPTune relies on OpenMPI (4.0 or higher), Python (3.7 or higher), BLAS/LAPACK, SCALAPACK (2.1.0 or higher), mpi4py, scikit-optimize and autotune, which need to be installed by the user. In what follows, we assume OpenMPI, Python, BLAS/LAPACK have been installed (with the same compiler version):
 ```
 export MPICC=path-to-c-compiler-wrapper
 export MPICXX=path-to-cxx-compiler-wrapper
-export MPICXX=path-to-f90-compiler-wrapper
+export MPIF90=path-to-f90-compiler-wrapper
 export MPIRUN=path-to-mpirun
 export BLAS_LIB=path-to-blas-lib
 export LAPACK_LIB=path-to-lapack-lib
@@ -36,9 +36,9 @@ The rest can be installed as follows:
 ## Install SCALAPACK
 ```
 cd $GPTUNEROOT
-wget http://www.netlib.org/scalapack/scalapack-2.0.2.tgz
-tar -xf scalapack-2.0.2.tgz
-cd scalapack-2.0.2
+wget http://www.netlib.org/scalapack/scalapack-2.1.0.tgz
+tar -xf scalapack-2.1.0.tgz
+cd scalapack-2.1.0
 rm -rf build
 mkdir -p build
 cd build

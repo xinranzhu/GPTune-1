@@ -19,6 +19,12 @@
 
 
 ################################################################################
+import sys
+import os
+import mpi4py
+import logging
+sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+logging.getLogger('matplotlib.font_manager').disabled = True
 
 from autotune.search import *
 from autotune.space import *
@@ -28,18 +34,14 @@ from data import Data
 from data import Categoricalnorm
 from options import Options
 from computer import Computer
-import sys
-import os
-import mpi4py
+
 from mpi4py import MPI
 import numpy as np
 import time
 from callopentuner import OpenTuner
 from callhpbandster import HpBandSter
-import logging
 
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
-logging.getLogger('matplotlib.font_manager').disabled = True
+
 
 # from GPTune import *
 
@@ -165,9 +167,9 @@ if __name__ == '__main__':
 
     options.validate(computer=computer)
 
-    os.environ['TUNER_NAME'] = 'hpbandster'
+    os.environ['TUNER_NAME'] = 'GPTune'
     
-    giventask = [[6]]
+    giventask = [[6],[6.5]]
     # giventask = [[i] for i in np.arange(0, 10, 0.5).tolist()]
 
     NI=len(giventask)
