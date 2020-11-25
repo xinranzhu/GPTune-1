@@ -79,7 +79,33 @@ class LCM(GPy.kern.Kern):
         x = np.concatenate([self.theta, self.var, self.kappa, self.sigma, self.WS])
 
         return x
-
+    
+    def get_correlation_metric(self):
+        # self.kappa =  b_{1,1}, ..., b_{delta,1}, ..., b_{1,Q}, ..., b_{\delta,Q}
+        # self.sigma = d_1, ..., d_delta
+        # self.WS = a_{1,1}, ..., a_{delta,1}, ..., a_{1,Q}, ..., a_{delta,Q}
+        kappa = self.kappa
+        sigma = self.sigma
+        WS = self.WS
+        delta = len(sigma)
+        Q = int(len(WS)/delta)
+        print('delta = ', delta)
+        print('Q = ', Q)
+        B = np.zeros((delta, delta, Q))
+        for i in range(Q):
+            Wq = WS[i*delta : (i+1)*delta]
+            Kappa_q = kappa[i*delta : (i+1)*delta]
+            B[:, :, i] = np.outer(Wq, Wq) + np.diag(Kappa_q)
+            print("In model.py, i = ", i)
+            print(B[:, :, i])
+            
+        # return C_{i, i'}
+        C = np.zeros((delta, delta))
+        for i in range(delta):
+            for ip in range(i, delta):
+                C[i, ip] = np.linalg.norm(B[i, ip, :]) / np.sqrt(np.linalg.norm(B[i, i, :]) * np.linalg.norm(B[ip, ip, :]))
+        return C
+    
     def set_param_array(self, x):
 
         cpt = 0

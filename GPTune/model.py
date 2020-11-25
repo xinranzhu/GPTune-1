@@ -95,7 +95,6 @@ class Model_GPy_LCM(Model):
                 self.M = GPy.models.SparseGPCoregionalizedRegression(X_list = data.P, Y_list = data.O, kernel = K, num_inducing = model_inducing)
             else:
                 self.M = GPy.models.GPCoregionalizedRegression(X_list = data.P, Y_list = data.O, kernel = K)
-                # print(self.M)
         else:
             K = GPy.kern.RBF(input_dim = len(data.P[0][0]), ARD=True, name='GPy_GP')
             if (kwargs['model_sparse']):
@@ -126,7 +125,24 @@ class Model_GPy_LCM(Model):
         (mu, var) = self.M.predict_noiseless(x)
 
         return (mu, var)
-
+    def get_correlation_metric(self, delta):
+        print("In model.py, delta = ", delta)
+        Q = delta # number of latent processes 
+        B = np.zeros((delta, delta, Q))
+        for i in range(Q):
+            currentLCM = getattr(self.M.sum, f"GPy_LCM{i}")
+            Wq = currentLCM.B.W.values
+            Kappa_q = currentLCM.B.kappa.values
+            B[:, :, i] = np.outer(Wq, Wq) + np.diag(Kappa_q)
+            print("In model.py, i = ", i)
+            print(B[:, :, i])
+            
+        # return C_{i, i'}
+        C = np.zeros((delta, delta))
+        for i in range(delta):
+            for ip in range(i, delta):
+                C[i, ip] = np.linalg.norm(B[i, ip, :]) / np.sqrt(np.linalg.norm(B[i, i, :]) * np.linalg.norm(B[ip, ip, :]))
+        return C
 
 from lcm import LCM
 

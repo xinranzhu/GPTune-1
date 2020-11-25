@@ -100,6 +100,31 @@ def objectives(point):
     print(f"One demo run, x = {x:.4f}, t = {t:.4f}, budget = {bgt:.4f}, perturb = {perturb(bgt):.4f}, out = {out[0]:.4f}")
     return out
 
+def models(point):
+    """
+    f(t,x) = exp(- (x + 1) ^ (t + 1) * cos(2 * pi * x)) * (sin( (t + 2) * (2 * pi * x) ) + sin( (t + 2)^(2) * (2 * pi * x) + sin ( (t + 2)^(3) * (2 * pi *x))))
+    """
+    # global test
+    t = point['t']
+    x = point['x']
+    a = 2 * np.pi
+    b = a * t
+    c = a * x
+    d = np.exp(- (x + 1) ** (t + 1)) * np.cos(c)
+    e = np.sin((t + 2) * c) + np.sin((t + 2)**2 * c) + np.sin((t + 2)**3 * c)
+    f = d * e + 1
+    # print('dd',test)
+
+    """
+    f(t,x) = x^2+t
+    """
+    # t = point['t']
+    # x = point['x']
+    # f = 20*x**2+t
+    # time.sleep(1.0)
+
+    return [f*(1+np.random.uniform()*0.1)]
+
 
 """ Plot the objective function for t=1,2,3,4,5,6 """
 def annot_min(x,y, ax=None):
@@ -134,8 +159,8 @@ def main():
 
     output_space = Space([Real(float('-Inf'), float('Inf'), name="time")])
     constraints = {"cst1": "x >= 0. and x <= 1."}
-    # problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
-    problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None)  # no performance model
+    problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
+    # problem = TuningProblem(input_space, parameter_space, output_space, objectives, constraints, None)  # no performance model
     computer = Computer(nodes=1, cores=cores, hosts=None)
     options = Options()
     options['model_restarts'] = 1
@@ -153,8 +178,8 @@ def main():
     # options['search_threads'] = 16
     # options['mpi_comm'] = None
     # options['mpi_comm'] = mpi4py.MPI.COMM_WORLD
-    options['model_class'] = 'Model_LCM' #'Model_GPy_LCM'
-    options['verbose'] = False
+    options['model_class'] = 'Model_LCM' if args.LCMmodel == 'LCM' else 'Model_GPy_LCM' # Model_GPy_LCM or Model_LCM
+    options['verbose'] = True
     options['sample_class'] = 'SampleLHSMDU'
     options['sample_algo'] = 'LHS-MDU'
     options.validate(computer=computer)
@@ -180,12 +205,12 @@ def main():
     print()
     
     data = Data(problem)
-    # giventask = [[1.0], [1.1], [1.2]]
+    # giventask = [[1.0], [5.0], [10.0]]
     # giventask = [[1.0], [1.2], [1.3]]
-    # giventask = [[1.0]]
-    t_end = args.t_end
-    giventask = [[i] for i in np.arange(1, t_end, (t_end-1)/ntask).tolist()] # 10 tasks
-    # giventask = [[i] for i in np.arange(1.0, 6.0, 0.5).tolist()] # 10 tasks
+    giventask = [[1.0], [1.2]]
+    # t_end = args.t_end
+    # giventask = [[i] for i in np.arange(1, t_end, (t_end-1)/ntask).tolist()] # 10 tasks
+    # giventask = [[i] for i in np.arange(1.0, 6.0, 1.0).tolist()] # 5 tasks
     NI=len(giventask)
     assert NI == ntask # make sure number of tasks match
 	    
@@ -196,6 +221,8 @@ def main():
         gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
         (data, stats, data_hist)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
         print("Tuner: ", TUNER_NAME)
+        print("Sampler class: ", options['sample_class'])
+        print("Model class: ", options['model_class'])
         print("stats: ", stats)
         """ Print all input and parameter samples """
         for tid in range(NI):
@@ -216,19 +243,32 @@ def main():
          
     if(TUNER_NAME=='GPTune'):
         NS = Btotal
+        if args.nrun > 0:
+            NS = args.nrun
         NS1 = max(NS//2, 1)
         gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
         """ Building MLA with the given list of tasks """
         (data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=NS1)
-        print("Tuner: ", TUNER_NAME)
         print("stats: ", stats)
+        print("Sampler class: ", options['sample_class'], "Sample algo:", options['sample_algo'])
+        print("Model class: ", options['model_class'])
+        if options['model_class'] == 'Model_LCM' and NI > 1:
+            print("Get correlation metric ... ")
+            C = model[0].M.kern.get_correlation_metric()
+            print("The correlation matrix C is \n", C)
+        elif options['model_class'] == 'Model_GPy_LCM' and NI > 1:
+            print("Get correlation metric ... ")
+            C = model[0].get_correlation_metric(NI)
+            print("The correlation matrix C is \n", C)
+
+        
         """ Print all input and parameter samples """
         for tid in range(NI):
             print("tid: %d" % (tid))
             print(f"    t: {data.I[tid][0]:.2f} ")
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid])
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], f'Oopt  {min(data.O[tid])[0]:.3f}', 'nth ', np.argmin(data.O[tid]))
             
     if(TUNER_NAME=='opentuner'):
         NS = Btotal
@@ -323,6 +363,8 @@ def parse_args():
     parser.add_argument('-t_end', type=float, default=2.0, help='end of task value')
     parser.add_argument('-nodes', type=int, default=1, help='Number of nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cpu cores')
+    parser.add_argument('-nrun', type=int, default=-1, help='total application runs')
+    parser.add_argument('-LCMmodel', type=str, default='LCM', help='choose from LCM models: LCM or GPy_LCM')
     parser.add_argument('-Nloop', type=int, default=1, help='Number of outer loops in multi-armed bandit per task')
     # parser.add_argument('-sample_class', type=str,default='SampleOpenTURNS',help='Supported sample classes: SampleLHSMDU, SampleOpenTURNS')
     args = parser.parse_args()
