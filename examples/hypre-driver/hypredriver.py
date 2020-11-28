@@ -1,6 +1,7 @@
 import numpy as np
 import os, sys, re
 import mpi4py
+import time
 from mpi4py import MPI
 
 # Paths
@@ -98,6 +99,7 @@ def execute(params, RUNDIR, niter = 1, max_iter = '1000', tol = '1e-8'):
             # os.system("rm -rf %s"%(outputfilename))
             comm = MPI.COMM_SELF.Spawn(EXCUDIR, args=myargslist, maxprocs=NProc,info=info)
             comm.Disconnect()
+            time.sleep(3.0)
             runtime = read_output(outputfilename)
             runtimes.append(runtime)
         return np.mean(runtimes)             

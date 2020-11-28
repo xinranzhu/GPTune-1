@@ -96,7 +96,7 @@ def models(point):
     c = a * x
     d = np.exp(- (x + 1) ** (t + 1)) * np.cos(c)
     e = np.sin((t + 2) * c) + np.sin((t + 2)**2 * c) + np.sin((t + 2)**3 * c)
-    f = d * e
+    f = d * e + 1
     # print('dd',test)
 
     """
@@ -134,8 +134,8 @@ if __name__ == '__main__':
 
     output_space = Space([Real(float('-Inf'), float('Inf'), name="time")])
     constraints = {"cst1": "x >= 0. and x <= 1."}
-    # problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
-    problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None)  # no performance model
+    problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
+    # problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None)  # no performance model
 
     computer = Computer(nodes=1, cores=16, hosts=None)
     options = Options()
