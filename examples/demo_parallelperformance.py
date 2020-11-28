@@ -65,10 +65,10 @@ def parse_args():
     parser.add_argument('-nodes', type=int, default=1,help='Number of machine nodes')
     parser.add_argument('-cores', type=int, default=2,help='Number of cores per machine node')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
-    parser.add_argument('-optimization', type=str,default='GPTune', help='Optimization algorithm (opentuner, hpbandster, GPTune)')
-    parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
+    parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
     parser.add_argument('-nruns', type=int, default=20, help='Number of runs per task')
     parser.add_argument('-perfmodel', type=int, default=0, help='Whether to use the performance model')    
+    parser.add_argument('-distparallel', type=int, default=0, help='Whether to use distributed-memory parallelism in the modeling and search phase')    
 
 
     args = parser.parse_args()
@@ -142,11 +142,11 @@ def main():
     cores = args.cores
     machine = args.machine
     nruns = args.nruns
-    TUNER_NAME = args.optimization
     perfmodel = args.perfmodel
+    distparallel = args.distparallel
 
     os.environ['MACHINE_NAME'] = machine
-    os.environ['TUNER_NAME'] = TUNER_NAME    
+    os.environ['TUNER_NAME'] = 'GPTune'    
 
     input_space = Space([Real(0., 10., transform="normalize", name="t")])
     parameter_space = Space([Real(0., 1., transform="normalize", name="x")])
@@ -163,8 +163,11 @@ def main():
     computer = Computer(nodes=nodes, cores=cores, hosts=None)
     options = Options()
     options['model_restarts'] = 1
+    if(distparallel==True):
+        options['distributed_memory_parallelism'] = True
+    else:
+        options['distributed_memory_parallelism'] = False
 
-    options['distributed_memory_parallelism'] = False
     options['shared_memory_parallelism'] = False
 
     options['objective_evaluation_parallelism'] = False
@@ -172,8 +175,8 @@ def main():
     options['objective_multisample_processes'] = 1
     options['objective_nprocmax'] = 1
 
-    options['model_processes'] = 1
-    # options['model_threads'] = 1
+    # options['model_processes'] = nodes*cores-2
+    options['model_threads'] = 1
     # options['model_restart_processes'] = 1
 
     # options['search_multitask_processes'] = 1
@@ -184,16 +187,16 @@ def main():
     # options['mpi_comm'] = None
     #options['mpi_comm'] = mpi4py.MPI.COMM_WORLD
     options['model_class'] = 'Model_LCM' #'Model_GPy_LCM'
-    options['verbose'] = False
+    options['verbose'] = True
     # options['sample_algo'] = 'MCS'
     # options['sample_class'] = 'SampleLHSMDU'
 
     options.validate(computer=computer)
 
     
-   # giventask = [[6],[6.5]]
+    # giventask = [[6],[6.5]]
+    # giventask = [[i] for i in np.arange(0, 10, 0.5).tolist()]
     giventask = [[i] for i in np.arange(0, ntask/2, 0.5).tolist()]
-    print(giventask,'ggg')
 
     NI=len(giventask)
     NS=nruns	    
@@ -203,73 +206,19 @@ def main():
     if(TUNER_NAME=='GPTune'):
         data = Data(problem)
         gt = GPTune(problem, computer=computer, data=data, options=options,driverabspath=os.path.abspath(__file__))
-        (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2))
-        # (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS-1)
+        # (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2))
+        (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=NS-1)
         print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print("    t:%f " % (data.I[tid][0]))
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-        
-    
-
-    if(TUNER_NAME=='opentuner'):
-        (data,stats)=OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
-        print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print("    t:%f " % (data.I[tid][0]))
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-    if(TUNER_NAME=='hpbandster'):
-        (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
-        print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print("    t:%f " % (data.I[tid][0]))
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+        # """ Print all input and parameter samples """
+        # for tid in range(NI):
+        #     print("tid: %d" % (tid))
+        #     print("    t:%f " % (data.I[tid][0]))
+        #     print("    Ps ", data.P[tid])
+        #     print("    Os ", data.O[tid].tolist())
+        #     print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
 
 
 
-
-    plot=0
-    if plot==1:
-        x = np.arange(0., 1., 0.00001)
-        Nplot=9.5
-        # for t in np.linspace(0,Nplot,20):
-        for t in [1, 2, 4, 6]:
-            fig = plt.figure(figsize=[12.8, 9.6])
-            I_orig=[t]
-            kwargst = {input_space[k].name: I_orig[k] for k in range(len(input_space))}
-
-            y=np.zeros([len(x),1])
-            for i in range(len(x)):
-                P_orig=[x[i]]
-                kwargs = {parameter_space[k].name: P_orig[k] for k in range(len(parameter_space))}
-                kwargs.update(kwargst)
-                y[i]=objectives(kwargs) 
-            fontsize=30
-            plt.rcParams.update({'font.size': 21})
-            plt.plot(x, y, 'b')
-            plt.xlabel('x',fontsize=fontsize+2)
-            plt.ylabel('y(t,x)',fontsize=fontsize+2)
-            plt.title('t=%d'%t,fontsize=fontsize+2)
-            print('t:',t,'x:',x[np.argmin(y)],'ymin:',y.min())    
-        
-            annot_min(x,y)
-            # plt.show()
-            # plt.show(block=False)
-            # fig.savefig('obj_t_%d.eps'%t)   
-            fig.savefig('obj_t_%d.pdf'%t)                
 
 if __name__ == "__main__":
     main()

@@ -110,6 +110,31 @@ class Model_GPy_LCM(Model):
 #        self.M.param_array[:] = allreduce_best(self.M.param_array[:], resopt)[:]
         self.M.parameters_changed()
 
+        if(multitask): # dump the hyperparameters
+            theta=[]
+            var=[]
+            ws=[]
+            kappa=[]
+            sigma=[]
+            # print(self.M)
+            for qq in range(model_latent):
+                q = self.M.kern['.*GPy_LCM%s.rbf.lengthscale'%qq]
+                theta = theta + q.values.tolist()
+                q = self.M.kern['.*GPy_LCM%s.rbf.variance'%qq]
+                var = var + q.values.tolist() 
+                q = self.M.kern['.*GPy_LCM%s.B.W'%qq]
+                ws = ws + q.values.tolist() 
+                q = self.M.kern['.*GPy_LCM%s.B.kappa'%qq]
+                kappa = kappa + q.values.tolist() 
+            for qq in range(data.NI):
+                q = self.M['.*mixed_noise.Gaussian_noise_%s.variance'%qq]
+                sigma = sigma + q.values.tolist()                                                  
+            # print(theta,'theta')
+            # print(var,'var')
+            # print(kappa,'kappa')           
+            # print(ws,'ws')           
+            # print(sigma,'sigma')   
+            params = theta+var+kappa+sigma+ws        
         return
 
     def update(self, newdata : Data, do_train: bool = False, **kwargs):
@@ -134,8 +159,8 @@ class Model_GPy_LCM(Model):
             Wq = currentLCM.B.W.values
             Kappa_q = currentLCM.B.kappa.values
             B[:, :, i] = np.outer(Wq, Wq) + np.diag(Kappa_q)
-            print("In model.py, i = ", i)
-            print(B[:, :, i])
+            # print("In model.py, i = ", i)
+            # print(B[:, :, i])
             
         # return C_{i, i'}
         C = np.zeros((delta, delta))
@@ -178,20 +203,22 @@ class Model_LCM(Model):
             #with concurrent.futures.ProcessPoolExecutor(max_workers = kwargs['search_multitask_threads']) as executor:
             with concurrent.futures.ThreadPoolExecutor(max_workers = kwargs['model_restart_threads']) as executor:
                 def fun(restart_iter):
-                    if ('seed' in kwargs):
-                        seed = kwargs['seed'] * kwargs['model_restart_threads'] + restart_iter
-                    else:
-                        seed = restart_iter
-                    np.random.seed(seed)
+                    # if ('seed' in kwargs):
+                    #     seed = kwargs['seed'] * kwargs['model_restart_threads'] + restart_iter
+                    # else:
+                    #     seed = restart_iter
+                    # np.random.seed(seed)
+                    ## np.random.seed()
                     kern = LCM(input_dim = len(data.P[0][0]), num_outputs = data.NI, Q = Q)
-                    if (restart_iter == 0 and self.M is not None):
-                        kern.set_param_array(self.M.kern.get_param_array())
+                    # if (restart_iter == 0 and self.M is not None):
+                    #     kern.set_param_array(self.M.kern.get_param_array())
                     return kern.train_kernel(X = data.P, Y = data.O, computer = self.computer, kwargs = kwargs)
                 res = list(executor.map(fun, restart_iters, timeout=None, chunksize=1))
 
         else:
             def fun(restart_iter):
-                np.random.seed(restart_iter)
+                # np.random.seed(restart_iter)
+                np.random.seed()
                 kern = LCM(input_dim = len(data.P[0][0]), num_outputs = data.NI, Q = Q)
                 # print('I am here')
                 return kern.train_kernel(X = data.P, Y = data.O, computer = self.computer, kwargs = kwargs)
@@ -203,12 +230,13 @@ class Model_LCM(Model):
         kern = LCM(input_dim = len(data.P[0][0]), num_outputs = data.NI, Q = Q)
         bestxopt = min(res, key = lambda x: x[1])[0]
         kern.set_param_array(bestxopt)
-        # print(kern.get_param_array())
-        # print('theta:',kern.theta)
-        # print('var:',kern.var)
-        # print('kappa:',kern.kappa)
-        # print('sigma:',kern.sigma)
-        # print('WS:',kern.WS)
+        if(kwargs['verbose']==True):
+            # print('hyperparameters:', kern.get_param_array())
+            print('theta:',kern.theta)
+            print('var:',kern.var)
+            print('kappa:',kern.kappa)
+            print('sigma:',kern.sigma)
+            print('WS:',kern.WS)
 
 
 
