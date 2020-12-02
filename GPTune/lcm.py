@@ -83,7 +83,7 @@ class LCM(GPy.kern.Kern):
 
 
     def get_correlation_metric(self):
-        # self.kappa =  b_{1,1}, ..., b_{delta,1}, ..., b_{1,Q}, ..., b_{\delta,Q}
+        # self.kappa =  b_{1,1}, ..., b_{delta,1}, ..., b_{1,Q}, ..., b_{delta,Q}
         # self.sigma = d_1, ..., d_delta
         # self.WS = a_{1,1}, ..., a_{delta,1}, ..., a_{1,Q}, ..., a_{delta,Q}
         kappa = self.kappa
@@ -91,8 +91,8 @@ class LCM(GPy.kern.Kern):
         WS = self.WS
         delta = len(sigma)
         Q = int(len(WS)/delta)
-        # print('NI = ', delta)
-        # print('Q = ', Q)
+        WS_mat = np.array(WS).reshape((Q, delta)).T
+        kappa_mat =  np.array(kappa).reshape((Q, delta)).T
         B = np.zeros((delta, delta, Q))
         for i in range(Q):
             Wq = WS[i*delta : (i+1)*delta]
@@ -103,10 +103,18 @@ class LCM(GPy.kern.Kern):
             
         # return C_{i, i'}
         C = np.zeros((delta, delta))
+        C2 = np.zeros((delta, delta))
+        # C3 = np.zeros((delta, delta))
         for i in range(delta):
+            a_i = WS_mat[i, :]
+            b_i = kappa_mat[i, :]
             for ip in range(i, delta):
                 C[i, ip] = np.linalg.norm(B[i, ip, :]) / np.sqrt(np.linalg.norm(B[i, i, :]) * np.linalg.norm(B[ip, ip, :]))
-        return C
+                a_ip = WS_mat[ip, :]
+                b_ip = kappa_mat[ip, :]
+                C2[i, ip] = a_i.dot(a_ip) / np.linalg.norm(a_ip) / np.linalg.norm(a_i)
+                # C3[i, ip] = (a_i+b_i).dot(a_ip+b_ip) / np.linalg.norm(a_ip+b_ip) / np.linalg.norm(a_i+b_i)
+        return C, C2
 
 
     def set_param_array(self, x):

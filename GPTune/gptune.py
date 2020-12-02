@@ -140,7 +140,6 @@ class GPTune(object):
                     NSi = self.data.P[i].shape[0]
                     tmpP[i] = tmpP[i][0:max(NS1-NSi,0),:] # if NSi>=NS1, no need to generate new random data
 
-
 #            #XXX add the info of problem.models here
 #            for P2 in P:
 #                for x in P2:
@@ -154,6 +153,8 @@ class GPTune(object):
         time_sample_init = time_sample_init + (t2-t1)/1e9
 
         t1 = time.time_ns()
+               
+                
         if (NSmin<NS1):
             tmpO = self.computer.evaluate_objective(self.problem, self.data.I, tmpP, self.data.D, options = kwargs)
             if(NSmin==0): # no existing tuning data is available
@@ -224,12 +225,13 @@ class GPTune(object):
                 # print(tmpdata.P[0])
                 modelers[o].train(data = tmpdata, **kwargs)
                 if self.options['verbose'] == True and self.options['model_class'] == 'Model_LCM' and len(self.data.I)>1:
-                    C = modelers[o].M.kern.get_correlation_metric()
+                    C, C2 = modelers[o].M.kern.get_correlation_metric()
                     print("The correlation matrix C is \n", C)
+                    print("\nThe new correlation matrix C2 is \n", C2)
                 elif self.options['verbose'] == True and self.options['model_class'] == 'Model_GPy_LCM' and len(self.data.I)>1:
-                    C = modelers[o].get_correlation_metric(len(self.data.I))
+                    C, C2 = modelers[o].get_correlation_metric(len(self.data.I))
                     print("The correlation matrix C is \n", C)
-                
+                    print("\nThe new correlation matrix C2 is \n", C2)
                 
                 
                 
@@ -488,16 +490,18 @@ class GPTune_MB(object):
                         if s > 0:
                             # data.P[i] = np.array(P_temp)[idx[:ratio]].tolist() + data.P[i] 
                             data.P[i] = [P_temp[_i] for _i in idx[:ratio]] + data.P[i] 
-                            print(data.O[i])
-                            print(O_temp[idx[:ratio]])
+                            # print(data.O[i])
+                            # print(O_temp[idx[:ratio]])
                             data.O[i] = np.concatenate((O_temp[idx[:ratio]], data.O[i]))
                         else:
                             data.P.append([P_temp[_i] for _i in idx[:ratio]])
                             data.O.append(O_temp[idx[:ratio]])
-                            
+                
+                # print("Calling MLA: \ndata.I", data.I, "\ndata.P", data.P, "\ndata.O", data.O)
+                # print(f"NS={ntotal}, Igiven={newtasks}, NI={len(newtasks)}, NS1={min(self.NSs)}")
                 gt = GPTune(self.tp, computer=self.computer,
                             data=data, options=self.options)
-                (data, _, stats0) = gt.MLA(NS=ntotal, Igiven=newtasks, NI=len(newtasks), NS1=ns)
+                (data, _, stats0) = gt.MLA(NS=ntotal, Igiven=newtasks, NI=len(newtasks), NS1=min(self.NSs))
                 data.P = [x[-ns:] for x in data.P]
                 data.O = [x[-ns:] for x in data.O]
                 data1.I += data.I[0:len(Igiven)]
@@ -571,7 +575,10 @@ class GPTune_MB(object):
                     newdata = Data(problem=self.tp, I=temp_I, P=temp_P)
                     gt = GPTune(self.tp, computer=self.computer, data=newdata, options=self.options)
                     print(f'Evaluating top {ratio} by MLA with budget = {budget}')
-                    (newdata, _, stats_new) = gt.MLA(NS=ratio, Igiven=temp_I, NI=len(temp_I), NS1=int(ns/2))
+                    # print('temp_P is', temp_P)
+                    # print(f'NS={ratio}, Igiven={temp_I}, \n NI={len(temp_I)}, NS1={int(ns/2)}')
+                    # (newdata, _, stats_new) = gt.MLA(NS=ratio, Igiven=temp_I, NI=len(temp_I), NS1=int(ns/2))
+                    (newdata, _, stats_new) = gt.MLA(NS=ratio, Igiven=temp_I, NI=len(temp_I), NS1=ratio)
                     temp_O = list(map(np.squeeze, newdata.O))
                     # temp_P = list(map(np.array, newdata.P))
                     temp_P = newdata.P
@@ -580,8 +587,8 @@ class GPTune_MB(object):
                     stats['time_total'] += stats_new['time_total']
                 
                 newdata.I = Igiven
-                print('newdata before merge')
-                print('newdata.P = ', newdata.P)
+                # print('newdata before merge')
+                # print('newdata.P = ', newdata.P)
                 # self.data.merge(newdata) # this would make self.data.P a list of numpy array
                 self.data.P = [x + y for x, y in zip(self.data.P, newdata.P)]
                 self.data.O = [np.concatenate((self.data.O[i], newdata.O[i])) for i in range(len(self.data.O))]
