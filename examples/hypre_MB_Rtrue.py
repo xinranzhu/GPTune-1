@@ -262,9 +262,9 @@ def main():
     
     # choose sampler
     # options['sample_class'] = 'SampleOpenTURNS'
-    if args.lhs == 1:
-        options['sample_class'] = 'SampleLHSMDU'
-        options['sample_algo'] = 'LHS-MDU'
+    # if args.lhs == 1:
+    options['sample_class'] = 'SampleLHSMDU'
+    options['sample_algo'] = 'LHS-MDU'
     options.validate(computer=computer)
     
     options['budget_min'] = bmin
@@ -359,92 +359,10 @@ def main():
     if(TUNER_NAME=='GPTune'):
         gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
         """ Building MLA with the given list of tasks """
-        NS = Btotal
         if args.nrun > 0:
             NS = args.nrun
-        NS1 = max(NS//2, 1)
-        (data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=NS1)
-        print("stats: ", stats)
-        print("model class: ", options['model_class'])
-        print("Model restart: ", restart)
-        
-        # """ Dump the data to file as a new check point """
-        # pickle.dump(data, open('Data_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
-        
-        # """ Dump the tuner to file for TLA use """
-        # pickle.dump(gt, open('MLA_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
-
-
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid])
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-
-        if TLA is True:
-            """ Call TLA for 2 new tasks using the constructed LCM model"""
-            newtask = [[0.5, 0.3], [0.2, 1.0]]
-            (aprxopts, objval, stats) = gt.TLA1(newtask, NS=None)
-            print("stats: ", stats)
-
-            """ Print the optimal parameters and function evaluations"""
-            for tid in range(len(newtask)):
-                print("new task: %s" % (newtask[tid]))
-                print('    predicted Popt: ', aprxopts[tid], ' objval: ', objval[tid])
-
-    
-    if(TUNER_NAME=='opentuner'):
-        NS = Btotal
-        (data,stats) = OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
-        print("stats: ", stats)
-
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid])
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
-
-    if(TUNER_NAME=='TPE'):
-        NS = Btotal
-        (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
-        print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-    
-    if(TUNER_NAME=='GPTuneBand'):
-        data = Data(problem)
-        gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
-        (data, stats, data_hist)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
-        print("Tuner: ", TUNER_NAME)
-        print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            nth = np.argmin(data.O[tid])
-            Popt = data.P[tid][nth]
-            # find which arm and which sample the optimal param is from
-            for arm in range(len(data_hist.P)):
-                try:
-                    idx = (data_hist.P[arm]).index(Popt)
-                    arm_opt = arm
-                except ValueError:
-                    pass
-            print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
-         
-    if(TUNER_NAME=='GPTuneBand_single'):
-        
+        # NS1 = max(NS//2, 1)
+        NS1 = NS
         def merge_dict(mydict, newdict):
             for key in mydict.keys():
                 mydict[key] += newdict[key]
@@ -455,8 +373,8 @@ def main():
             NI = 1
             cur_task = [singletask]
             data = Data(problem)
-            gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
-            (data, stats)=gt.MB_LCM(NS = Nloop, Igiven = cur_task)
+            gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
+            (data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=cur_task, NS1=NS1)
             data_all.append(data)
             merge_dict(stats_all, stats)
             print("Finish one single task tuning")
@@ -468,49 +386,122 @@ def main():
             print("    Os ", data.O[tid].tolist())
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
         
-        print("Finish tuning...")
-        print("Tuner: ", TUNER_NAME)
-        print("stats_all: ", stats_all)
-        for i in range(len(data_all)):
-            data = data_all[i]
-            for tid in range(NI):
-                print("tid: %d" % (i))
-                print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-                print("    Ps ", data.P[tid])
-                print("    Os ", data.O[tid].tolist())
-                print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+    # if(TUNER_NAME=='opentuner'):
+    #     NS = Btotal
+    #     (data,stats) = OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
+    #     print("stats: ", stats)
+
+    #     """ Print all input and parameter samples """
+    #     for tid in range(NI):
+    #         print("tid: %d" % (tid))
+    #         print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #         print("    Ps ", data.P[tid])
+    #         print("    Os ", data.O[tid])
+    #         print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
+
+    # if(TUNER_NAME=='TPE'):
+    #     NS = Btotal
+    #     (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
+    #     print("stats: ", stats)
+    #     """ Print all input and parameter samples """
+    #     for tid in range(NI):
+    #         print("tid: %d" % (tid))
+    #         print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #         print("    Ps ", data.P[tid])
+    #         print("    Os ", data.O[tid].tolist())
+    #         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+    
+    # if(TUNER_NAME=='GPTuneBand'):
+    #     data = Data(problem)
+    #     gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
+    #     (data, stats, data_hist)=gt.MB_LCM(NS = Nloop, Igiven = giventask)
+    #     print("Tuner: ", TUNER_NAME)
+    #     print("stats: ", stats)
+    #     """ Print all input and parameter samples """
+    #     for tid in range(NI):
+    #         print("tid: %d" % (tid))
+    #         print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #         print("    Ps ", data.P[tid])
+    #         print("    Os ", data.O[tid].tolist())
+    #         nth = np.argmin(data.O[tid])
+    #         Popt = data.P[tid][nth]
+    #         # find which arm and which sample the optimal param is from
+    #         for arm in range(len(data_hist.P)):
+    #             try:
+    #                 idx = (data_hist.P[arm]).index(Popt)
+    #                 arm_opt = arm
+    #             except ValueError:
+    #                 pass
+    #         print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
+         
+    # if(TUNER_NAME=='GPTuneBand_single'):
+        
+    #     def merge_dict(mydict, newdict):
+    #         for key in mydict.keys():
+    #             mydict[key] += newdict[key]
+                
+    #     data_all = []
+    #     stats_all = {}
+    #     for singletask in giventask:
+    #         NI = 1
+    #         cur_task = [singletask]
+    #         data = Data(problem)
+    #         gt = GPTune_MB(problem, computer=computer, NS=Nloop, options=options)
+    #         (data, stats)=gt.MB_LCM(NS = Nloop, Igiven = cur_task)
+    #         data_all.append(data)
+    #         merge_dict(stats_all, stats)
+    #         print("Finish one single task tuning")
+    #         print("Tuner: ", TUNER_NAME)
+    #         print("stats: ", stats)
+    #         tid = 0
+    #         print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #         print("    Ps ", data.P[tid])
+    #         print("    Os ", data.O[tid].tolist())
+    #         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+        
+    #     print("Finish tuning...")
+    #     print("Tuner: ", TUNER_NAME)
+    #     print("stats_all: ", stats_all)
+    #     for i in range(len(data_all)):
+    #         data = data_all[i]
+    #         for tid in range(NI):
+    #             print("tid: %d" % (i))
+    #             print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #             print("    Ps ", data.P[tid])
+    #             print("    Os ", data.O[tid].tolist())
+    #             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
          
          
                               
-    if(TUNER_NAME=='hpbandster'):
-        NS = Ntotal
-        (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
-        print("stats: ", stats)
-        """ Print all input and parameter samples """
-        for tid in range(NI):
-            print("tid: %d" % (tid))
-            print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
-            print("    Ps ", data.P[tid])
-            print("    Os ", data.O[tid].tolist())
-            # print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-            max_budget = 0.
-            Oopt = 99999
-            Popt = None
-            nth = None
-            for idx, (config, out) in enumerate(zip(data.P[tid], data.O[tid].tolist())):
-                for subout in out[0]:
-                    budget_cur = subout[0]
-                    if budget_cur > max_budget:
-                        max_budget = budget_cur
-                        Oopt = subout[1]
-                        Popt = config
-                        nth = idx
-                    elif budget_cur == max_budget:
-                        if subout[1] < Oopt:
-                            Oopt = subout[1]
-                            Popt = config
-                            nth = idx                    
-            print('    Popt ', Popt, 'Oopt ', Oopt, 'nth ', nth)
+    # if(TUNER_NAME=='hpbandster'):
+    #     NS = Ntotal
+    #     (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
+    #     print("stats: ", stats)
+    #     """ Print all input and parameter samples """
+    #     for tid in range(NI):
+    #         print("tid: %d" % (tid))
+    #         print(f"   [a_val, c_val] = [{data.I[tid][0]:.3f}, {data.I[tid][1]:.3f}]")
+    #         print("    Ps ", data.P[tid])
+    #         print("    Os ", data.O[tid].tolist())
+    #         # print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+    #         max_budget = 0.
+    #         Oopt = 99999
+    #         Popt = None
+    #         nth = None
+    #         for idx, (config, out) in enumerate(zip(data.P[tid], data.O[tid].tolist())):
+    #             for subout in out[0]:
+    #                 budget_cur = subout[0]
+    #                 if budget_cur > max_budget:
+    #                     max_budget = budget_cur
+    #                     Oopt = subout[1]
+    #                     Popt = config
+    #                     nth = idx
+    #                 elif budget_cur == max_budget:
+    #                     if subout[1] < Oopt:
+    #                         Oopt = subout[1]
+    #                         Popt = config
+    #                         nth = idx                    
+    #         print('    Popt ', Popt, 'Oopt ', Oopt, 'nth ', nth)
 
 
 def parse_args():

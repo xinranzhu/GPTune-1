@@ -39,7 +39,6 @@ CCC=mpicc
 CCCPP=mpicxx
 FTN=mpif90
 
-ntask=10
 # task='na' # the t value for the task
 Nloop=1
 # expid=0
@@ -48,36 +47,64 @@ Nloop=1
 cd examples
 rm -rf *.pkl
 
-for expid in 30
-do
-tuner='opentuner'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} 2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_expid${expid}
+nodes=1
+cores=32
 
-tuner='hpbandster'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} 2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_expid${expid}
-done
-
-for expid in 31
-do
-tuner='hpbandster_bandit'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} 2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_expid${expid}
-
-tuner='GPTune_MB'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner}  2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_expid${expid}
-
+ntask=10
 tuner='GPTune'
-mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} 2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_expid${expid}
-done
+plot=1
+
+restart=1
+perfmodel=0
+# nruns=10
+
+# expid='E0'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E1'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E2'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E3'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E4'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
 
 
-# TEST multi-loop
-# testid=4
-# tuner='GPTune_MB'
-# mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -nbracket ${nbracket} -optimization ${tuner}  2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_testid${testid}
 
+# restart=1
+# perfmodel=0
+# nruns=20
+# expid='E5'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E6'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E7'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E8'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E9'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
 
-# TEST all random config sampling in GPTune
-# testid=4
-# ntask=1
-# tuner='GPTune_MB'
-# mpirun --oversubscribe --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1 python -u demo_MB.py -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner}  2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_${tuner}_testid${testid}
+# nruns=40
+# expid='E10'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E11'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E12'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E13'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E14'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+
+nruns=80
+# expid='E15'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+# expid='E16'
+# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+expid='E17'
+mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+expid='E18'
+mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+expid='E19'
+mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
