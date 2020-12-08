@@ -30,3 +30,6 @@ autotune
 scikit-optimize
 examples/hypre_bandit.py
 examples/hypre_fidelitytest.py
+TEMP*.txt
+temp*.txt
+obj_*.pdf
