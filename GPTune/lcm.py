@@ -101,20 +101,22 @@ class LCM(GPy.kern.Kern):
             # print("In model.py, i = ", i)
             # print(B[:, :, i])
             
-        # return C_{i, i'}
         C = np.zeros((delta, delta))
         C2 = np.zeros((delta, delta))
-        # C3 = np.zeros((delta, delta))
+        C3 = np.zeros((delta, delta))
         for i in range(delta):
             a_i = WS_mat[i, :]
             b_i = kappa_mat[i, :]
+            sum_bi = sum(b_i)
+            ai_bi = np.sqrt( np.linalg.norm(a_i)**2 + sum_bi )
             for ip in range(i, delta):
                 C[i, ip] = np.linalg.norm(B[i, ip, :]) / np.sqrt(np.linalg.norm(B[i, i, :]) * np.linalg.norm(B[ip, ip, :]))
                 a_ip = WS_mat[ip, :]
                 b_ip = kappa_mat[ip, :]
+                aip_bip = np.sqrt( np.linalg.norm(a_ip)**2+sum(b_ip) )
                 C2[i, ip] = a_i.dot(a_ip) / np.linalg.norm(a_ip) / np.linalg.norm(a_i)
-                # C3[i, ip] = (a_i+b_i).dot(a_ip+b_ip) / np.linalg.norm(a_ip+b_ip) / np.linalg.norm(a_i+b_i)
-        return C, C2
+                C3[i, ip] = ( a_i.dot(a_ip) + (i==ip)*sum_bi ) /  aip_bip / ai_bi
+        return C, C2, C3
 
 
     def set_param_array(self, x):
