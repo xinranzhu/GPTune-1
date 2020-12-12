@@ -437,10 +437,11 @@ class GPTune_MB(object):
         self.options = options
         self.data = Data(tp)
 
-    def MB_LCM(self, NS=None, Igiven=None, **kwargs):
+    def MB_LCM(self, NS=None, Igiven=None, Pdefault=None, **kwargs):
         """
         Igiven		 : a list of tasks 
         NS			 : number of samples in the highest budget arm
+        Pdefault     : assuming there is a default parameter configuration among all tasks
         """
 
         np.set_printoptions(suppress=False, precision=4)
@@ -506,6 +507,11 @@ class GPTune_MB(object):
                         else:
                             data.P.append([P_temp[_i] for _i in idx[:ratio]])
                             data.O.append(O_temp[idx[:ratio]])
+                if(Pdefault is not None):
+                    if(data.P is None):
+                        data.P = [[Pdefault]] * len(newtasks)
+                    elif(len(data.P) == 0):
+                        data.P = [[Pdefault]] * len(newtasks)
                 
                 # print("Calling MLA: \ndata.I", data.I, "\ndata.P", data.P, "\ndata.O", data.O)
                 # print(f"NS={ntotal}, Igiven={newtasks}, NI={len(newtasks)}, NS1={min(self.NSs)}")
