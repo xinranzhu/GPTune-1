@@ -223,7 +223,7 @@ def main():
     # options['mpi_comm'] = None
     # options['mpi_comm'] = mpi4py.MPI.COMM_WORLD
     options['model_class'] = 'Model_LCM' # Model_GPy_LCM or Model_LCM(default)
-    options['verbose'] = True
+    options['verbose'] = False
     # options['sample_class'] = 'SampleLHSMDU'
     # options['sample_algo'] = 'LHS-MDU'
     options.validate(computer=computer)
@@ -253,8 +253,8 @@ def main():
     # giventask = [[1.0], [1.2], [1.3]]
     # giventask = [[1.0]]
     # t_end = args.t_end
-    # giventask = [[i] for i in np.arange(1, ntask/2+1, 0.5).tolist()]
-    giventask = [[i] for i in np.arange(1, 1.5, 0.05).tolist()]
+    giventask = [[i] for i in np.arange(1, ntask/2+1, 0.5).tolist()]
+    # giventask = [[i] for i in np.arange(1, 1.5, 0.05).tolist()]
     # giventask = [[1.0], [1.05], [1.1]]
     NI=len(giventask)
     assert NI == ntask # make sure number of tasks match
@@ -432,8 +432,6 @@ def main():
         print("The correlation matrix among true functions is: \n", R_true)
         new_Rtrue = R_true[np.triu_indices(R_true.shape[0], 1)]
         new_R = R[np.triu_indices(R.shape[0], 1)]
-        print(new_Rtrue)
-        print(new_R)
         print("The mean absolute error is: \n", np.mean(abs(new_Rtrue - new_R)))
         print("The mean relative error is: \n", np.mean( abs(new_Rtrue - new_R)/ abs(new_R) ))
 
