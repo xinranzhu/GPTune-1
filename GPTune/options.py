@@ -78,7 +78,8 @@ class Options(dict):
         budget_min = 0.1 # minimum budget
         budget_max = 1 # maximum budget
         budget_base = 2 # the number of arms is floor{log_{budget_base}{budget_max/budget_min}}+1
-
+        fidelity_map = None
+        
         self.update(locals())
         self.update(kwargs)
         self.pop('self')

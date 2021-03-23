@@ -404,11 +404,19 @@ class GPTune_MB(object):
         options      : object defining all the options that will define the behaviour of the tuner (See file 'GPTune/options.py')
         """
 
-        self.smax = int(np.floor(np.log10(
-            options['budget_max']/options['budget_min'])/np.log10(options['budget_base'])))
-        self.budgets = [options['budget_max'] /
-                        options['budget_base']**x for x in range(self.smax+1)]
-        print(f'smax = {self.smax}, budgets = {self.budgets}')
+        # options contains: bin, bmax, eta
+        # Or contains: fidelity map (dictionary from s values to budget level B(s)), eta
+        if options['fidelity_map'] == None:
+            self.smax = int(np.floor(np.log10(
+                options['budget_max']/options['budget_min'])/np.log10(options['budget_base'])))
+            self.budgets = [options['budget_max'] /
+                            options['budget_base']**x for x in range(self.smax+1)]
+            print(f'Using a default way, smax = {self.smax}, budgets = {self.budgets}.')
+        else:
+            s_vals = sorted(options['fidelity_map'].keys())
+            self.smax = s_vals[-1]
+            self.budgets = [options['fidelity_map'].get(key) for key in s_vals]
+            print(f'Using a flexible way, smax = {self.smax}, budgets = {self.budgets}.')
 
         parameter_space = tp.parameter_space
         output_space = tp.output_space
