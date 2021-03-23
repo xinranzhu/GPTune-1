@@ -47,7 +47,7 @@ class HpBandSterWorker(hpbandster.core.worker.Worker):
         super().__init__(*args, **kwargs)
         self.myworker_id = kwargs['id']
         self.tp          = tp
-        self.computer          = computer
+        self.computer    = computer
         self.t          = t
         self.NS         = NS
         self.niter      = niter

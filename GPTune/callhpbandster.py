@@ -22,6 +22,7 @@ import hpbandster.optimizers
 
 import numpy as np
 from autotune.problem import TuningProblem
+from options import Options
 from computer import Computer
 from typing import Collection
 
@@ -119,6 +120,7 @@ class HpBandSterWorker(hpbandster.core.worker.Worker):
             kwargs = {d.name: x[i] for (i, d) in enumerate(self.tp.parameter_space)}
             kwargs2 = {d.name: t[i] for (i, d) in enumerate(self.tp.input_space)}
             kwargs2.update(kwargs)
+            kwargs2['budget'] = budget
             check_constraints = functools.partial(self.computer.evaluate_constraints, self.tp, inputs_only = False, kwargs = kwargs)
             cond = check_constraints(kwargs2)
 
@@ -216,6 +218,7 @@ def HpBandSter_bandit(T, NS, tp : TuningProblem, computer : Computer, options: O
     min_budget   = options['budget_min'] # Minimum budget used during the optimization.
     max_budget   = options['budget_max'] # Maximum budget used during the optimization.
     budget_base  = options['budget_base']
+    n_iterations = NS # Number of iterations performed by the optimizer
     n_workers    = 1  # Number of workers to run in parallel.
 
     X = []
