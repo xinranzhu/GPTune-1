@@ -286,7 +286,7 @@ def main():
     print()
     
     data = Data(problem)
-    giventask = [[(amax-amin)*random.random()+amin,(cmax-cmin)*random.random()+cmin] for i in range(ntask)]
+    giventask = [[(amax-amin)*random()+amin,(cmax-cmin)*random()+cmin] for i in range(ntask)]
     # giventask = [[0.2, 0.5]]
     
     if ntask == 1:
