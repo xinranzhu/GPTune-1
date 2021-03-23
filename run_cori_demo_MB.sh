@@ -41,7 +41,6 @@ FTN=mpif90
 
 # task='na' # the t value for the task
 Nloop=1
-# expid=0
 # sample_class='SampleLHSMDU' # 'Supported sample classes: SampleLHSMDU, SampleOpenTURNS(default)'
 
 cd examples
@@ -49,62 +48,11 @@ rm -rf *.pkl
 
 nodes=1
 cores=32
-
 ntask=10
+nruns=10
 tuner='GPTune'
 plot=1
-
 restart=1
 perfmodel=0
-# nruns=10
-
-# expid='E0'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E1'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E2'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E3'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E4'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-
-
-
-# restart=1
-# perfmodel=0
-# nruns=20
-# expid='E5'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E6'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E7'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E8'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E9'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-
-# nruns=40
-# expid='E10'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E11'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E12'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E13'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E14'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-
-nruns=80
-# expid='E15'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-# expid='E16'
-# mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-expid='E17'
-mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-expid='E18'
-mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
-expid='E19'
+expid='0'
 mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
