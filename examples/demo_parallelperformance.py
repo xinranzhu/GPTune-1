@@ -180,7 +180,7 @@ def main():
     # options['model_restart_processes'] = 1
 
     # options['search_multitask_processes'] = 1
-    # options['search_multitask_threads'] = 1
+    options['search_multitask_threads'] = 1
     # options['search_threads'] = 16
 
 
@@ -196,7 +196,8 @@ def main():
     
     # giventask = [[6],[6.5]]
     # giventask = [[i] for i in np.arange(0, 10, 0.5).tolist()]
-    giventask = [[i] for i in np.arange(0, ntask/2, 0.5).tolist()]
+    # giventask = [[i] for i in np.arange(0, ntask/2, 0.5).tolist()]
+    giventask = [ [np.random.rand()] for i in range(ntask)]
 
     NI=len(giventask)
     NS=nruns	    
