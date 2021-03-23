@@ -1,0 +1,50 @@
+GPTuneBand	0, [0.2, 0.5]	1.27	0.15	1.44	1.16	1.20
+HpBandster		1.05	0.24	1.18	0.77	1.19
+GPTune		1.18	0.09	1.09	1.26	1.20
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	1, [0.159, 0.545]	0.86	0.08	0.82	0.95	0.80
+HpBandster		2.01	0.71	1.37	1.87	2.78
+GPTune		1.09	0.15	1.19	1.16	0.92
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	2, [0.02, 0.682]	1.23	0.31	1.50	0.89	1.30
+HpBandster		1.73	0.39	1.35	1.71	2.12
+GPTune		0.96	0.08	0.87	1.00	1.01
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	3, [0.9, 0.02]	1.50	0.13	1.50	1.62	1.37
+HpBandster		1.33	0.18	1.34	1.15	1.50
+GPTune		0.97	0.09	1.01	0.87	1.03
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	4, [0.7, 0.3]	0.85	0.07	0.84	0.78	0.92
+HpBandster		1.25	0.28	1.27	1.51	0.96
+GPTune		1.06	0.03	1.03	1.06	1.08
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	5, [0.147, 0.739]	1.00	0.03	1.02	1.02	0.96
+HpBandster		0.97	0.14	0.88	1.13	0.90
+GPTune		1.07	0.20	1.30	1.00	0.92
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!
+GPTuneBand	6, [0.033, 0.528]	0.97	0.10	0.85	1.02	1.03
+HpBandster		1.29	0.22	1.40	1.43	1.04
+GPTune		0.99	0.10	1.07	0.88	1.01
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	7, [0.094, 0.402]	0.89	0.12	1.00	0.90	0.77
+HpBandster		1.07	0.08	1.08	1.14	0.99
+GPTune		1.09	0.05	1.07	1.14	1.05
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	8, [0.698, 0.302]	1.27	0.17	1.07	1.37	1.37
+HpBandster		1.21	0.20	1.37	1.28	0.98
+GPTune		1.10	0.10	0.99	1.16	1.15
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!			
+GPTuneBand	9, [0.603, 0.0784]	1.16	0.22	1.24	1.33	0.92
+HpBandster		1.06	0.13	0.94	1.06	1.19
+GPTune		1.12	0.13	1.11	1.25	0.99
+OpenTuner		#DIV/0!	#DIV/0!			
+TPE		#DIV/0!	#DIV/0!						
