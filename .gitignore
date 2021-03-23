@@ -37,3 +37,6 @@ examples/demo_MB_graphite*
 examples/hypre_MB_Rtrue*
 examples/dgemm*
 examples/mydgemm*
+run_cori_hypre_Rtrue-copy.sh
+run_cori_hypre_MB_single-copy.sh
+GPTune/callhpbandster_bandit.py

@@ -38,8 +38,7 @@ import matplotlib.pyplot as plt
 import time
 import argparse
 from callopentuner import OpenTuner
-from callhpbandster import HpBandSter
-import callhpbandster_bandit
+from callhpbandster import HpBandSter, HpBandSter_bandit
 import logging
 import scipy
 
@@ -324,7 +323,8 @@ def main():
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
-            
+    
+    # single fidelity version of hpbandster
     if(TUNER_NAME=='TPE'):
         NS = Btotal
         (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
@@ -337,10 +337,10 @@ def main():
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
             
-    
+    # multi-fidelity version
     if(TUNER_NAME=='hpbandster'):
         NS = Ntotal
-        (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
+        (data,stats)=HpBandSter_bandit(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
         print("Tuner: ", TUNER_NAME)
         print("stats: ", stats)
         """ Print all input and parameter samples """
