@@ -174,7 +174,6 @@ def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, options: Options 
 
     timefun=0
     t1 = time.time_ns()
-    print("Start HpBandSter")
     for i in range(len(T)):
 
         workers=[]
@@ -188,37 +187,16 @@ def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, options: Options 
         res = bohb.run(n_iterations=n_iterations, min_n_workers=n_workers)
 
         config_mapping = res.get_id2config_mapping()
-        # incumbent = res.get_incumbent_id()
 
         xs = [[config_mapping[idx]['config'][p] for p in tp.parameter_space.dimension_names] for idx in config_mapping.keys()]
         ys = [[(k, v['loss']) for k,v in res[idx].results.items()] for idx in config_mapping.keys()]
-        # xopt = np.array([res.get_id2config_mapping()[incumbent]['config'][p] for p in tp.parameter_space.dimension_names])
-        # yopt = min([v['loss'] for k,v in res[incumbent].results.items()])
-        
-        # XZ: print to help understanding 
-        # print('------ INSIDE hpbandster -------')
-        # print(config_mapping)
-        # print()
-        # for idx in config_mapping.keys():
-        #     print(idx)
-        #     print()
-        #     print(res[idx])
-        #     print()
-        #     print(res[idx].results.items())
-        #     print()
-            
-        # print(ys)
-        # print('------FINISHING-------')
         
         X.append(xs)
         tmp = np.array(ys).reshape((len(ys), 1))
         Y.append(tmp)
-        # Xopt.append(xopt)
-        # Yopt.append(yopt)
         timefun=timefun+workers[0].timefun
         bohb.shutdown(shutdown_workers=True)
 
-    print("End HpBandSter")
     t2 = time.time_ns()
     stats['time_total'] = (t2-t1)/1e9	
     stats['time_fun'] = timefun
