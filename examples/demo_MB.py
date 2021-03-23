@@ -98,7 +98,7 @@ def objectives(point):
         return np.cos(c) * (k1*bgt + perturb_magnitude)
     
     out = [f*(1+perturb(bgt))]
-    # print(f"One demo run, x = {x:.4f}, t = {t:.4f}, budget = {bgt:.4f}, perturb = {perturb(bgt):.4f}, out = {out[0]:.4f}")
+    print(f"One demo run, x = {x:.4f}, t = {t:.4f}, budget = {bgt:.4f}, perturb = {perturb(bgt):.4f}, out = {out[0]:.4f}")
     return out
 
 def models(point):
@@ -309,7 +309,7 @@ def main():
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], f'Oopt  {min(data.O[tid])[0]:.3f}', 'nth ', np.argmin(data.O[tid]))
             sum_Oopt += min(data.O[tid])[0]
-        print("sum of all optimal objectives", sum_Oopt)
+        # print("sum of all optimal objectives", sum_Oopt)
         
     if(TUNER_NAME=='opentuner'):
         NS = Btotal

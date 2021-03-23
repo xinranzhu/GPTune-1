@@ -58,15 +58,15 @@ import GPy
 
 class Model_GPy_LCM(Model):
 
-#model_threads=1
-#model_processes=1
-#model_groups=1
-#model_restarts=1
-#model_max_iters=15000
-#model_latent=0
-#model_sparse=False
-#model_inducing=None
-#model_layers=2
+    #model_threads=1
+    #model_processes=1
+    #model_groups=1
+    #model_restarts=1
+    #model_max_iters=15000
+    #model_latent=0
+    #model_sparse=False
+    #model_inducing=None
+    #model_layers=2
 
     def train(self, data : Data, **kwargs):
 
@@ -107,8 +107,6 @@ class Model_GPy_LCM(Model):
 
 #        np.random.seed(mpi_rank)
 #        num_restarts = max(1, model_n_restarts // mpi_size)
-
-
         resopt = self.M.optimize_restarts(num_restarts = kwargs['model_restarts'], robust = True, verbose = kwargs['verbose'], parallel = (kwargs['model_threads'] > 1), num_processes = kwargs['model_threads'], messages = kwargs['verbose'], optimizer = 'lbfgs', start = None, max_iters = kwargs['model_max_iters'], ipython_notebook = False, clear_after_finish = True)
 
 #        self.M.param_array[:] = allreduce_best(self.M.param_array[:], resopt)[:]
@@ -141,8 +139,6 @@ class Model_GPy_LCM(Model):
                 print('WS:',ws)            
                 print('sigma:',sigma)
 
-
-
             params = theta+var+kappa+sigma+ws        
         return
 
@@ -160,7 +156,6 @@ class Model_GPy_LCM(Model):
 
         return (mu, var)
     def get_correlation_metric(self, delta):
-        print("In model.py, delta = ", delta)
         Q = delta # number of latent processes 
         B = np.zeros((delta, delta, Q))
         for i in range(Q):
@@ -168,10 +163,7 @@ class Model_GPy_LCM(Model):
             Wq = currentLCM.B.W.values
             Kappa_q = currentLCM.B.kappa.values
             B[:, :, i] = np.outer(Wq, Wq) + np.diag(Kappa_q)
-            # print("In model.py, i = ", i)
-            # print(B[:, :, i])
-            
-        # return C_{i, i'}
+
         C = np.zeros((delta, delta))
         for i in range(delta):
             for ip in range(i, delta):
@@ -229,7 +221,6 @@ class Model_LCM(Model):
                 # np.random.seed(restart_iter)
                 np.random.seed()
                 kern = LCM(input_dim = len(data.P[0][0]), num_outputs = data.NI, Q = Q)
-                # print('I am here')
                 return kern.train_kernel(X = data.P, Y = data.O, computer = self.computer, kwargs = kwargs)
             res = list(map(fun, restart_iters))
 
@@ -246,9 +237,6 @@ class Model_LCM(Model):
             print('kappa:',kern.kappa)
             print('sigma:',kern.sigma)
             print('WS:',kern.WS)
-
-
-
 
         # YL: likelihoods needs to be provided, since K operator doesn't take into account sigma/jittering, but Kinv does. The GPCoregionalizedRegression intialization will call inference in GPy/interence/latent_function_inference/exact_gaussian_inference.py, and add to diagonals of the K operator with sigma+1e-8   
         likelihoods_list = [GPy.likelihoods.Gaussian(variance = kern.sigma[i], name = "Gaussian_noise_%s" %i) for i in range(data.NI)]
