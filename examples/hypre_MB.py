@@ -74,8 +74,7 @@ import argparse
 import pickle
 from random import *
 from callopentuner import OpenTuner
-from callhpbandster import HpBandSter
-import callhpbandster_bandit
+from callhpbandster import HpBandSter, HpBandSter_bandit
 import math
 import functools
 import scipy
@@ -176,7 +175,7 @@ def objectives(point):
     
     runtime = hypredriver(params, niter=1, JOBID=-1)
     print(params, ' hypre time: ', runtime)
-
+    
     return runtime
     
 def models(): # todo
@@ -287,63 +286,8 @@ def main():
     print()
     
     data = Data(problem)
-    # giventask = [[(amax-amin)*random.random()+amin,(cmax-cmin)*random.random()+cmin] for i in range(ntask)]
+    giventask = [[(amax-amin)*random.random()+amin,(cmax-cmin)*random.random()+cmin] for i in range(ntask)]
     # giventask = [[0.2, 0.5]]
-    
-
-        
-    # a, c in [0, 2], 20 tasks
-    # giventask = [[1.764404747086545, 0.1690780613092806], [0.04112427493772097, 0.8085715496434904], 
-    #              [0.22710987838880214, 1.88151014852883], [1.4295598579456825, 0.6777959247566412], 
-    #              [1.2113920952170643, 1.2736211372774706], [1.9506691433602787, 1.6164125044517066], 
-    #              [1.0599323074104676, 0.31237589097846064], [0.5539778042983943, 1.7201524881603167], 
-    #              [1.1202117146999948, 1.4008498376477942], [1.9764454822916864, 0.49519243217069175],
-    #              [1.6242107544285, 1.546469305586815], [0.48556463965870966, 0.9104470584141897], 
-    #              [0.24335919069425582, 1.9474734644218745], [1.4548622289600037, 0.44034181519644044], 
-    #              [0.30572684587777066, 1.744356822716747], [1.3121087439465606, 1.8289812234496303], 
-    #              [0.4368157748180814, 1.7463601854749693], [1.179881068844456, 0.31389817437239453], 
-    #              [0.6840593333787133, 1.2532549528173518], [0.808378518110451, 0.7833341762792181]]
-    # a, c in [0, 1], 10 tasks
-    # giventask = [[0.023181354151175504, 0.6816796355829654], [0.15948672790394447, 0.545007082153842], 
-    #              [0.3061777407959666, 0.2613262568641622], [0.13635922601717265, 0.42633245310802903], 
-    #              [0.007106878341192613, 0.1275649768730277], [0.14739645464726914, 0.7387029572331887], 
-    #              [0.03343150589405264, 0.5281563810546017], [0.09379810626184892, 0.4018339729841335],
-    #              [0.698222888451084, 0.30201670579496664], [0.6026109961485946, 0.07835020207209975]]
-    if ntask == 10:
-        giventask = [[0.2, 0.5], [0.159, 0.545], 
-                    [0.02, 0.682], [0.9, 0.02], 
-                    [0.7, 0.3], [0.147, 0.739], 
-                    [0.033, 0.528], [0.094, 0.402],
-                    [0.698, 0.302], [0.603, 0.0784]]
-    if ntask == 3:
-        # group 1
-        giventask = [[0.2, 0.5], [0.159, 0.545], 
-                    [0.02, 0.682]]
-        # group 2
-        # giventask = [[0.9, 0.02], 
-        #             [0.7, 0.3], [0.147, 0.739]]
-        # grioup 
-        # giventask = [[0.147, 0.739], 
-        #             [0.033, 0.528], [0.094, 0.402]]
-        
-    if ntask == 2:
-        # giventask = [[0.9, 0.02], 
-        #             [0.7, 0.3]]
-        giventask = [[0.698, 0.302], 
-                    [0.603, 0.0784]]
-    if ntask == 4:
-        giventask = [[0.033, 0.528], [0.094, 0.402],
-                    [0.698, 0.302], [0.603, 0.0784]]
-    if ntask == 5:
-        giventask = [[0.2, 0.5],  
-                    [0.02, 0.682], [0.9, 0.02], 
-                    [0.7, 0.3], [0.147, 0.739]]
-    
-    if ntask == 6:
-        giventask = [[0.2, 0.5], [0.159, 0.545], 
-                    [0.02, 0.682], [0.9, 0.02], 
-                    [0.7, 0.3], [0.147, 0.739]]
-        
     
     if ntask == 1:
         giventask = [[args.a, args.c]]
@@ -408,6 +352,7 @@ def main():
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
 
+    # single-fidelity version of hpbandster
     if(TUNER_NAME=='TPE'):
         NS = Btotal
         (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
@@ -481,10 +426,10 @@ def main():
                 print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
          
          
-                              
+    # multi-fidelity version                
     if(TUNER_NAME=='hpbandster'):
         NS = Ntotal
-        (data,stats)=callhpbandster_bandit.HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
+        (data,stats)=HpBandSter_bandit(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="hpbandster_bandit", niter=1)
         print("stats: ", stats)
         """ Print all input and parameter samples """
         for tid in range(NI):
