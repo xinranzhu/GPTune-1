@@ -33,5 +33,7 @@ examples/hypre_fidelitytest.py
 TEMP*.txt
 temp*.txt
 obj_*.pdf
-examples/demo_MB_graphite-copy
-examples/dgemm-copy
+examples/demo_MB_graphite*
+examples/hypre_MB_Rtrue*
+examples/dgemm*
+examples/mydgemm*
