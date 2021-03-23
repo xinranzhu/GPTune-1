@@ -48,11 +48,19 @@ rm -rf *.pkl
 
 nodes=1
 cores=32
-ntask=10
-nruns=10
-tuner='GPTune'
-plot=1
+ntask=2
+plot=0
 restart=1
 perfmodel=0
 expid='0'
-mpirun -n 1 python -u demo_MB.py -nruns ${nruns} -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}
+tuner='GPTune'
+mpirun -n 1 python -u demo_MB.py -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
+
+# tuner='GPTuneBand'
+# mpirun -n 1 python -u demo_MB.py -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
+
+# tuner='hpbandster'
+# mpirun -n 1 python -u demo_MB.py -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
+
+# tuner='TPE'
+# mpirun -n 1 python -u demo_MB.py -nodes ${nodes} -cores ${cores} -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart} -perfmodel ${perfmodel} -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
