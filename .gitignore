@@ -40,3 +40,6 @@ examples/mydgemm*
 run_cori_hypre_Rtrue-copy.sh
 run_cori_hypre_MB_single-copy.sh
 GPTune/callhpbandster_bandit.py
+examples/Hypre/hypre-driver/exp/cori1/
+examples/Hypre/hypre_MLA/postprocess/out.historical_mean_set_Poisson_nmax150_nmin30_nrun20
+examples/Hypre/hypre_MLA/postprocess/parse_unfinished.py
