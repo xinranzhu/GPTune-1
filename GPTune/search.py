@@ -261,6 +261,26 @@ if __name__ == '__main__':
     def models(point):
         print('this is a dummy definition')
         return point
+    
+    def models_update(data):
+        print('this is a dummy definition')
+        return data
+
+    def cst1(point):
+        print('this is a dummy definition')
+        return point
+    def cst2(point):
+        print('this is a dummy definition')
+        return point
+    def cst3(point):
+        print('this is a dummy definition')
+        return point
+    def cst4(point):
+        print('this is a dummy definition')
+        return point
+    def cst5(point):
+        print('this is a dummy definition')
+        return point          
 
     mpi_comm = MPI.Comm.Get_parent()
     mpi_rank = mpi_comm.Get_rank()

@@ -20,17 +20,12 @@
 """
 Example of invocation of this script:
 
-python hypre.py -nxmax 200 -nymax 200 -nzmax 200 -nxmin 100 -nymin 100 -nzmin 100 -nodes 1 -cores 32 -nprocmin_pernode 1 -ntask 20 -nrun 800 -machine cori -jobid 0
-
+mpirun -n 1 python hypre_MB.py -nxmax 200 -nymax 200 -nzmax 200 -nxmin 100 -nymin 100 -nzmin 100 -nprocmin_pernode 1 -ntask 20 -nrun 800
 where:
     -nxmax/nymax/nzmax       maximum number of discretization size for each dimension
-    -nodes                   number of compute node
-    -cores                   number of cores per node
     -nprocmin_pernode is the minimum number of MPIs per node for launching the application code
-    -machine                 name of the machine 
     -ntask                   number of different tasks to be tuned
     -nrun                    number of calls per task
-    -jobid                   optional, can always be 0
     
 Description of the parameters of Hypre AMG:
 Task space:
@@ -57,17 +52,19 @@ Input space:
     interp_type:       Defines which parallel interpolation operator is used  
     agg_num_levels:    Number of levels of aggressive coarsening
 """
+import sys, os
+# add GPTunde path in front of all python pkg path
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
+sys.path.insert(0, os.path.abspath(__file__ + "/../hypre-driver/"))
+
+
 from hypredriver import hypredriver
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
-from gptune import GPTune
-from gptune import GPTune_MB
-from data import Data
-from data import Categoricalnorm
-from options import Options
-from computer import Computer
-import sys, os, re
+from gptune import * # import all
+
+import re
 import numpy as np
 import time
 import argparse
@@ -82,9 +79,6 @@ import scipy
 # import mpi4py
 # from mpi4py import MPI
 
-# add GPTunde path in front of all python pkg path
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
-sys.path.insert(0, os.path.abspath(__file__ + "/../hypre_driver/"))
 
 solver = 3 # Bommer AMG
 # max_setup_time = 1000.
@@ -93,16 +87,17 @@ solver = 3 # Bommer AMG
 # coeffs_a = "-a 0 0 0 " # specify a-coefficients in format "-a 1 1 1 " leave as empty string for laplacian and Poisson problems
 # problem_name = "-laplacian " # "-difconv " for convection-diffusion problems to include the a coefficients
 problem_name = "-difconv "
-bmin = 1
-bmax = 27
-eta = 3
-smax = int(np.floor(np.log10(bmax/bmin)/np.log10(eta)))
 
 # define objective function
 def objectives(point):
-    # hard coded global variable for distributed-memory parallelism
-    cores = 32
-    nodes = 2
+######################################### 
+##### constants defined in TuningProblem
+    nodes = point['nodes']
+    cores = point['cores']
+    bmin = point['bmin']
+    bmax = point['bmax']
+    eta = point['eta']    
+#########################################
     
     # task params 
     c_val = point['c_val']
@@ -182,26 +177,21 @@ def models(): # todo
     pass
 
 def main(): 
-    global nodes
-    global cores
-    global JOBID
-    global nprocmax
-    global nprocmin
+    (machine, processor, nodes, cores) = GetMachineConfiguration()
+    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
 
     # Parse command line arguments
     args = parse_args()
-
+    bmin = args.bmin
+    bmax = args.bmax
+    eta = args.eta
     amin = args.amin
     amax = args.amax
     cmin = args.cmin
     cmax = args.cmax
-    nodes = args.nodes
-    cores = args.cores
     nprocmin_pernode = args.nprocmin_pernode
-    machine = args.machine
     ntask = args.ntask
     Nloop = args.Nloop
-    JOBID = args.jobid
     restart = args.restart
     TUNER_NAME = args.optimization
     TLA = False
@@ -210,8 +200,8 @@ def main():
     os.environ['TUNER_NAME'] = TUNER_NAME
     # os.system("mkdir -p scalapack-driver/bin/%s; cp ../build/pdqrdriver scalapack-driver/bin/%s/.;" %(machine, machine))
 
-    nprocmax = nodes*cores-1  # YL: there is one proc doing spawning, so nodes*cores should be at least 2
-    nprocmin = min(nodes*nprocmin_pernode,nprocmax-1)  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space 
+    nprocmax = nodes*cores
+    nprocmin = nodes*nprocmin_pernode 
 
     a_val = Real(amin, amax, transform="normalize", name="a_val")
     c_val = Real(cmin, cmax, transform="normalize", name="c_val")
@@ -237,10 +227,11 @@ def main():
     cst1 = f"Px * Py  <= Nproc"
     cst2 = f"not(P_max_elmts==10 and coarsen_type=='6' and relax_type=='18' and smooth_type=='6' and smooth_num_levels==3 and interp_type=='8' and agg_num_levels==1)"
     constraints = {"cst1": cst1,"cst2": cst2}
+    constants={"nodes":nodes,"cores":cores,"bmin":bmin,"bmax":bmax,"eta":eta}
 
     print(IS, PS, OS, constraints)
 
-    problem = TuningProblem(IS, PS, OS, objectives, constraints, None) # no performance model
+    problem = TuningProblem(IS, PS, OS, objectives, constraints, constants=constants) 
     computer = Computer(nodes=nodes, cores=cores, hosts=None)
 
     options = Options()
@@ -269,6 +260,7 @@ def main():
     options['budget_min'] = bmin
     options['budget_max'] = bmax
     options['budget_base'] = eta
+    smax = int(np.floor(np.log(options['budget_max']/options['budget_min'])/np.log(options['budget_base'])))
     budgets = [options['budget_max'] /options['budget_base']**x for x in range(smax+1)]
     NSs = [int((smax+1)/(s+1))*options['budget_base']**s for s in range(smax+1)] 
     NSs_all = NSs.copy()
@@ -309,15 +301,6 @@ def main():
         NS1 = max(NS//2, 1)
         (data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=NS1)
         print("stats: ", stats)
-        print("model class: ", options['model_class'])
-        print("Model restart: ", restart)
-        
-        # """ Dump the data to file as a new check point """
-        # pickle.dump(data, open('Data_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
-        
-        # """ Dump the tuner to file for TLA use """
-        # pickle.dump(gt, open('MLA_nodes_%d_cores_%d_nxmax_%d_nymax_%d_nzmax_%d_machine_%s_jobid_%d.pkl' % (nodes, cores, nxmax, nymax, nzmax, machine, JOBID), 'wb'))
-
 
         """ Print all input and parameter samples """
         for tid in range(NI):
@@ -461,6 +444,9 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser()
     # Problem related arguments
+    parser.add_argument('-bmin', type=int, default=1, help='budget min')   
+    parser.add_argument('-bmax', type=int, default=2, help='budget max')   
+    parser.add_argument('-eta', type=int, default=2, help='eta')       
     parser.add_argument('-amin', type=float, default=0, help='min value of coeffs_a')
     parser.add_argument('-amax', type=float, default=2, help='max value of coeffs_a')
     parser.add_argument('-cmin', type=float, default=0, help='min value of coeffs_c')
@@ -468,10 +454,7 @@ def parse_args():
     parser.add_argument('-a', type=float, default=0.5, help='a value in a single task')
     parser.add_argument('-c', type=float, default=0.5, help='c value in a single task')
     # Machine related arguments
-    parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
-    parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
     parser.add_argument('-nprocmin_pernode', type=int, default=1,help='Minimum number of MPIs per machine node for the application code')
-    parser.add_argument('-machine', type=str, default='cori1', help='Name of the computer (not hostname)')
     # Algorithm related arguments
     # parser.add_argument('-optimization', type=str, help='Optimization algorithm (opentuner, spearmint, mogpo)')
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
@@ -480,13 +463,6 @@ def parse_args():
     parser.add_argument('-restart', type=int, default=1, help='Number of model restarts')
     parser.add_argument('-lhs', type=int, default=0, help='use LHS-MDU sampler or not')
     parser.add_argument('-nrun', type=int, default=-1, help='total application runs')
-    # parser.add_argument('-truns', type=int, default=-1, help='Time of runs')
-    # Experiment related arguments
-    # 0 means interactive execution (not batch)
-    parser.add_argument('-jobid', type=int, default=0, help='ID of the batch job')
-    parser.add_argument('-stepid', type=int, default=-1, help='step ID')
-    parser.add_argument('-phase', type=int, default=0, help='phase')
-    
     args = parser.parse_args()
 
     return args

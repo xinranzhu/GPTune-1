@@ -129,7 +129,7 @@ The files `scalapack_*.py` in the `examples` folder shows how to tune the parall
 cd $GPTUNEROOT/examples
 cp ../build/pdqrdriver ../.
 export PYTHONPATH=$PYTHONPATH:$PWD/scalapack-driver/spt/
-$MPIRUN -n 1  python ./scalapack_MLA_loaddata.py -mmax 1000 -nmax 1000 -nodes 1 -cores 4 -nprocmin_pernode 1 -ntask 2 -nrun 20 -machine yourmachine -optimization 'GPTune'
+$MPIRUN -n 1  python ./scalapack_MLA.py -mmax 1000 -nmax 1000 -nodes 1 -cores 4 -nprocmin_pernode 1 -ntask 2 -nrun 20 -machine yourmachine -optimization 'GPTune'
 ```
 ### SuperLU_DIST
 First, SuperLU_DIST needs to be installed with the same OpenMPI and BLAS/LAPACK as the above.
@@ -233,4 +233,4 @@ Then, the different kinds of tuning techniques (*MLA, ...*) can be called throug
 
 ## REFERENCES
 
-W.M. Sid-Lakhdar, M.M. Aznaveh, X.S. Li, and J. Demmel, "Multitask and Transfer Learning for Autotuning Exascale Applications", arXiv:1908.05792, Aug. 2019.
+Y. Liu, W.M. Sid-Lakhdar, O. Marques, X. Zhu, C. Meng, J.W. Demmel, and X.S. Li. "GPTune: multitask learning for autotuning exascale applications", in Proceedings of the 26th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming (PPoPP '21). Association for Computing Machinery, New York, NY, USA, 234–246. DOI:https://doi.org/10.1145/3437801.3441621

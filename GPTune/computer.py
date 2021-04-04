@@ -20,6 +20,7 @@
 import numpy as np
 from problem import Problem
 from data import Data
+from historydb import HistoryDB
 from typing import Collection, Callable
 import mpi4py
 from mpi4py import MPI
@@ -47,7 +48,8 @@ class Computer(object):
 #       kwargs['constraints_evaluation_parallelism']
 
         # points can be either a dict or a list of dicts on which to iterate
-
+        if(problem.constants is not None):
+            point.update(problem.constants)
         cond = True
         for (cstname, cst) in problem.constraints.items():
             if (isinstance(cst, str)):
@@ -63,11 +65,19 @@ class Computer(object):
                         raise Exception(f"Unexpected exception '{inst}' was raised while evaluating constraint '{cstname}'. Correct this constraint before calling the tuner again.")
             else:
                 try:
+                    if(hasattr(problem, 'driverabspath')): # differentiate between Problem and TuningProblem 
+                        if(problem.driverabspath is not None):
+                            modulename = Path(problem.driverabspath).stem  # get the driver name excluding all directories and extensions
+                            sys.path.append(problem.driverabspath) # add path to sys
+                            module = importlib.import_module(modulename) # import driver name as a module
+                            cst = getattr(module, cstname)
+                        else:
+                            raise Exception('the driverabspath is required for the constraints')        
                     kwargs2 = {}
                     sig = inspect.signature(cst)
                     for varname in point:
                         if (varname in sig.parameters):
-                            kwargs2[varname] = point[varname]
+                            kwargs2[varname] = point[varname]              
                     cond = cst(**kwargs2)
                 except Exception as inst:
                     if (isinstance(inst, TypeError)):
@@ -84,7 +94,7 @@ class Computer(object):
         return cond
 
 
-    def evaluate_objective(self, problem : Problem, I : np.ndarray = None, P : Collection[np.ndarray] = None, D: Collection[dict] = None, options: dict=None):  # P and I are in the normalized space
+    def evaluate_objective(self, problem : Problem, I : np.ndarray = None, P : Collection[np.ndarray] = None, D: Collection[dict] = None, history_db : HistoryDB = None, options: dict=None):  # P and I are in the normalized space
         O = []
         for i in range(len(I)):
             t = I[i]
@@ -95,18 +105,26 @@ class Computer(object):
                 D2 = D[i]
             else:
                 D2 = None
-            O2 = self.evaluate_objective_onetask(problem=problem, i_am_manager=True, I_orig=I_orig, P2=P2, D2=D2, options = options)
-            tmp = np.array(O2).reshape((len(O2), problem.DO))
-            O.append(tmp.astype(np.double))   #YL: convert single, double or int to double types
+            if(options['RCI_mode']==False):    
+                O2 = self.evaluate_objective_onetask(problem=problem, i_am_manager=True, I_orig=I_orig, P2=P2, D2=D2, options = options)
+                tmp = np.array(O2).reshape((len(O2), problem.DO))
+                O.append(tmp.astype(np.double))   #YL: convert single, double or int to double types
+            else:
+                tmp = np.empty( shape=(len(P2), problem.DO))
+                tmp[:] = np.NaN
+                O.append(tmp.astype(np.double))   #YL: NaN indicates that the evaluation data is needed by GPTune
+            
+            if history_db is not None:
+                history_db.update_func_eval(problem = problem,\
+                        task_parameter = I[i], \
+                        tuning_parameter = P[i],\
+                        evaluation_result = tmp)
+
+        if(options['RCI_mode']==True):
+            print('RCI: GPTune returns\n')
+            exit()
 
         return O
-
-    # def evaluate_models_onepoint(self, problem : Problem, point: dict):  # a simple wrapper for problem.models, point is in the original space
-    #     print('nani')
-    #     O= problem.models(point)
-    #     return O
-
-
 
     def evaluate_objective_onetask(self, problem : Problem, pids : Collection[int] = None, i_am_manager : bool = True, I_orig: Collection=None, P2 : np.ndarray = None, D2 : dict=None, options:dict=None):  # P2 is in the normalized space
 
@@ -159,6 +177,8 @@ class Computer(object):
                     kwargs = {problem.PS[k].name: x_orig[k] for k in range(problem.DP)}
                     kwargs.update(kwargst)
                     kwargs.update(D2)
+                    if(problem.constants is not None):
+                        kwargs.update(problem.constants)
                     # print(kwargs)
                     return module.objectives(kwargs)
                 O2 = list(executor.map(fun, pids, timeout=None, chunksize=1))
@@ -169,6 +189,8 @@ class Computer(object):
                 x_orig = problem.PS.inverse_transform(np.array(x, ndmin=2))[0]
                 kwargs = {problem.PS[k].name: x_orig[k] for k in range(problem.DP)}
                 kwargs.update(kwargst)
+                if(problem.constants is not None):
+                    kwargs.update(problem.constants)
                 if D2 is not None:
                     kwargs.update(D2)
                 o = module.objectives(kwargs)

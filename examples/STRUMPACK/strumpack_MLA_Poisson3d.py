@@ -18,15 +18,13 @@
 ################################################################################
 """
 Example of invocation of this script:
-python superlu.py -nodes 1 -cores 32 -nprocmin_pernode 1 -ntask 20 -nrun 800 -machine cori
+mpirun -n 1 python ./strumpack_MLA_Poisson3d.py -nprocmin_pernode 1 -ntask 20 -nrun 800 -optimization GPTune
 
 where:
-    -nodes is the number of compute nodes
-    -cores is the number of cores per node
 	-nprocmin_pernode is the minimum number of MPIs per node for launching the application code
     -ntask is the number of different matrix sizes that will be tuned
     -nrun is the number of calls per task 
-    -machine is the name of the machine
+	-optimization is the optimization algorithm: GPTune,opentuner,hpbandster 
 """
  
 ################################################################################
@@ -42,13 +40,11 @@ from mpi4py import MPI
 from array import array
 import math
 
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
 
-from computer import Computer
-from options import Options
-from data import Data
-from data import Categoricalnorm
-from gptune import GPTune
+from gptune import * # import all
+
+
 
 from autotune.problem import *
 from autotune.space import *
@@ -61,6 +57,12 @@ import math
 ################################################################################
 def objectives(point):                  # should always use this name for user-defined objective function
     
+	######################################### 
+	##### constants defined in TuningProblem
+	nodes = point['nodes']
+	cores = point['cores']	
+	#########################################
+
 	gridsize = point['gridsize']
 	sp_reordering_method = point['sp_reordering_method']
 	sp_compression = point['sp_compression']
@@ -120,42 +122,24 @@ def objectives(point):                  # should always use this name for user-d
 	
 def main():
 
-	global ROOTDIR
-	global nodes
-	global cores
-	global target
-	global nprocmax
-	global nprocmin
-
 	# Parse command line arguments
 
 	args   = parse_args()
 
 	# Extract arguments
 
-	# mmax = args.mmax
-	# nmax = args.nmax
 	ntask = args.ntask
-	nodes = args.nodes
-	cores = args.cores
 	nprocmin_pernode = args.nprocmin_pernode
-	machine = args.machine
 	optimization = args.optimization
-	nruns = args.nruns
-	truns = args.truns
-	# JOBID = args.jobid
-	
+	nrun = args.nrun	
 	TUNER_NAME = args.optimization
+
+	(machine, processor, nodes, cores) = GetMachineConfiguration()
+	print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+
 	os.environ['MACHINE_NAME'] = machine
 	os.environ['TUNER_NAME'] = TUNER_NAME
-	
-	
-	# nprocmax = nodes*cores-1  # YL: there is one proc doing spawning, so nodes*cores should be at least 2
-	# nprocmin = min(nodes*nprocmin_pernode,nprocmax-1)  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space
 
-	# matrices = ["big.rua", "g4.rua", "g20.rua"]
-	# matrices = ["Si2.bin", "SiH4.bin", "SiNa.bin", "Na5.bin", "benzene.bin", "Si10H16.bin", "Si5H12.bin", "SiO.bin", "Ga3As3H12.bin","H2O.bin"]
-	# matrices = ["Si2.bin", "SiH4.bin", "SiNa.bin", "Na5.bin", "benzene.bin", "Si10H16.bin", "Si5H12.bin", "SiO.bin", "Ga3As3H12.bin", "GaAsH6.bin", "H2O.bin"]
 
 	# Task parameters
 	gridsize = Integer     (30, 100, transform="normalize", name="gridsize")
@@ -166,7 +150,7 @@ def main():
 	# sp_compression   = Categoricalnorm (['none','hss'], transform="onehot", name="sp_compression")
 	# sp_compression   = Categoricalnorm (['none','hss','hodlr','hodbf'], transform="onehot", name="sp_compression")
 	sp_compression   = Categoricalnorm (['none','hss','hodlr','hodbf','blr'], transform="onehot", name="sp_compression")
-	npernode     = Integer     (0, 5, transform="normalize", name="npernode")
+	npernode     = Integer     (int(math.log2(nprocmin_pernode)), int(math.log2(cores)), transform="normalize", name="npernode")
 	sp_nd_param     = Integer     (8, 32, transform="normalize", name="sp_nd_param")
 	sp_compression_min_sep_size     = Integer     (2, 5, transform="normalize", name="sp_compression_min_sep_size")
 	sp_compression_min_front_size     = Integer     (4, 10, transform="normalize", name="sp_compression_min_front_size")
@@ -180,12 +164,13 @@ def main():
 	OS = Space([result])
 	constraints = {}
 	models = {}
+	constants={"nodes":nodes,"cores":cores}
 
 	""" Print all input and parameter samples """	
 	print(IS, PS, OS, constraints, models)
 
 
-	problem = TuningProblem(IS, PS, OS, objectives, constraints, None)
+	problem = TuningProblem(IS, PS, OS, objectives, constraints, None, constants=constants)
 	computer = Computer(nodes = nodes, cores = cores, hosts = None)  
 
 	""" Set and validate options """	
@@ -204,7 +189,7 @@ def main():
 	
 	
 	# """ Building MLA with the given list of tasks """
-	giventask = [[80]]		
+	giventask = [[30]]		
 	data = Data(problem)
 
 
@@ -213,7 +198,7 @@ def main():
 		gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
 		
 		NI = len(giventask)
-		NS = nruns
+		NS = nrun
 		(data, model, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=max(NS//2, 1))
 		print("stats: ", stats)
 
@@ -227,7 +212,7 @@ def main():
 
 	if(TUNER_NAME=='opentuner'):
 		NI = ntask
-		NS = nruns
+		NS = nrun
 		(data,stats) = OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
 		print("stats: ", stats)
 
@@ -241,7 +226,7 @@ def main():
 
 	if(TUNER_NAME=='hpbandster'):
 		NI = ntask
-		NS = nruns
+		NS = nrun
 		(data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
 		print("stats: ", stats)
 		""" Print all input and parameter samples """
@@ -261,8 +246,7 @@ def parse_args():
 	parser = argparse.ArgumentParser()
 
 	# Problem related arguments
-	parser.add_argument('-mmax', type=int, default=-1, help='Number of rows')
-	parser.add_argument('-nmax', type=int, default=-1, help='Number of columns')
+
 	# Machine related arguments
 	parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
 	parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
@@ -271,12 +255,8 @@ def parse_args():
 	# Algorithm related arguments
 	parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
 	parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
-	parser.add_argument('-nruns', type=int, help='Number of runs per task')
-	parser.add_argument('-truns', type=int, help='Time of runs')
-	# Experiment related arguments
-	parser.add_argument('-jobid', type=int, default=-1, help='ID of the batch job') #0 means interactive execution (not batch)
-	parser.add_argument('-stepid', type=int, default=-1, help='step ID')
-	parser.add_argument('-phase', type=int, default=0, help='phase')
+	parser.add_argument('-nrun', type=int, help='Number of runs per task')
+
 
 	args   = parser.parse_args()
 	return args

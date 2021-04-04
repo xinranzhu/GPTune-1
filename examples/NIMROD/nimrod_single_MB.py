@@ -19,30 +19,24 @@
 
 
 ################################################################################
-import sys
-import os
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
-from gptune import GPTune
-from gptune import GPTune_MB
-from data import Data
-from data import Categoricalnorm
-from options import Options
-from computer import Computer
+from gptune import * # import all
 
+import sys
+import os
 import mpi4py
 from mpi4py import MPI
 import numpy as np
 import time
 import argparse
 from callopentuner import OpenTuner
-from callhpbandster import HpBandSter
-import callhpbandster_bandit
+from callhpbandster import HpBandSter, HpBandSter_bandit
 import logging
 
-
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
 logging.getLogger('matplotlib.font_manager').disabled = True
 
 # from GPTune import *
@@ -50,21 +44,16 @@ logging.getLogger('matplotlib.font_manager').disabled = True
 ################################################################################
 
 # Define Problem
-
-# YL: for the spaces, the following datatypes are supported:
-# Real(lower, upper, transform="normalize", name="yourname")
-# Integer(lower, upper, transform="normalize", name="yourname")
-# Categoricalnorm(categories, transform="onehot", name="yourname")
-
-
-# Argmin{x} objectives(t,x), for x in [0., 1.]
-
-# bandit structure
-bmin = 1
-bmax = 27
-eta = 3
-
 def objectives(point):
+    nodes = point['nodes']
+    cores = point['cores']
+    nstepmax = point['nstepmax']
+    nstepmin = point['nstepmin']
+    bmin = point['bmin']
+    bmax = point['bmax']
+    eta = point['eta']
+    
+    nprocmax = nodes*cores
 
     def budget_map(b, nmin=10, nmax=100):
         k1 = (nmax-nmin)/(bmax-bmin)
@@ -113,6 +102,10 @@ def objectives(point):
     envstr+= 'NSUP=%d\n' %(NSUP)   
     info.Set('env',envstr)
 
+    #####################################
+    ####### npernode is very important, without setting it the application can be much slower
+    info.Set('npernode','%d'%(cores)) # flat MPI # YL: npernode is deprecated in openmpi 4.0, but no other parameter (e.g. 'map-by') works
+    #####################################
 
     fin = open("./nimrod_template.in","rt")
     fout = open("./nimrod.in","wt")
@@ -154,18 +147,22 @@ def objectives(point):
 
     os.system("./nimset")
 
-    """ use MPI spawn to call the executable, and pass the other parameters and inputs through command line """
-    print('exec', "./nimrod_spawn", 'nproc', nproc, 'env', 'OMP_NUM_THREADS=%d' %(nthreads), 'NSUP=%d' %(NSUP), 'NREL=%d' %(NREL))
-    comm = MPI.COMM_SELF.Spawn("./nimrod_spawn", maxprocs=nproc,info=info)
 
-
-    # # retval=1.0
-
-
-    """ gather the return value using the inter-communicator, also refer to the INPUTDIR/pddrive_spawn.c to see how the return value are communicated """																	
-    tmpdata = np.array([0,0,0,0,0],dtype=np.float64)
-    comm.Reduce(sendbuf=None, recvbuf=[tmpdata,MPI.DOUBLE],op=MPI.MAX,root=mpi4py.MPI.ROOT) 
-    comm.Disconnect()	
+    nrep=1 #3
+    hist=[]
+    for i in range(nrep):
+        """ use MPI spawn to call the executable, and pass the other parameters and inputs through command line """
+        print('exec', "./nimrod_spawn", 'nproc', nproc, 'env', 'OMP_NUM_THREADS=%d' %(nthreads), 'NSUP=%d' %(NSUP), 'NREL=%d' %(NREL))
+        comm = MPI.COMM_SELF.Spawn("./nimrod_spawn", maxprocs=nproc,info=info)
+        """ gather the return value using the inter-communicator, also refer to the INPUTDIR/pddrive_spawn.c to see how the return value are communicated """																	
+        tmpdata = np.array([0,0,0,0,0],dtype=np.float64)
+        comm.Reduce(sendbuf=None, recvbuf=[tmpdata,MPI.DOUBLE],op=MPI.MAX,root=mpi4py.MPI.ROOT) 
+        comm.Disconnect()
+        time.sleep(5.0)
+        hist.append(tmpdata)
+        print(params, ' nimrod time (trial) -- loop:', tmpdata[0],'slu: ', tmpdata[1],'factor: ', tmpdata[2], 'iter: ', tmpdata[3], 'total: ', tmpdata[4])
+    
+    tmpdata = min(hist, key=lambda x: x[0])
     retval = tmpdata[0]
     print(params, ' nimrod time -- loop:', tmpdata[0],'slu: ', tmpdata[1],'factor: ', tmpdata[2], 'iter: ', tmpdata[3], 'total: ', tmpdata[4])
 
@@ -188,31 +185,24 @@ def objectives(point):
 
 def main():
 
-    global ROOTDIR
-    global nodes
-    global cores
-    global target
-    global nprocmax
-    global nstepmax
-    global nstepmin
-
-    import matplotlib.pyplot as plt
     
     args = parse_args()
     ntask = args.ntask
-    nodes = args.nodes
-    cores = args.cores
     Nloop = args.Nloop
+    bmin = args.bmin
+    bmax = args.bmax
+    eta = args.eta
+
     TUNER_NAME = args.optimization
+    (machine, processor, nodes, cores) = GetMachineConfiguration()
+    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+
     nstepmax = args.nstepmax
     nstepmin = args.nstepmin
     
     os.environ['TUNER_NAME'] = TUNER_NAME
 
 
-
-    nprocmax = nodes*cores
-    # nprocmax = 256
 
     # Input parameters
     # ROWPERM   = Categoricalnorm (['1', '2'], transform="onehot", name="ROWPERM")
@@ -224,7 +214,7 @@ def main():
     nbx      = Integer     (1, 3, transform="normalize", name="nbx")	
     nby      = Integer     (1, 3, transform="normalize", name="nby")	
 
-    result   = Real        (float("-Inf") , float("Inf"), transform="normalize", name="r")
+    time   = Real        (float("-Inf") , float("Inf"), transform="normalize", name="time")
 
     # nstep      = Integer     (3, 15, transform="normalize", name="nstep")
     lphi      = Integer     (2, 3, transform="normalize", name="lphi")
@@ -235,10 +225,11 @@ def main():
     # PS = Space([ROWPERM, COLPERM, nprows, nproc, NSUP, NREL])
     # PS = Space([ROWPERM, COLPERM, NSUP, NREL, nbx, nby])
     PS = Space([NSUP, NREL, nbx, nby])
-    OS = Space([result])
+    OS = Space([time])
     cst1 = "NSUP >= NREL"
     constraints = {"cst1" : cst1}
     models = {}
+    constants={"nodes":nodes,"cores":cores,"nstepmin":nstepmin,"nstepmax":nstepmax,"bmin":bmin,"bmax":bmax,"eta":eta}
 
     """ Print all input and parameter samples """	
     print(IS, PS, OS, constraints, models)
@@ -253,11 +244,8 @@ def main():
     os.system("cp %s/nimrod ./nimrod_spawn"%(BINDIR))
 
 
-    # target='memory'
-    target='time'
 
-
-    problem = TuningProblem(IS, PS, OS, objectives, constraints, None)
+    problem = TuningProblem(IS, PS, OS, objectives, constraints, None, constants=constants)
     computer = Computer(nodes = nodes, cores = cores, hosts = None)  
 
     """ Set and validate options """	
@@ -437,12 +425,13 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('-bmin', type=int, default=1, help='budget min')   
+    parser.add_argument('-bmax', type=int, default=2, help='budget max')   
+    parser.add_argument('-eta', type=int, default=2, help='eta')   
     parser.add_argument('-nstepmax', type=int, default=-1, help='maximum number of time steps')   
     parser.add_argument('-nstepmin', type=int, default=-1, help='minimum number of time steps')   
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
-    parser.add_argument('-nodes', type=int, default=1, help='Number of nodes')
-    parser.add_argument('-cores', type=int, default=1, help='Number of cpu cores')
     parser.add_argument('-nrun', type=int, default=-1, help='total application runs')
     parser.add_argument('-LCMmodel', type=str, default='LCM', help='choose from LCM models: LCM or GPy_LCM')
     parser.add_argument('-Nloop', type=int, default=1, help='Number of outer loops in multi-armed bandit per task')

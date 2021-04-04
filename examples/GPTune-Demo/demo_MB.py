@@ -23,12 +23,14 @@
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
-from gptune import GPTune
-from gptune import GPTune_MB
-from data import Data
-from data import Categoricalnorm
-from options import Options
-from computer import Computer
+# from gptune import GPTune
+# from gptune import GPTune_MB
+# from data import Data
+# from data import Categoricalnorm
+# from options import Options
+# from computer import Computer
+from gptune import * # import all
+
 import sys
 import os
 import mpi4py
@@ -42,7 +44,11 @@ from callhpbandster import HpBandSter, HpBandSter_bandit
 import logging
 import scipy
 
+<<<<<<< HEAD
 sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+=======
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
+>>>>>>> upstream/master
 logging.getLogger('matplotlib.font_manager').disabled = True
 
 # from GPTune import *
@@ -71,7 +77,11 @@ def objectives(point):
     t = point['t']
     x = point['x']
     if 'budget' in point:
+<<<<<<< HEAD
         bgt = point['budget']    
+=======
+        bgt = point['budget']
+>>>>>>> upstream/master
     else:
         bgt = bmax
 
@@ -96,11 +106,16 @@ def objectives(point):
         # return np.cos(c)*(-np.log10(bgt))*0.1
         assert k1*bmax + perturb_magnitude == 0
         return np.cos(c) * (k1*bgt + perturb_magnitude)
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> upstream/master
     out = [f*(1+perturb(bgt))]
     print(f"One demo run, x = {x:.4f}, t = {t:.4f}, budget = {bgt:.4f}, perturb = {perturb(bgt):.4f}, out = {out[0]:.4f}")
     return out
 
+<<<<<<< HEAD
 def models(point):
     """
     f(t,x) = exp(- (x + 1) ^ (t + 1) * cos(2 * pi * x)) * (sin( (t + 2) * (2 * pi * x) ) + sin( (t + 2)^(2) * (2 * pi * x) + sin ( (t + 2)^(3) * (2 * pi *x))))
@@ -126,6 +141,8 @@ def models(point):
 
     return [f*(1+np.random.uniform()*0.1)]
 
+=======
+>>>>>>> upstream/master
 
 """ Plot the objective function for t=1,2,3,4,5,6 """
 def annot_min(x,y, ax=None):
@@ -140,6 +157,7 @@ def annot_min(x,y, ax=None):
     ax.annotate(text, xy=(xmin, ymin), xytext=(210,5), **kw)
 
 
+<<<<<<< HEAD
 def predict_aug(modeler, gt, point,tid):   # point is the orginal space
     x =point['x']
     xNorm = gt.problem.PS.transform([[x]])
@@ -188,6 +206,22 @@ def main():
     expid = args.expid
     restart = args.restart
     
+=======
+def main():
+    import matplotlib.pyplot as plt
+    args = parse_args()
+    ntask = args.ntask
+    nruns = args.nruns
+    TUNER_NAME = args.optimization
+    Nloop = args.Nloop
+    plot = args.plot
+    expid = args.expid
+    restart = args.restart
+
+    (machine, processor, nodes, cores) = GetMachineConfiguration()
+    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+
+>>>>>>> upstream/master
     os.environ['MACHINE_NAME'] = machine
     os.environ['TUNER_NAME'] = TUNER_NAME
 
@@ -196,6 +230,7 @@ def main():
     # input_space = Space([Real(0., 0.0001, "uniform", "normalize", name="t")])
     # parameter_space = Space([Real(-1., 1., "uniform", "normalize", name="x")])
 
+<<<<<<< HEAD
     output_space = Space([Real(float('-Inf'), float('Inf'), name="time")])
     constraints = {"cst1": "x >= 0. and x <= 1."}
     if(perfmodel==1):
@@ -209,10 +244,25 @@ def main():
     options['distributed_memory_parallelism'] = False
     options['shared_memory_parallelism'] = False
     
+=======
+    output_space = Space([Real(float('-Inf'), float('Inf'), name="y")])
+    constraints = {"cst1": "x >= 0. and x <= 1."}
+    # problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
+    problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None)  # no performance model
+
+    computer = Computer(nodes=nodes, cores=cores, hosts=None)
+    options = Options()
+    options['model_restarts'] = restart
+
+    options['distributed_memory_parallelism'] = False
+    options['shared_memory_parallelism'] = False
+
+>>>>>>> upstream/master
     options['objective_evaluation_parallelism'] = False
     options['objective_multisample_threads'] = 1
     options['objective_multisample_processes'] = 1
     options['objective_nprocmax'] = 1
+<<<<<<< HEAD
     
     options['model_processes'] = 1
     # options['model_threads'] = 1
@@ -226,6 +276,24 @@ def main():
     options['verbose'] = False
     # options['sample_class'] = 'SampleLHSMDU'
     # options['sample_algo'] = 'LHS-MDU'
+=======
+
+    options['model_processes'] = 1
+    # options['model_threads'] = 1
+    # options['model_restart_processes'] = 1
+
+    # options['search_multitask_processes'] = 1
+    # options['search_multitask_threads'] = 1
+    # options['search_threads'] = 16
+
+
+    # options['mpi_comm'] = None
+    #options['mpi_comm'] = mpi4py.MPI.COMM_WORLD
+    options['model_class'] = 'Model_LCM' #'Model_GPy_LCM'
+    options['verbose'] = False
+    # options['sample_algo'] = 'MCS'
+    # options['sample_class'] = 'SampleLHSMDU'
+>>>>>>> upstream/master
     options.validate(computer=computer)
 
     options['budget_min'] = bmin
@@ -233,7 +301,11 @@ def main():
     options['budget_base'] = eta
     smax = int(np.floor(np.log(options['budget_max']/options['budget_min'])/np.log(options['budget_base'])))
     budgets = [options['budget_max'] /options['budget_base']**x for x in range(smax+1)]
+<<<<<<< HEAD
     NSs = [int((smax+1)/(s+1))*options['budget_base']**s for s in range(smax+1)] 
+=======
+    NSs = [int((smax+1)/(s+1))*options['budget_base']**s for s in range(smax+1)]
+>>>>>>> upstream/master
     NSs_all = NSs.copy()
     budget_all = budgets.copy()
     for s in range(smax+1):
@@ -247,7 +319,11 @@ def main():
     print("total number of evaluations at highest budget: ", Btotal)
     print(f"Sampler: {options['sample_class']}, {options['sample_algo']}")
     print()
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> upstream/master
     data = Data(problem)
     # giventask = [[1.0], [5.0], [10.0]]
     # giventask = [[1.0], [1.2], [1.3]]
@@ -258,7 +334,11 @@ def main():
     # giventask = [[1.0], [1.05], [1.1]]
     NI=len(giventask)
     assert NI == ntask # make sure number of tasks match
+<<<<<<< HEAD
 	    
+=======
+
+>>>>>>> upstream/master
     np.set_printoptions(suppress=False, precision=3)
     if(TUNER_NAME=='GPTuneBand'):
         NS = Nloop
@@ -285,21 +365,34 @@ def main():
                 except ValueError:
                     pass
             print('    Popt ', Popt, 'Oopt ', min(data.O[tid])[0], 'nth ', nth, 'nth-bandit (s, nth) = ', (arm_opt, idx))
+<<<<<<< HEAD
          
+=======
+
+>>>>>>> upstream/master
     if(TUNER_NAME=='GPTune'):
         NS = Btotal
         if args.nruns > 0:
             NS = args.nruns
             print("In GPTune, using the given number of nruns ", NS)
         NS1 = max(NS//2, 1)
+<<<<<<< HEAD
         gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))        
+=======
+        gt = GPTune(problem, computer=computer, data=data, options=options, driverabspath=os.path.abspath(__file__))
+>>>>>>> upstream/master
         """ Building MLA with the given list of tasks """
         (data, modeler, stats) = gt.MLA(NS=NS, NI=NI, Igiven=giventask, NS1=NS1)
         print("stats: ", stats)
         print("model class: ", options['model_class'])
+<<<<<<< HEAD
         print("Performance model: ", perfmodel)
         print("Model restart: ", restart)
         
+=======
+        print("Model restart: ", restart)
+
+>>>>>>> upstream/master
         """ Print all input and parameter samples """
         sum_Oopt = 0.
         for tid in range(NI):
@@ -310,7 +403,11 @@ def main():
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], f'Oopt  {min(data.O[tid])[0]:.3f}', 'nth ', np.argmin(data.O[tid]))
             sum_Oopt += min(data.O[tid])[0]
         # print("sum of all optimal objectives", sum_Oopt)
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> upstream/master
     if(TUNER_NAME=='opentuner'):
         NS = Btotal
         (data,stats) = OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
@@ -323,7 +420,11 @@ def main():
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid][:NS])], 'Oopt ', min(data.O[tid][:NS])[0], 'nth ', np.argmin(data.O[tid][:NS]))
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> upstream/master
     # single fidelity version of hpbandster
     if(TUNER_NAME=='TPE'):
         NS = Btotal
@@ -336,7 +437,11 @@ def main():
             print("    Ps ", data.P[tid])
             print("    Os ", data.O[tid])
             print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> upstream/master
     # multi-fidelity version
     if(TUNER_NAME=='hpbandster'):
         NS = Ntotal
@@ -366,7 +471,11 @@ def main():
                         if subout[1] < Oopt:
                             Oopt = subout[1]
                             Popt = config
+<<<<<<< HEAD
                             nth = idx                    
+=======
+                            nth = idx
+>>>>>>> upstream/master
             print('    Popt ', Popt, 'Oopt ', Oopt, 'nth ', nth)
 
     if plot==1:
@@ -386,7 +495,11 @@ def main():
                 P_orig=[x[i]]
                 kwargs = {parameter_space[k].name: P_orig[k] for k in range(len(parameter_space))}
                 kwargs.update(kwargst)
+<<<<<<< HEAD
                 y[i]=objectives(kwargs) 
+=======
+                y[i]=objectives(kwargs)
+>>>>>>> upstream/master
                 if(TUNER_NAME=='GPTune'):
                     (y_mean[i],var) = predict_aug(modeler, gt, kwargs,tid)
                     y_std[i]=np.sqrt(var)
@@ -400,20 +513,34 @@ def main():
             plt.ylim(0, 2)
             # print(data.P[tid])
             plt.scatter(data.P[tid], data.O[tid], c='r', s=50, zorder=10, edgecolors=(0, 0, 0),label='sample')
+<<<<<<< HEAD
             
             plt.xlabel('x',fontsize=fontsize+2)
             plt.ylabel('y(t,x)',fontsize=fontsize+2)
             plt.title('t=%f'%t,fontsize=fontsize+2)
             print('t:',t,'x:',x[np.argmin(y)],'ymin:',y.min())    
+=======
+
+            plt.xlabel('x',fontsize=fontsize+2)
+            plt.ylabel('y(t,x)',fontsize=fontsize+2)
+            plt.title('t=%f'%t,fontsize=fontsize+2)
+            print('t:',t,'x:',x[np.argmin(y)],'ymin:',y.min())
+>>>>>>> upstream/master
             # legend = plt.legend(loc='upper center', shadow=True, fontsize='x-large')
             legend = plt.legend(loc='upper right', shadow=False, fontsize=fontsize)
             annot_min(x,y)
             # plt.show()
             plt.show(block=False)
             plt.pause(0.5)
+<<<<<<< HEAD
             # input("Press [enter] to continue.")                
             # fig.savefig('obj_t_%f.eps'%t)
             fig.savefig(f'obj_ntask{NI}_{expid}_tid_{tid}_t_{t:.1f}.pdf')        
+=======
+            # input("Press [enter] to continue.")
+            # fig.savefig('obj_t_%f.eps'%t)
+            fig.savefig(f'obj_ntask{NI}_{expid}_tid_{tid}_t_{t:.1f}.pdf')
+>>>>>>> upstream/master
             ymean_set.append(y_mean)
             ytrue_set.append(y)
         # show the distance among surrogate functions
@@ -435,27 +562,45 @@ def main():
         print("The mean absolute error is: \n", np.mean(abs(new_Rtrue - new_R)))
         print("The mean relative error is: \n", np.mean( abs(new_Rtrue - new_R)/ abs(new_R) ))
 
+<<<<<<< HEAD
         
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-nodes', type=int, default=1, help='Number of nodes')
     parser.add_argument('-cores', type=int, default=1, help='Number of cpu cores')
     parser.add_argument('-machine', type=str,default='-1', help='Name of the computer (not hostname)')
+=======
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+>>>>>>> upstream/master
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-ntask', type=int, default=1, help='Number of tasks')
     # parser.add_argument('-t_end', type=float, default=2.0, help='end of task value')
     parser.add_argument('-nruns', type=int, default=-1, help='total application runs')
     parser.add_argument('-plot', type=int, default=0, help='Whether to plot the objective function')
     # parser.add_argument('-LCMmodel', type=str, default='LCM', help='choose from LCM models: LCM or GPy_LCM')
+<<<<<<< HEAD
     parser.add_argument('-perfmodel', type=int, default=0, help='Whether to use the performance model')
+=======
+>>>>>>> upstream/master
     parser.add_argument('-Nloop', type=int, default=1, help='Number of outer loops in multi-armed bandit per task')
     parser.add_argument('-expid', type=str,default='-1', help='experiment id')
     parser.add_argument('-restart', type=int, default=1, help='number of model restart')
     # parser.add_argument('-sample_class', type=str,default='SampleOpenTURNS',help='Supported sample classes: SampleLHSMDU, SampleOpenTURNS')
     args = parser.parse_args()
+<<<<<<< HEAD
     
     return args   
 
 
 if __name__ == "__main__":
     main()
+=======
+
+    return args
+
+
+if __name__ == "__main__":
+    main()
+>>>>>>> upstream/master

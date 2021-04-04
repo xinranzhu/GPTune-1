@@ -18,15 +18,12 @@
 ################################################################################
 """
 Example of invocation of this script:
-python superlu.py -nodes 1 -cores 32 -nprocmin_pernode 1 -ntask 20 -nrun 800 -machine cori
+mpirun -n 1 python superlu_MLA_complex.py -nprocmin_pernode 1 -ntask 20 -nrun 800 
 
 where:
-    -nodes is the number of compute nodes
-    -cores is the number of cores per node
 	-nprocmin_pernode is the minimum number of MPIs per node for launching the application code
     -ntask is the number of different matrix sizes that will be tuned
     -nrun is the number of calls per task 
-    -machine is the name of the machine
 """
  
 ################################################################################
@@ -43,13 +40,11 @@ from mpi4py import MPI
 from array import array
 import math
 
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
 
-from computer import Computer
-from options import Options
-from data import Data
-from data import Categoricalnorm
-from gptune import GPTune
+from gptune import * # import all
+
+
 
 from autotune.problem import *
 from autotune.space import *
@@ -66,11 +61,11 @@ def objectives(point):                  # should always use this name for user-d
 	COLPERM = point['COLPERM']
 	LOOKAHEAD = point['LOOKAHEAD']
 	nprows = point['nprows']
-	nproc = point['nproc']
+	npernode = 2**point['npernode']
+	nproc = nodes*npernode
+	nthreads = int(cores / npernode)
 	NSUP = point['NSUP']
 	NREL = point['NREL']
-	npernode =  math.ceil(float(nproc)/nodes)  
-	nthreads = int(cores / npernode)
 	npcols     = int(nproc / nprows)
 	params = [matrix, 'COLPERM', COLPERM, 'LOOKAHEAD', LOOKAHEAD, 'nthreads', nthreads, 'npernode', npernode, 'nprows', nprows, 'npcols', npcols, 'NSUP', NSUP, 'NREL', NREL]
 	RUNDIR = os.path.abspath(__file__ + "/../superlu_dist/build/EXAMPLE")
@@ -104,7 +99,10 @@ def objectives(point):                  # should always use this name for user-d
 	return tmpdata 
 
 	
-	
+def cst1(NSUP,NREL):
+	return NSUP >= NREL
+def cst2(npernode,nprows):
+	return nodes * 2**npernode >= nprows		
 def main():
 
 	global ROOTDIR
@@ -112,28 +110,25 @@ def main():
 	global cores
 	global target
 	global nprocmax
-	global nprocmin
 
 	# Parse command line arguments
 	args   = parse_args()
 
 	# Extract arguments
 	ntask = args.ntask
-	nodes = args.nodes
-	cores = args.cores
 	nprocmin_pernode = args.nprocmin_pernode
-	machine = args.machine
 	optimization = args.optimization
-	nruns = args.nruns
-	truns = args.truns
-	# JOBID = args.jobid
+	nrun = args.nrun
 	TUNER_NAME = args.optimization
+	(machine, processor, nodes, cores) = GetMachineConfiguration()
+	print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
+
+
 	os.environ['MACHINE_NAME'] = machine
 	os.environ['TUNER_NAME'] = TUNER_NAME
 
 
-	nprocmax = nodes*cores-1  # YL: there is one proc doing spawning, so nodes*cores should be at least 2
-	nprocmin = min(nodes*nprocmin_pernode,nprocmax-1)  # YL: ensure strictly nprocmin<nprocmax, required by the Integer space
+	nprocmax = nodes*cores
 	# matrices = ["big.rua", "g4.rua", "g20.rua"]
 	matrices = ["nimrodMatrix-V.bin", "nimrodMatrix-B.bin", "cg20.cua"]
 	# matrices = ["Si2.rb", "SiH4.rb", "SiNa.rb", "Na5.rb", "benzene.rb", "Si10H16.rb", "Si5H12.rb", "SiO.rb", "Ga3As3H12.rb", "GaAsH6.rb", "H2O.rb"]
@@ -143,16 +138,14 @@ def main():
 	COLPERM   = Categoricalnorm (['2', '4'], transform="onehot", name="COLPERM")
 	LOOKAHEAD = Integer     (5, 20, transform="normalize", name="LOOKAHEAD")
 	nprows    = Integer     (1, nprocmax, transform="normalize", name="nprows")
-	nproc     = Integer     (nprocmin, nprocmax, transform="normalize", name="nproc")
+	npernode     = Integer     (int(math.log2(nprocmin_pernode)), int(math.log2(cores)), transform="normalize", name="npernode")
 	NSUP      = Integer     (30, 300, transform="normalize", name="NSUP")
 	NREL      = Integer     (10, 40, transform="normalize", name="NREL")	
 	factor   = Real        (float("-Inf") , float("Inf"), name="factor_time")
 	solve    = Real        (float("-Inf") , float("Inf"), name="solve_time")
 	IS = Space([matrix])
-	PS = Space([COLPERM, LOOKAHEAD, nproc, nprows, NSUP, NREL])
+	PS = Space([COLPERM, LOOKAHEAD, npernode, nprows, NSUP, NREL])
 	OS = Space([factor, solve])
-	cst1 = "NSUP >= NREL"
-	cst2 = "nproc >= nprows" # intrinsically implies "p <= nproc"
 	constraints = {"cst1" : cst1, "cst2" : cst2}
 	models = {}
 
@@ -181,12 +174,12 @@ def main():
 
 	""" Intialize the tuner with existing data"""		
 	data = Data(problem)
-	gt = GPTune(problem, computer = computer, data = data, options = options)
+	gt = GPTune(problem, computer = computer, data = data, options = options, driverabspath=os.path.abspath(__file__))
 
 	if(TUNER_NAME=='GPTune'):
 		#""" Building MLA with NI random tasks """
 		#NI = ntask
-		#NS = nruns
+		#NS = nrun
 		#(data, model,stats) = gt.MLA(NS=NS, NI=NI, NS1 = max(NS//2,1))
 		#print("stats: ",stats)
 
@@ -195,7 +188,7 @@ def main():
 		giventask = [["cg20.cua"]]	
 		# giventask = [["nimrodMatrix-V.bin"]]	
 		NI = len(giventask)
-		NS = nruns
+		NS = nrun
 		(data, model,stats) = gt.MLA(NS=NS, NI=NI, Igiven =giventask, NS1 = max(NS//2,1))
 		print("stats: ",stats)
 
@@ -220,8 +213,6 @@ def parse_args():
 	parser = argparse.ArgumentParser()
 
 	# Problem related arguments
-	parser.add_argument('-mmax', type=int, default=-1, help='Number of rows')
-	parser.add_argument('-nmax', type=int, default=-1, help='Number of columns')
 	# Machine related arguments
 	parser.add_argument('-nodes', type=int, default=1, help='Number of machine nodes')
 	parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
@@ -230,12 +221,7 @@ def parse_args():
 	# Algorithm related arguments
 	parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
 	parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
-	parser.add_argument('-nruns', type=int, help='Number of runs per task')
-	parser.add_argument('-truns', type=int, help='Time of runs')
-	# Experiment related arguments
-	parser.add_argument('-jobid', type=int, default=-1, help='ID of the batch job') #0 means interactive execution (not batch)
-	parser.add_argument('-stepid', type=int, default=-1, help='step ID')
-	parser.add_argument('-phase', type=int, default=0, help='phase')
+	parser.add_argument('-nrun', type=int, help='Number of runs per task')
 
 	args   = parser.parse_args()
 	return args

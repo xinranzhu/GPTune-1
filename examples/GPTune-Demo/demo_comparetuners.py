@@ -17,17 +17,26 @@
 # other to do so.
 #
 
+"""
+Example of invocation of this script:
+
+mpirun -n 1 python ./demo_comparetuners.py -nrun 20 -ntask 5 -perfmodel 0 -nrep 2
+
+where:
+    -ntask is the number of different matrix sizes that will be tuned
+    -nrun is the number of calls per task
+    -perfmodel is whether a coarse performance model is used
+    -nrep is the the number of repetitions for running each of the three optimization algorithms: GPTune,opentuner,hpbandster
+    -plot is whether the objective function and the model will be plotted
+"""
 
 ################################################################################
 
 from autotune.search import *
 from autotune.space import *
 from autotune.problem import *
-from gptune import GPTune
-from data import Data
-from data import Categoricalnorm
-from options import Options
-from computer import Computer
+from gptune import * # import all
+
 import argparse
 import sys
 import os
@@ -41,7 +50,7 @@ from callhpbandster import HpBandSter
 import logging
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, os.path.abspath(__file__ + "/../../GPTune/"))
+sys.path.insert(0, os.path.abspath(__file__ + "/../../../GPTune/"))
 logging.getLogger('matplotlib.font_manager').disabled = True
 
 # from GPTune import *
@@ -101,7 +110,7 @@ def objectives(point):
     return [f]
 
 
-# test=1  # make sure to set global variables here, rather than in the main function 
+# test=1  # make sure to set global variables here, rather than in the main function
 def models(point):
     """
     f(t,x) = exp(- (x + 1) ^ (t + 1) * cos(2 * pi * x)) * (sin( (t + 2) * (2 * pi * x) ) + sin( (t + 2)^(2) * (2 * pi * x) + sin ( (t + 2)^(3) * (2 * pi *x))))
@@ -137,24 +146,23 @@ def main():
     args = parse_args()
 
     ntask = args.ntask
-    nodes = args.nodes
-    cores = args.cores
-    machine = args.machine
     perfmodel = args.perfmodel
-    plot = args.plot    
-    nrep = args.nrep    
+    plot = args.plot
+    nrep = args.nrep
+    (machine, processor, nodes, cores) = GetMachineConfiguration()
+    print ("machine: " + machine + " processor: " + processor + " num_nodes: " + str(nodes) + " num_cores: " + str(cores))
 
-    os.environ['MACHINE_NAME'] = machine   
+    os.environ['MACHINE_NAME'] = machine
     input_space = Space([Real(0., 10., transform="normalize", name="t")])
     parameter_space = Space([Real(0., 1., transform="normalize", name="x")])
     # input_space = Space([Real(0., 0.0001, "uniform", "normalize", name="t")])
     # parameter_space = Space([Real(-1., 1., "uniform", "normalize", name="x")])
 
-    output_space = Space([Real(float('-Inf'), float('Inf'), name="time")])
+    output_space = Space([Real(float('-Inf'), float('Inf'), name="y")])
     constraints = {"cst1": "x >= 0. and x <= 1."}
-    if(perfmodel==1):    
+    if(perfmodel==1):
         problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, models)  # with performance model
-    else:    
+    else:
         problem = TuningProblem(input_space, parameter_space,output_space, objectives, constraints, None)  # no performance model
 
     computer = Computer(nodes=nodes, cores=cores, hosts=None)
@@ -193,26 +201,27 @@ def main():
     times=[]
 
     # os.environ['TUNER_NAME'] = 'hpbandster' #'hpbandster'
-    
+
     giventask = [[6]]
     # giventask = [[i] for i in np.arange(0, 10, 0.5).tolist()]
 
     NI=len(giventask)
-    # NS=80	    
+    # NS=80
     NREP=nrep
     NSS=[10, 20, 40]
 
     for TUNER_NAME in ['GPTune','hpbandster','opentuner']:
         t1 = time.time_ns()
-        
+
         mins=np.zeros(len(NSS))
         maxs=np.zeros(len(NSS))
-        avr=np.zeros(len(NSS))  
+        avr=np.zeros(len(NSS))
         for ss in range(len(NSS)):
             NS=NSS[ss]
             opts=np.zeros(NREP)
             for ii in range(NREP):
                 if(TUNER_NAME=='GPTune'):
+                    os.system("rm -rf ./gptune.db/*.json") ## YL: do not reuse database if NREP>1
                     data = Data(problem)
                     gt = GPTune(problem, computer=computer, data=data, options=options,driverabspath=os.path.abspath(__file__))
                     (data, modeler, stats) = gt.MLA(NS=NS, Igiven=giventask, NI=NI, NS1=int(NS/2))
@@ -225,8 +234,8 @@ def main():
                         print("    Ps ", data.P[tid])
                         print("    Os ", data.O[tid].tolist())
                         print('    Popt ', data.P[tid][np.argmin(data.O[tid])], 'Oopt ', min(data.O[tid])[0], 'nth ', np.argmin(data.O[tid]))
-                    
-                
+
+
 
                 if(TUNER_NAME=='opentuner'):
                     (data,stats)=OpenTuner(T=giventask, NS=NS, tp=problem, computer=computer, run_id="OpenTuner", niter=1, technique=None)
@@ -254,11 +263,11 @@ def main():
             avr[ss]=np.average(opts)
             maxs[ss]=np.max(opts)
             mins[ss]=np.min(opts)
-                
+
         allavrs.append(avr)
         allmaxs.append(maxs)
         allmins.append(mins)
-        
+
         t2 = time.time_ns()
         times.append((t2-t1)/1e9)
 
@@ -307,8 +316,8 @@ def main():
         plt.legend(loc='upper right')
         plt.show(block=False)
         plt.pause(0.5)
-        input("Press [enter] to continue.")    
-        fig.savefig('fmins_t%d.eps'%int(giventask[0][0]))     
+        input("Press [enter] to continue.")
+        fig.savefig('fmins_t%d.eps'%int(giventask[0][0]))
 
 
 

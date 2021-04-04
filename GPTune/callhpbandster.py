@@ -211,7 +211,6 @@ def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, run_id="HpBandSte
 
     return (data, stats)
 
-
 def HpBandSter_bandit(T, NS, tp : TuningProblem, computer : Computer, options: Options = None, run_id="HpBandSter_bandit", niter=1):
    # Initialize
     min_budget   = options['budget_min'] # Minimum budget used during the optimization.
