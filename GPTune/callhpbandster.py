@@ -144,11 +144,11 @@ class HpBandSterWorker(hpbandster.core.worker.Worker):
 
 ####################################################################################################
 
-def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, run_id="HpBandSter", niter=1):
+def HpBandSter(T, NS, tp : TuningProblem, computer : Computer, options: Options = None,run_id="HpBandSter", niter=1):
 
     # Initialize
-    min_budget   = 1. # Minimum budget used during the optimization.
-    max_budget   = 1. # Maximum budget used during the optimization.
+    min_budget   = options['budget_max'] # Minimum budget used during the optimization.
+    max_budget   = options['budget_max'] # Maximum budget used during the optimization.
     n_iterations = NS # Number of iterations performed by the optimizer
     n_workers    = 1  # Number of workers to run in parallel.
 
