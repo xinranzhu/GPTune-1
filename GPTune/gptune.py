@@ -33,7 +33,6 @@ import math
 import os
 
 import mpi4py
-from mpi4py import MPI
 import numpy as np
 
 import json
@@ -983,7 +982,7 @@ class GPTune_MB(object):
                 del data.P[0:len(Igiven)]
                 del data.O[0:len(Igiven)]
                 if(data.D is not None):
-                    del data.D[0:len(Igiven)]
+                    data.D=None
                 # merge new results to history
                 
 

@@ -23,7 +23,7 @@ from data import Data
 from historydb import HistoryDB
 from typing import Collection, Callable
 import mpi4py
-from mpi4py import MPI
+# from mpi4py import MPI
 import os
 import sys
 import concurrent
@@ -144,7 +144,7 @@ class Computer(object):
 
 
         if (options['distributed_memory_parallelism'] and options['objective_evaluation_parallelism'] and i_am_manager):
-
+            from mpi4py import MPI
             if(problem.driverabspath is None):
                 raise Exception('objective_evaluation_parallelism and distributed_memory_parallelism require passing driverabspath to GPTune')
 
@@ -203,29 +203,30 @@ class Computer(object):
 
 
     def spawn(self, executable, nproc, nthreads, npernode=None, args=None, kwargs=None):
-
+        from mpi4py import MPI
         print('exec', executable, 'args', args, 'nproc', nproc)
 
         npernodes=npernode
         if(npernode is None):
             npernodes=self.cores
 
-        info = MPI.Info.Create()
+        info = mpi4py.MPI.Info.Create()
 #        info.Set("add-hostfile", "slurm.hosts")
 #        info.Set("host", "slurm.hosts")
         info.Set('env', 'OMP_NUM_THREADS=%d\n' %(nthreads))
         info.Set('npernode','%d'%(npernodes))  # YL: npernode is deprecated in openmpi 4.0, but no other parameter (e.g. 'map-by') works
 
 
-        comm = MPI.COMM_SELF.Spawn(sys.executable, args=executable, maxprocs=nproc,info=info)#, info=mpi_info).Merge()# process_rank = comm.Get_rank()
+        comm = mpi4py.MPI.COMM_SELF.Spawn(sys.executable, args=executable, maxprocs=nproc,info=info)#, info=mpi_info).Merge()# process_rank = comm.Get_rank()
         # process_rank = comm.Get_rank()
         # process_count = comm.Get_size()
-        # process_host = MPI.Get_processor_name()
+        # process_host = mpi4py.MPI.Get_processor_name()
         # print('manager',process_rank, process_count, process_host)
         return comm
 
 
 if __name__ == '__main__':
+    from mpi4py import MPI
 
     def objectives(point):
         print('this is a dummy definition')
@@ -234,7 +235,7 @@ if __name__ == '__main__':
         print('this is a dummy definition')
         return point
 
-    mpi_comm = MPI.Comm.Get_parent()
+    mpi_comm = mpi4py.MPI.Comm.Get_parent()
     mpi_rank = mpi_comm.Get_rank()
     mpi_size = mpi_comm.Get_size()
     (computer, problem,P2, D2, I_orig, pids, kwargs) = mpi_comm.bcast(None, root=0)

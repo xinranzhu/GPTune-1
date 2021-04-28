@@ -69,7 +69,11 @@ import scipy
 def objectives(point):
     bmin = point['bmin']
     bmax = point['bmax']
+<<<<<<< HEAD
     eta = point['eta']   
+=======
+    eta = point['eta']
+>>>>>>> upstream/master
     
     params = [(point["lr"], point["optimizer"], point["sgd_momentum"], 
                point["num_conv_layers"], point["num_filters_1"], 
@@ -85,7 +89,11 @@ def objectives(point):
     validation_loss = cnnMNISTdriver(params, niter=1, 
                                   budget=budget, 
                                   max_epoch=bmax, batch_size=64,
+<<<<<<< HEAD
                                   ntrain=point["ntrain"], nvalid=point["nvalid"])
+=======
+                                  ntrain=point["ntrain"], nvalid=point["nvalid"],device=point["device"])
+>>>>>>> upstream/master
     # print(params, ' valiation accuracy: ', accuracy)
     
     return validation_loss
@@ -99,6 +107,10 @@ def main():
     # Parse command line arguments
     args = parse_args()
     bmin = args.bmin
+<<<<<<< HEAD
+=======
+    device = args.device
+>>>>>>> upstream/master
     bmax = args.bmax
     eta = args.eta
     nrun = args.nrun
@@ -117,7 +129,11 @@ def main():
     # os.system("mkdir -p scalapack-driver/bin/%s; cp ../build/pdqrdriver scalapack-driver/bin/%s/.;" %(machine, machine))
 
     ntrain = Integer(1000, 10000, transform="normalize", name="ntrain")
+<<<<<<< HEAD
     nvalid = Integer(256, 4096, transform="normalize", name="nvalid")
+=======
+    nvalid = Integer(256, 2048, transform="normalize", name="nvalid")
+>>>>>>> upstream/master
     
     lr = Real(1e-6, 1e-2, name="lr")
     optimizer = Categoricalnorm(['Adam', 'SGD'], transform="onehot", name="optimizer")
@@ -135,7 +151,11 @@ def main():
     OS = Space([validation_loss])
     
     constraints = {}
+<<<<<<< HEAD
     constants={"nodes":nodes,"cores":cores,"npernode":npernode,"bmin":bmin,"bmax":bmax,"eta":eta}
+=======
+    constants={"nodes":nodes,"cores":cores,"npernode":npernode,"bmin":bmin,"bmax":bmax,"eta":eta, "device":device}
+>>>>>>> upstream/master
 
     print(IS, PS, OS, constraints)
 
@@ -227,7 +247,11 @@ def main():
     # single-fidelity version of hpbandster
     if(TUNER_NAME=='TPE'):
         NS = Btotal
+<<<<<<< HEAD
         (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="HpBandSter", niter=1)
+=======
+        (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
+>>>>>>> upstream/master
         print("stats: ", stats)
         """ Print all input and parameter samples """
         for tid in range(NI):
@@ -303,12 +327,20 @@ def parse_args():
     parser.add_argument('-cores', type=int, default=1, help='Number of cores per machine node')
     parser.add_argument('-npernode', type=int, default=1,help='Minimum number of MPIs per machine node for the application code')
     parser.add_argument('-machine', type=str, help='Name of the computer (not hostname)')
+<<<<<<< HEAD
+=======
+    parser.add_argument('-device', type=str, default='cpu', help='torch.device: cpu or cuda')
+>>>>>>> upstream/master
     # Algorithm related arguments
     parser.add_argument('-optimization', type=str,default='GPTune',help='Optimization algorithm (opentuner, hpbandster, GPTune)')
     parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
     parser.add_argument('-ntrain', type=int, default=3000, help='Number of training data')
     parser.add_argument('-nvalid', type=int, default=1000, help='Number of testing')
+<<<<<<< HEAD
     parser.add_argument('-nrun', type=int, default=-1, help='Number of runs per task')
+=======
+    parser.add_argument('-nrun', type=int, default=2, help='Number of runs per task')
+>>>>>>> upstream/master
     parser.add_argument('-bmin', type=int, default=1,  help='minimum fidelity for a bandit structure')
     parser.add_argument('-bmax', type=int, default=8, help='maximum fidelity for a bandit structure')
     parser.add_argument('-eta', type=int, default=2, help='base value for a bandit structure')

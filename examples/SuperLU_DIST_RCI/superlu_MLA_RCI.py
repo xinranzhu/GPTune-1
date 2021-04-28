@@ -35,7 +35,6 @@ import argparse
 import pickle
 
 import mpi4py
-from mpi4py import MPI
 from array import array
 import math
 
@@ -48,8 +47,8 @@ from autotune.problem import *
 from autotune.space import *
 from autotune.search import *
 
-from callopentuner import OpenTuner
-from callhpbandster import HpBandSter
+# from callopentuner import OpenTuner
+# from callhpbandster import HpBandSter
 import math
 
 ################################################################################
@@ -131,7 +130,7 @@ def main():
 	# options['model_restart_processes'] = 1
 	options['distributed_memory_parallelism'] = False
 	options['shared_memory_parallelism'] = False
-	options['model_class '] = 'Model_LCM' # 'Model_LCM'
+	options['model_class'] = 'Model_LCM' # 'Model_LCM'
 	options['verbose'] = False
 
 	options.validate(computer = computer)

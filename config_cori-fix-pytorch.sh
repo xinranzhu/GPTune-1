@@ -23,7 +23,7 @@ module load cmake/3.14.4
 ##################################################
 ##################################################
 machine=cori
-proc=haswell   # knl,haswell
+proc=haswell   # knl,haswell,gpu
 mpi=openmpi  # openmpi,craympich
 compiler=gnu   # gnu, intel	
 
@@ -76,9 +76,12 @@ elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
     module unload atp
 
 	GPTUNEROOT=$PWD
+<<<<<<< HEAD:config_cori-fix-pytorch.sh
 
 
 
+=======
+>>>>>>> upstream/master:config_cori.sh
 	
 	export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
 	BLAS_INC="-I${MKLROOT}/include"
@@ -86,6 +89,7 @@ elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
 	BLAS_LIB="${MKLROOT}/lib/intel64/libmkl_gf_lp64.so;${MKLROOT}/lib/intel64/libmkl_gnu_thread.so;${MKLROOT}/lib/intel64/libmkl_core.so;-lgomp"
 	LAPACK_LIB="${MKLROOT}/lib/intel64/libmkl_gf_lp64.so;${MKLROOT}/lib/intel64/libmkl_gnu_thread.so;${MKLROOT}/lib/intel64/libmkl_core.so;-lgomp"
 
+<<<<<<< HEAD:config_cori-fix-pytorch.sh
 	### this assumes pytorch is built from source from https://github.com/sparticlesteve/nersc-pytorch-build 
 	module unload python
 	USER="$(basename $HOME)"
@@ -97,6 +101,21 @@ elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
 	export LD_LIBRARY_PATH=$PREFIX_PATH/lib:$LD_LIBRARY_PATH
 	BLAS_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
 	LAPACK_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
+=======
+
+	######### uncomment the following to use python installed with pytorch 
+	### this assumes pytorch is built from source from https://github.com/sparticlesteve/nersc-pytorch-build 
+	# module unload python
+	# USER="$(basename $HOME)"
+	# PREFIX_PATH=/global/cscratch1/sd/$USER/conda/pytorch/1.8.0
+	# source /usr/common/software/python/3.7-anaconda-2019.10/etc/profile.d/conda.sh
+	# conda activate $PREFIX_PATH
+	# export MKLROOT=$PREFIX_PATH
+	# BLAS_INC="-I${MKLROOT}/include"	
+	# export LD_LIBRARY_PATH=$PREFIX_PATH/lib:$LD_LIBRARY_PATH
+	# BLAS_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
+	# LAPACK_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
+>>>>>>> upstream/master:config_cori.sh
 	
 	SCALAPACK_LIB="$GPTUNEROOT/scalapack-2.1.0/build/lib/libscalapack.so"
 
@@ -106,6 +125,68 @@ elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
 	MPIF90=mpif90
 	OPENMPFLAG=fopenmp
 # fi 
+
+
+elif [ $ModuleEnv = 'cori-gpu-openmpi-gnu' ]; then
+    module load gcc/8.3.0
+    module unload cray-mpich
+    module unload openmpi
+    module unload PrgEnv-intel
+    module load PrgEnv-gnu
+
+
+	module use /global/common/software/m3169/cori/modulefiles
+    module load cgpu
+	module load cuda/11.1.1 
+	module load openmpi/4.0.1-ucx-1.9.0-cuda-10.2.89
+
+    module load cudnn/8.0.5
+    export UCX_LOG_LEVEL=error
+    export NCCL_IB_HCA=mlx5_0:1,mlx5_2:1,mlx5_4:1,mlx5_6:1
+    export LD_LIBRARY_PATH=/usr/common/software/sles15_cgpu/ucx/1.9.0/lib:$LD_LIBRARY_PATH
+    module unload craype-hugepages2M
+    module unload cray-libsci
+    module unload atp
+
+	GPTUNEROOT=$PWD
+
+	
+	export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
+	BLAS_INC="-I${MKLROOT}/include"
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
+	BLAS_LIB="${MKLROOT}/lib/intel64/libmkl_gf_lp64.so;${MKLROOT}/lib/intel64/libmkl_gnu_thread.so;${MKLROOT}/lib/intel64/libmkl_core.so;-lgomp"
+	LAPACK_LIB="${MKLROOT}/lib/intel64/libmkl_gf_lp64.so;${MKLROOT}/lib/intel64/libmkl_gnu_thread.so;${MKLROOT}/lib/intel64/libmkl_core.so;-lgomp"
+
+
+	# ######### uncomment the following to use python installed with pytorch 
+	# ## this assumes pytorch is built from source from https://github.com/sparticlesteve/nersc-pytorch-build 
+	# module unload python
+	# USER="$(basename $HOME)"
+	# PREFIX_PATH=/global/cscratch1/sd/$USER/conda/pytorch/1.8.0-gpu
+	# source /usr/common/software/python/3.7-anaconda-2019.10/etc/profile.d/conda.sh
+	# conda activate $PREFIX_PATH
+	# export MKLROOT=$PREFIX_PATH
+	# BLAS_INC="-I${MKLROOT}/include"	
+	# export LD_LIBRARY_PATH=$PREFIX_PATH/lib:$LD_LIBRARY_PATH
+	# BLAS_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
+	# LAPACK_LIB="${MKLROOT}/lib/libmkl_gf_lp64.so;${MKLROOT}/lib/libmkl_gnu_thread.so;${MKLROOT}/lib/libmkl_core.so;-lgomp"
+	
+
+
+
+	SCALAPACK_LIB="$GPTUNEROOT/scalapack-2.1.0/build/lib/libscalapack.so"
+
+	MPICC=mpicc
+	MPICXX=mpicxx
+	MPIF90=mpif90
+	OPENMPFLAG=fopenmp
+	SLU_CUDA_FLAG="-DGPU_ACC -I${CUDA_ROOT}/include"
+	STRUMPACK_USE_CUDA=ON
+	STRUMPACK_CUDA_FLAGS="-I/global/common/software/m3169/openmpi/4.0.1/gnu-ucx-1.9.0-cuda-10.2.89/include"
+	CUBLAS_LIB="${CUDA_ROOT}/lib64/libcublas.so;${CUDA_ROOT}/lib64/libcudart.so"
+	CUBLAS_INCLUDE="${CUDA_ROOT}/include"
+# fi 
+
 
 
 elif [ $ModuleEnv = 'cori-haswell-openmpi-intel' ]; then
@@ -285,7 +366,7 @@ if [[ $BuildExample == 1 ]]; then
 	rm -rf CMakeFiles
 	cmake .. \
 		-DCMAKE_CXX_FLAGS="-Ofast -std=c++11 -DAdd_ -DRELEASE" \
-		-DCMAKE_C_FLAGS="-std=c11 -DPRNTlevel=0 -DPROFlevel=0 -DDEBUGlevel=0" \
+		-DCMAKE_C_FLAGS="-std=c11 -DPRNTlevel=0 -DPROFlevel=0 -DDEBUGlevel=0 ${SLU_CUDA_FLAG}" \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_CXX_COMPILER=$MPICXX \
 		-DCMAKE_C_COMPILER=$MPICC \
@@ -295,7 +376,7 @@ if [[ $BuildExample == 1 ]]; then
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
 		-DTPL_BLAS_LIBRARIES="${BLAS_LIB}" \
-		-DTPL_LAPACK_LIBRARIES="${LAPACK_LIB}" \
+		-DTPL_LAPACK_LIBRARIES="${LAPACK_LIB};${CUBLAS_LIB}" \
 		-DTPL_PARMETIS_INCLUDE_DIRS=$PARMETIS_INCLUDE_DIRS \
 		-DTPL_PARMETIS_LIBRARIES=$PARMETIS_LIBRARIES
 	make pddrive_spawn
@@ -404,6 +485,10 @@ if [[ $BuildExample == 1 ]]; then
 		-DCMAKE_Fortran_COMPILER=$MPIF90 \
 		-DSTRUMPACK_COUNT_FLOPS=ON \
 		-DSTRUMPACK_TASK_TIMERS=ON \
+		-DSTRUMPACK_USE_CUDA=${STRUMPACK_USE_CUDA} \
+		-DTPL_CUBLAS_LIBRARIES="${CUBLAS_LIB}" \
+		-DTPL_CUBLAS_INCLUDE_DIRS="${CUBLAS_INCLUDE}" \
+		-DCMAKE_CUDA_FLAGS="${STRUMPACK_CUDA_FLAGS}" \
 		-DTPL_ENABLE_SCOTCH=ON \
 		-DTPL_ENABLE_ZFP=OFF \
 		-DTPL_ENABLE_PTSCOTCH=ON \
@@ -481,4 +566,8 @@ env CC=$MPICC pip install --prefix=$PREFIX_PATH -e .
 
 
 cp ../patches/opentuner/manipulator.py  $PREFIX_PATH/lib/python3.7/site-packages/opentuner/search/.
+<<<<<<< HEAD:config_cori-fix-pytorch.sh
 cd $GPTUNEROOT
+=======
+cd $GPTUNEROOT
+>>>>>>> upstream/master:config_cori.sh

@@ -1,15 +1,6 @@
 #!/bin/bash
 start=`date +%s`
 
-# ModuleEnv='tr4-workstation-AMD1950X-openmpi-gnu'
-# ModuleEnv='cori-haswell-craympich-gnu'
-# ModuleEnv='cori-haswell-craympich-intel'
-# ModuleEnv='cori-haswell-openmpi-gnu'
-# ModuleEnv='cori-haswell-openmpi-intel'
-# ModuleEnv='cori-knl-openmpi-gnu'
-# ModuleEnv='cori-knl-openmpi-intel'
-
-
 # Get nrun and nprocmin_pernode from command line
 while getopts "a:b:" opt
 do
@@ -19,103 +10,6 @@ do
       ? ) echo "unrecognized bash option $opt" ;; # Print helpFunction in case parameter is non-existent
    esac
 done
-
-
-# ############### Yang's tr4 machine
-# if [ $ModuleEnv = 'tr4-workstation-AMD1950X-openmpi-gnu' ]; then
-#     module load gcc/9.1.0
-#     module load openmpi/gcc-9.1.0/4.0.1
-#     module load scalapack-netlib/gcc-9.1.0/2.0.2
-#     module load python/gcc-9.1.0/3.7.4
-# # fi
-# ###############
-
-
-# ############### Cori Haswell Openmpi+GNU
-# elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
-#     module load python/3.7-anaconda-2019.10
-#     module unload cray-mpich
-#     module swap PrgEnv-intel PrgEnv-gnu
-#     export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-#     module load openmpi/4.0.1
-# # fi    
-# ###############
-
-# ############### Cori Haswell Openmpi+Intel
-# elif [ $ModuleEnv = 'cori-haswell-openmpi-intel' ]; then
-#     module load python/3.7-anaconda-2019.10
-#     module unload cray-mpich
-#     module swap PrgEnv-gnu PrgEnv-intel 
-#     module swap intel intel/19.0.3.199 
-#     export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-#     module load openmpi/4.0.1
-# # fi    
-# ###############
-
-# ############### Cori Haswell CrayMPICH+GNU
-# elif [ $ModuleEnv = 'cori-haswell-craympich-gnu' ]; then
-#     module load python/3.7-anaconda-2019.10
-#     module swap PrgEnv-intel PrgEnv-gnu
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-# # fi
-# ###############
-
-# ############### Cori Haswell CrayMPICH+Intel
-# elif [ $ModuleEnv = 'cori-haswell-craympich-intel' ]; then
-#     module load python/3.7-anaconda-2019.10
-#     module swap PrgEnv-gnu PrgEnv-intel 
-#     module swap intel intel/19.0.3.199 
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-# # fi
-# ###############
-
-# ############### Cori KNL Openmpi+GNU
-# elif [ $ModuleEnv = 'cori-knl-openmpi-gnu' ]; then
-# 	module unload darshan
-# 	module swap craype-haswell craype-mic-knl
-# 	module load craype-hugepages2M
-# 	module unload cray-libsci
-# 	module unload cray-mpich
-# 	module swap PrgEnv-intel PrgEnv-gnu
-# 	module load openmpi/4.0.1
-#     export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-# # fi    
-# ###############
-
-
-# ############### Cori KNL Openmpi+Intel
-# elif [ $ModuleEnv = 'cori-knl-openmpi-intel' ]; then
-# 	module unload darshan
-# 	module swap craype-haswell craype-mic-knl
-# 	module load craype-hugepages2M
-# 	module unload cray-libsci
-# 	module unload cray-mpich
-# 	module swap PrgEnv-gnu PrgEnv-intel 
-#     module swap intel intel/19.0.3.199 
-# 	module load openmpi/4.0.1
-#     export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
-#     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
-# else
-#     echo "Untested ModuleEnv: $ModuleEnv for RCI, please add the corresponding definitions in this file"
-#     exit
-# fi    
-  
-# ###############
-
-
 
 cd ../../
 export PYTHONPATH=$PYTHONPATH:$PWD/autotune/
@@ -206,10 +100,28 @@ if [[ $ModuleEnv == *"openmpi"* ]]; then
 ############ openmpi
     echo "mpirun --allow-run-as-root -n $nproc $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix"
     mpirun --allow-run-as-root -n $nproc $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix | tee a.out
-else 
+elif [[ $ModuleEnv == *"craympich"* ]]; then
 ############ craympich
     echo "srun -n $nproc $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix | tee a.out"
     srun -n $nproc $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix | tee a.out
+elif [[ $ModuleEnv == *"spectrummpi"* ]]; then
+############ spectrummpi
+    RS_PER_HOST=6
+    GPU_PER_RS=0    # CPU only now
+
+    if [[ $npernode -lt $RS_PER_HOST ]]; then
+        npernode=$RS_PER_HOST
+    fi
+    export OMP_NUM_THREADS=$(($cores / $npernode))
+    npernode_ext=$(($cores / $OMP_NUM_THREADS)) # break the constraint of power-of-2 npernode 
+    RANK_PER_RS=$(($npernode_ext / $RS_PER_HOST)) 
+    npernode_ext=$(($RANK_PER_RS * $RS_PER_HOST)) 
+    RS_VAL=$(($nodes * $RS_PER_HOST)) 
+    TH_PER_RS=`expr $OMP_NUM_THREADS \* $RANK_PER_RS`
+    
+    echo "jsrun -b packed:$OMP_NUM_THREADS -d packed --nrs $RS_VAL --tasks_per_rs $RANK_PER_RS -c $TH_PER_RS --gpu_per_rs $GPU_PER_RS  --rs_per_host $RS_PER_HOST '--smpiargs=-x PAMI_DISABLE_CUDA_HOOK=1 -disable_gpu_hooks' $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix | tee a.out"
+    jsrun -b packed:$OMP_NUM_THREADS -d packed --nrs $RS_VAL --tasks_per_rs $RANK_PER_RS -c $TH_PER_RS --gpu_per_rs $GPU_PER_RS  --rs_per_host $RS_PER_HOST '--smpiargs=-x PAMI_DISABLE_CUDA_HOOK=1 -disable_gpu_hooks' $RUNDIR/pddrive_spawn -c $npcols -r $nprows -l $LOOKAHEAD -p $COLPERM $INPUTDIR/$matrix | tee a.out
+    
 fi
 
 

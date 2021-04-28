@@ -35,7 +35,6 @@ import pickle
 import copy
 
 import mpi4py
-from mpi4py import MPI
 from array import array
 import math
 
@@ -125,7 +124,7 @@ def main():
 	# options['model_restart_processes'] = 1
 	options['distributed_memory_parallelism'] = False
 	options['shared_memory_parallelism'] = False
-	options['model_class '] = 'Model_GPy_LCM' # 'Model_LCM'
+	options['model_class'] = 'Model_GPy_LCM' # 'Model_LCM'
 	options['verbose'] = False
 	options['search_algo'] = 'nsga2' #'maco' #'moead' #'nsga2' #'nspso' 
 	options['search_pop_size'] = 1000
