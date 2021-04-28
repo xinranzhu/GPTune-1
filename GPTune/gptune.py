@@ -977,7 +977,8 @@ class GPTune_MB(object):
                 data1.P += data.P[0:len(Igiven)]
                 data1.O += data.O[0:len(Igiven)]
                 if(data.D is not None):
-                    data1.D += data.D[0:len(Igiven)]
+                    # data1.D += data.D[0:len(Igiven)]
+                    data.D=None
                 del data.I[0:len(Igiven)]
                 del data.P[0:len(Igiven)]
                 del data.O[0:len(Igiven)]
