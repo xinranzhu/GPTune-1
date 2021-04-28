@@ -83,34 +83,27 @@ Nloop=2
 ntask=1
 plot=0
 restart=1
-expid='4'
-t=2.0
+expid='TEST'
+rm gptune.db/GPTune-Demo.json
 
 tuner='GPTune'
+LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
+mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
+
 rm gptune.db/GPTune-Demo.json
-LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libtinfo.so.6 \
-mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} -t ${t} \
-2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}
 
 tuner='GPTuneBand'
-rm gptune.db/GPTune-Demo.json
 LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
-mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} -t ${t} \
-2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}
-mpirun -n 1 python demo_parse_GPTuneBand_db.py -ntask ${ntask} -save_path "./postprocess/data/demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}" 
+mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
 
-tuner='hpbandster'
-LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
-mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} -t ${t} \
-2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}
+# tuner='hpbandster'
+# LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
+# mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
 
-tuner='TPE'
-LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
-mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} -t ${t} \
-2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}
+# tuner='TPE'
+# LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
+# mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
 
-tuner='opentuner'
-LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
-mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} -t ${t} \
-2>&1 | tee a.out_demo_ntask${ntask}_Nloop${Nloop}_expid${expid}_${tuner}
-
+# tuner='opentuner'
+# LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so \
+# mpirun -n 1 python -u demo_MB.py  -ntask ${ntask} -Nloop ${Nloop} -optimization ${tuner} -restart ${restart}  -plot ${plot} -expid ${expid} 2>&1 | tee a.out_demo_ntask${ntask}_nruns${nruns}_expid${expid}_${tuner}
