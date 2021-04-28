@@ -70,3 +70,4 @@ examples/STRUMPACK/pack
 examples/STRUMPACK/KRR_*
 examples/STRUMPACK/postprocess
 examples/SuperLU_DIST/.gptune/
+
