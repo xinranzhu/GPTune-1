@@ -126,16 +126,17 @@ def main():
 
 
 	datafiles = ["data/susy_10Kn"]
+	# datafiles = ["data/branin_10k"]
 
 	# Task input parameters
-	datafile    = Categoricalnorm (datafiles, transform="onehot", name="datafile")
+	datafile    = Categoricalnorm(datafiles, transform="onehot", name="datafile")
 
 	# Tuning parameters
 	h =  Real(-10, 10, transform="normalize", name="h")
 	Lambda =  Real(-10, 10, transform="normalize", name="Lambda")
-	# npernode     = Integer     (int(math.log2(nprocmin_pernode)), int(math.log2(cores)), transform="normalize", name="npernode")
+	# npernode     = Integer(int(math.log2(nprocmin_pernode)), int(math.log2(cores)), transform="normalize", name="npernode")
 
-	result   = Real        (0 , float("Inf"),name="r")
+	result   = Real(0 , float("Inf"),name="r")
 	IS = Space([datafile])
 	# PS = Space([h,Lambda,npernode])
 	PS = Space([h,Lambda])
