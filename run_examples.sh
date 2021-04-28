@@ -15,11 +15,11 @@ BuildExample=1 # whether all the examples have been built
 # export nodes=1  # number of nodes to be used
 
 ################ Cori
-# export machine=cori
-# export proc=haswell   # knl,haswell
-# export mpi=openmpi  # openmpi,craympich
-# export compiler=gnu   # gnu, intel	
-# export nodes=1  # number of nodes to be used
+export machine=cori
+export proc=haswell   # knl,haswell
+export mpi=openmpi  # openmpi,craympich
+export compiler=gnu   # gnu, intel	
+export nodes=1  # number of nodes to be used
 
 
 # ################ Yang's tr4 machine
@@ -31,11 +31,11 @@ BuildExample=1 # whether all the examples have been built
 
 
 ################ Any ubuntu/debian machine that has used config_cleanlinux.sh to build GPTune
-export machine=cleanlinux
-export proc=unknown   
-export mpi=openmpi  
-export compiler=gnu   
-export nodes=1  # number of nodes to be used
+# export machine=cleanlinux
+# export proc=unknown   
+# export mpi=openmpi  
+# export compiler=gnu   
+# export nodes=1  # number of nodes to be used
 
 
 ##################################################
@@ -146,14 +146,35 @@ elif [ $ModuleEnv = 'cori-haswell-craympich-intel' ]; then
 
 ############### Cori Haswell Openmpi+GNU
 elif [ $ModuleEnv = 'cori-haswell-openmpi-gnu' ]; then
-    module load python/3.7-anaconda-2019.10
+    
+    module load gcc/8.3.0
     module unload cray-mpich
-    module swap PrgEnv-intel PrgEnv-gnu
+    module unload openmpi
+    module unload PrgEnv-intel
+    module load PrgEnv-gnu
     module load openmpi/4.0.1
+    module unload craype-hugepages2M
+    module unload cray-libsci
+    module unload atp    
+    module load python/3.7-anaconda-2019.10
     export MKLROOT=/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/examples/SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
     export PYTHONPATH=~/.local/cori/3.7-anaconda-2019.10/lib/python3.7/site-packages
+
+    
+    module unload python
+    USER="$(basename $HOME)"
+    PREFIX_PATH=/global/cscratch1/sd/$USER/conda/pytorch/1.8.0
+    source /usr/common/software/python/3.7-anaconda-2019.10/etc/profile.d/conda.sh
+    conda activate $PREFIX_PATH
+    export MKLROOT=$PREFIX_PATH
+    BLAS_INC="-I${MKLROOT}/include"
+    export LD_LIBRARY_PATH=$PREFIX_PATH/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/examples/SuperLU_DIST/superlu_dist/parmetis-4.0.3/install/lib/
+    export PYTHONPATH=$PREFIX_PATH/lib/python3.7/site-packages
+
+
     MPIRUN=mpirun
     cores=32
     software_json=$(echo ",\"software_configuration\":{\"openmpi\":{\"version_split\": [4,0,1]},\"scalapack\":{\"version_split\": [2,1,0]},\"gcc\":{\"version_split\": [8,3,0]}}")
@@ -306,12 +327,12 @@ if [[ $ModuleEnv == *"openmpi"* ]]; then
     # $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  python ./scalapack_MLA.py -mmax 1000 -nmax 1000 -nprocmin_pernode 1 -ntask 2 -nrun 20 -machine cori -jobid 0 -tla 1
 
     if [[ $BuildExample == 1 ]]; then
-        cd $GPTUNEROOT/examples/SuperLU_DIST
-        rm -rf gptune.db/*.json # do not load any database 
-        tp=SuperLU_DIST
-        app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
-        echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json
-        $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  python ./superlu_MLA.py -nprocmin_pernode 1 -ntask 1 -nrun 20 -machine cori
+        # cd $GPTUNEROOT/examples/SuperLU_DIST
+        # rm -rf gptune.db/*.json # do not load any database 
+        # tp=SuperLU_DIST
+        # app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
+        # echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json
+        # $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  python ./superlu_MLA.py -nprocmin_pernode 1 -ntask 1 -nrun 20 -machine cori
 
 
         # cd $GPTUNEROOT/examples/STRUMPACK
@@ -322,14 +343,28 @@ if [[ $ModuleEnv == *"openmpi"* ]]; then
         # $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  python ./strumpack_MLA_Poisson3d.py -ntask 1 -nrun 10 -machine cori 
 
 
-        # cd $GPTUNEROOT/examples/STRUMPACK
+        cd $GPTUNEROOT/examples/STRUMPACK
+        rm -rf gptune.db/*.json # do not load any database
+        tp=STRUMPACK_KRR
+        app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
+        echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json 
+        LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  \
+        python ./strumpack_MLA_KRR.py -ntask 1 -nrun 10 -machine cori -npernode $cores 
+
+        # cd $GPTUNEROOT/examples/cnnMNIST
         # rm -rf gptune.db/*.json # do not load any database
-        # tp=STRUMPACK_KRR
+        # tp=cnnMNIST
         # app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
         # echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json 
-        # $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  python ./strumpack_MLA_KRR.py -ntask 1 -nrun 10 -machine cori -npernode $cores 
 
+        # LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  \
+        # python ./cnnMNIST_MB.py -ntask 1 -nrun 4 -machine cori -npernode $cores -optimization "GPTune"\
+        # 2>&1 | tee a.out_STRUMPACK_KRR_ntask1_nrun10_GPTune
 
+        # LD_PRELOAD=/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_core.so:/global/cscratch1/sd/xinranz/conda/pytorch/1.8.0/lib/libmkl_sequential.so $MPIRUN --oversubscribe --allow-run-as-root --mca pmix_server_max_wait 3600 --mca pmix_base_exchange_timeout 3600 --mca orte_abort_timeout 3600 --mca plm_rsh_no_tree_spawn true -n 1  \
+        # python ./cnnMNIST_MB.py -ntask 1 -nrun -1 -machine cori -npernode $cores -optimization "GPTuneBand" \
+        # -bmin 3 -bmax 27 -eta 3 -Nloop 1 -restart 1\
+        # 2>&1 | tee a.out_cnnMNIST_MB_ntask1_bandit3-27-3_GPTuneBand
 
         # cd $GPTUNEROOT/examples/MFEM
         # rm -rf gptune.db/*.json # do not load any database 
@@ -379,14 +414,14 @@ echo "Testing Reverse Communication Interface"
 # bash scalapack_MLA_RCI.sh -a 40 -b 2 -c 1000 -d 1000 -e 2 | tee log.pdgeqrf #a: nrun b: nprocmin_pernode c: mmax d: nmax e: ntask
 # cp gptune.db/PDGEQRF.json  gptune.db/PDGEQRF.json_$(timestamp)
 
-if [[ $BuildExample == 1 ]]; then
-    cd $GPTUNEROOT/examples/SuperLU_DIST_RCI
-    rm -rf gptune.db/*.json # do not load any database 
-    tp=SuperLU_DIST
-    app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
-    echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json
-    bash superlu_MLA_RCI.sh -a 10 -b 2 -c memory | tee log.superlu #a: nrun b: nprocmin_pernode c: objective
-    cp gptune.db/SuperLU_DIST.json  gptune.db/SuperLU_DIST.json_$(timestamp)
+# if [[ $BuildExample == 1 ]]; then
+    # cd $GPTUNEROOT/examples/SuperLU_DIST_RCI
+    # rm -rf gptune.db/*.json # do not load any database 
+    # tp=SuperLU_DIST
+    # app_json=$(echo "{\"tuning_problem_name\":\"$tp\"")
+    # echo "$app_json$machine_json$software_json$loadable_machine_json$loadable_software_json}" | jq '.' > .gptune/meta.json
+    # bash superlu_MLA_RCI.sh -a 10 -b 2 -c memory | tee log.superlu #a: nrun b: nprocmin_pernode c: objective
+    # cp gptune.db/SuperLU_DIST.json  gptune.db/SuperLU_DIST.json_$(timestamp)
 
     # cd $GPTUNEROOT/examples/SuperLU_DIST_RCI
     # rm -rf gptune.db/*.json # do not load any database 
@@ -435,7 +470,7 @@ if [[ $BuildExample == 1 ]]; then
     # optimization='GPTune'
     # bash nimrod_single_MB_RCI.sh -a $nstepmax -b $nstepmin -c $Nloop -d $optimization | tee log.nimrod_nstepmax${nstepmax}_nstepmin$nstepmin}_Nloop${Nloop}_optimization${optimization}_nodes${nodes} #a: nstepmax b: nstepmin c: Nloop d: optimization
     # cp gptune.db/NIMROD.json  gptune.db/NIMROD.json_$(timestamp)
-fi
+# fi
 
 # ##########################################################################
 # ##########################################################################
