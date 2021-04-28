@@ -3,7 +3,6 @@ import os, sys, re
 import mpi4py
 import time
 from mpi4py import MPI
-import time
 
 # Paths
 MACHINE_NAME = 'tmp'
