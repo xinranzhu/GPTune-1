@@ -117,7 +117,7 @@ def main():
     # os.system("mkdir -p scalapack-driver/bin/%s; cp ../build/pdqrdriver scalapack-driver/bin/%s/.;" %(machine, machine))
 
     ntrain = Integer(1000, 10000, transform="normalize", name="ntrain")
-    nvalid = Integer(256, 2048, transform="normalize", name="nvalid")
+    nvalid = Integer(256, 4096, transform="normalize", name="nvalid")
     
     lr = Real(1e-6, 1e-2, name="lr")
     optimizer = Categoricalnorm(['Adam', 'SGD'], transform="onehot", name="optimizer")
@@ -185,8 +185,8 @@ def main():
     # giventask = [[0.2, 0.5]]
     
     if ntask == 1:
-        # giventask = [[args.ntrain, args.nvalid]]
-        giventask = [[3000, 1000]]
+        giventask = [[args.ntrain, args.nvalid]]
+        # giventask = [[3000, 1000]]
     
     
     NI=len(giventask)
@@ -227,7 +227,7 @@ def main():
     # single-fidelity version of hpbandster
     if(TUNER_NAME=='TPE'):
         NS = Btotal
-        (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, run_id="HpBandSter", niter=1)
+        (data,stats)=HpBandSter(T=giventask, NS=NS, tp=problem, computer=computer, options=options, run_id="HpBandSter", niter=1)
         print("stats: ", stats)
         """ Print all input and parameter samples """
         for tid in range(NI):
@@ -308,7 +308,7 @@ def parse_args():
     parser.add_argument('-ntask', type=int, default=-1, help='Number of tasks')
     parser.add_argument('-ntrain', type=int, default=3000, help='Number of training data')
     parser.add_argument('-nvalid', type=int, default=1000, help='Number of testing')
-    parser.add_argument('-nrun', type=int, default=2, help='Number of runs per task')
+    parser.add_argument('-nrun', type=int, default=-1, help='Number of runs per task')
     parser.add_argument('-bmin', type=int, default=1,  help='minimum fidelity for a bandit structure')
     parser.add_argument('-bmax', type=int, default=8, help='maximum fidelity for a bandit structure')
     parser.add_argument('-eta', type=int, default=2, help='base value for a bandit structure')

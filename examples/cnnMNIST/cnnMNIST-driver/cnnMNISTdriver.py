@@ -177,7 +177,7 @@ def execute(params, niter=1, budget=None, max_epoch=243,
     
 
     print()
-    print(f"ntrain={ntrain}, nvalid={nvalid}, num_epoch={num_epoch}" )
+    print(f"One CNN run, ntrain={ntrain}, nvalid={nvalid}, num_epoch={num_epoch}" )
     print('params: ', params)
     print({'loss': 1-validation_accuracy, 
            'info': {    'test accuracy': test_accuracy,
