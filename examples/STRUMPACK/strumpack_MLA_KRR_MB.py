@@ -109,7 +109,6 @@ def objectives(point):                  # should always use this name for user-d
     # h = 0.1
     # Lambda = 3.11
     degree = 1    # only used when kernel=ANOVA (degree<=d) in KernelRegressionMPI.py 
-
     """ use MPI spawn to call the executable, and pass the other parameters and inputs through command line """
     # print('exec', "%s/testPoisson3dMPIDist"%(RUNDIR), 'args', ['%s'%(gridsize), '1', '--sp_reordering_method', '%s'%(sp_reordering_method),'--sp_matching', '0','--sp_compression', '%s'%(sp_compression1),'--sp_nd_param', '%s'%(sp_nd_param),'--sp_compression_min_sep_size', '%s'%(sp_compression_min_sep_size),'--sp_compression_min_front_size', '%s'%(sp_compression_min_front_size),'--sp_compression_leaf_size', '%s'%(sp_compression_leaf_size)]+extra_str, 'nproc', nproc, 'env', 'OMP_NUM_THREADS=%d' %(nthreads))
     comm = MPI.COMM_SELF.Spawn("%s/KernelRegressionMPI.py"%(RUNDIR), args=['%s/%s'%(INPUTDIR,datafile), '%s'%(h),'%s'%(Lambda),'%s'%(degree), '%s'%(fidelity)], maxprocs=nproc,info=info)
