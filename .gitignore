@@ -71,3 +71,6 @@ examples/STRUMPACK/KRR_*
 examples/STRUMPACK/postprocess
 examples/SuperLU_DIST/.gptune/
 
+examples/STRUMPACK_MULTI/scotch_6.1.0
+examples/STRUMPACK_MULTI/log.superlu
+examples/STRUMPACK_MULTI/core
